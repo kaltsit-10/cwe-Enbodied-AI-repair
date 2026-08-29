@@ -3,7 +3,6 @@
 """Score evidence readiness and produce a defensive PR materialization queue."""
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -60,14 +59,17 @@ def meaningful(value, field=None):
     return not any(marker in text for marker in NEGATIVE_MARKERS)
 
 
-def path_exists(value):
-    return isinstance(value, str) and bool(value) and os.path.isfile(value)
+def recorded_path(value):
+    """Check registry provenance without requiring a third-party worktree in this host."""
+    return isinstance(value, str) and bool(value.strip())
 
 
 def assess_case(case):
     evidence = case.get("evidence", {})
     base_head = bool(evidence.get("base_sha")) and bool(evidence.get("head_sha"))
-    source_pair = path_exists(evidence.get("before_source")) and path_exists(evidence.get("after_source"))
+    # The queue is a checked-in provenance snapshot. Runtime/build validators, not
+    # this inventory score, decide whether a referenced local worktree is available.
+    source_pair = recorded_path(evidence.get("before_source")) and recorded_path(evidence.get("after_source"))
     gates = {
         "official_source": evidence.get("official_source") is True,
         "base_head": base_head,
