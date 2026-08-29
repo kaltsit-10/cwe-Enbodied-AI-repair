@@ -1,0 +1,3 @@
+# This research artifact contains hash-bound evidence files.
+# Preserve committed bytes across Windows, Linux CI, and git archive checkouts.
+* -text
