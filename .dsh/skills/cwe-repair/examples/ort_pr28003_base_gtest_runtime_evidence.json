@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "source_revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "target": "onnxruntime_provider_test",
+  "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+  "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+  "runtime_scope": "paired-shared-operator-controls",
+  "execution_scope": "local-pinned-binary-only",
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "status": "PASS",
+  "errors": [],
+  "cases": [
+    {
+      "id": "rnn-bidirectional-sequence-lens-control",
+      "filter": "RNNTest.RNN_bidirectional_with_sequence_lens",
+      "expected_test_count": 1,
+      "role": "finite benign control shared by base and head",
+      "contract_paths": [
+        "rnn-narrowing-contract"
+      ],
+      "exit_code": 0,
+      "tests_run": 1,
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASS",
+      "output_tail": "Note: Google Test filter = RNNTest.RNN_bidirectional_with_sequence_lens\n[==========] Running 1 test from 1 test suite.\n[----------] Global test environment set-up.\n[----------] 1 test from RNNTest\n[ RUN      ] RNNTest.RNN_bidirectional_with_sequence_lens\n[       OK ] RNNTest.RNN_bidirectional_with_sequence_lens (66 ms)\n[----------] 1 test from RNNTest (66 ms total)\n\n[----------] Global test environment tear-down\n[==========] 1 test from 1 test suite ran. (66 ms total)\n[  PASSED  ] 1 test.\n"
+    },
+    {
+      "id": "rnn-invalid-sequence-lens-rejection",
+      "filter": "RNNTest.RNN_invalid_sequence_lens",
+      "expected_test_count": 1,
+      "role": "adjacent input-validation control with shape/out-of-range failures; not evidence that sequence_lens=0 is rejected",
+      "contract_paths": [],
+      "exit_code": 0,
+      "tests_run": 1,
+      "tests_passed": 1,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASS",
+      "output_tail": "Note: Google Test filter = RNNTest.RNN_invalid_sequence_lens\n[==========] Running 1 test from 1 test suite.\n[----------] Global test environment set-up.\n[----------] 1 test from RNNTest\n[ RUN      ] RNNTest.RNN_invalid_sequence_lens\n\u001b[1;31m2026-08-27 12:42:21.929599531 [E:onnxruntime:RNN, sequential_executor.cc:614 ExecuteKernel] Non-zero status code returned while running RNN node. Name:'node1' Status Message: Input sequence_lens must have shape {2}. Actual:{1}\u001b[m\n\u001b[1;31m2026-08-27 12:42:21.931564393 [E:onnxruntime:RNN, sequential_executor.cc:614 ExecuteKernel] Non-zero status code returned while running RNN node. Name:'node1' Status Message: Invalid value/s in sequence_lens. All values must be > 0 and < seq_length. seq_length=3\u001b[m\n[       OK ] RNNTest.RNN_invalid_sequence_lens (16 ms)\n[----------] 1 test from RNNTest (16 ms total)\n\n[----------] Global test environment tear-down\n[==========] 1 test from 1 test suite ran. (16 ms total)\n[  PASSED  ] 1 test.\n"
+    }
+  ],
+  "summary": {
+    "passed": "2/2",
+    "verdict": "PASS"
+  },
+  "formal_proof": false,
+  "proof_scope": "declared local GoogleTest filters only"
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-91146",
+  "evidence_scope": "reduced-nonnegative-shape-dimension-contract",
+  "official_source": "https://gitee.com/mindspore/mindspore/pulls/91146",
+  "base_sha": "538ff34fbc1eaa00355d5a2fb5ed1b17a76ecc4e",
+  "head_sha": "4c2308c95c7f1584e18aedb01ca3b90fb7a67168",
+  "reduced_runtime": {
+    "after_source": ".dsh/skills/cwe-repair/examples/ms_pr91146_shape_after.cpp",
+    "harness_source": ".dsh/skills/cwe-repair/examples/ms_pr91146_shape_verify.cpp",
+    "binary": "/home/kaltsit/vuln_repro/mindspore_history/ms_pr91146_shape_verify",
+    "binary_sha256": "086416886d1ce994758c631820f2e7f25641f091949c22af9147a3bcd2bdcff7",
+    "malicious": [
+      {
+        "input": "ms_pr91146_shape_invalid_empty.shape",
+        "sha256": "cfc3f1de8d64c4b46406d663408cd933246d415d2d60ac9aa2086027e04fa1b9",
+        "contract": "empty shape negative dimension",
+        "ret": -1,
+        "crashed": false
+      },
+      {
+        "input": "ms_pr91146_shape_invalid_rand.shape",
+        "sha256": "784cfeeb6a02dfb6168c519cf732c3e0d9a23e1581433593de0a6b04f57e557c",
+        "contract": "rand shape negative dimension",
+        "ret": -1,
+        "crashed": false
+      }
+    ],
+    "benign": [
+      {
+        "input": "ms_pr91146_shape_valid_zero.shape",
+        "sha256": "f5baa3dd872e5e8db14a97374af4003d7cbbc80c3ae512af2223c42cfc9777d0",
+        "contract": "zero dimension accepted",
+        "ret": 0,
+        "crashed": false
+      },
+      {
+        "input": "ms_pr91146_shape_valid_positive.shape",
+        "sha256": "b31813ca39a7e1b317ca0ee0fd11157bd933422c9426bc11a6026d9349ad1642",
+        "contract": "positive dimensions accepted",
+        "ret": 0,
+        "crashed": false
+      }
+    ],
+    "summary": {
+      "malicious_rejected": "2/2",
+      "benign_passed": "2/2",
+      "infrastructure_failures": 0,
+      "asan_ubsan": true,
+      "verdict": "PASS"
+    }
+  },
+  "full_case_status": "REVIEW",
+  "full_case_gap": "reduced shape validator is not the complete MindSpore empty/rand/randint executor and graph path",
+  "formal_proof": false,
+  "notes": [
+    "No tensor allocation, huge shape, real executor, network target, or exploit chain was used.",
+    "Reduced PASS does not upgrade the full case beyond REVIEW."
+  ]
+}

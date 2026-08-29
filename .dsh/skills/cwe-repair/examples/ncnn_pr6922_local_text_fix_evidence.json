@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "status": "local-only",
+  "base_pr": {
+    "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+    "upstream_state": "open/unmerged",
+    "base_source": "/home/kaltsit/vuln_repro/ncnn_history/pr6922_after",
+    "base_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5"
+  },
+  "local_fix": {
+    "worktree": "/home/kaltsit/vuln_repro/ncnn_history/pr6922_local_textfix",
+    "patch_file": ".dsh/skills/cwe-repair/examples/ncnn_pr6922_text_local_fix.patch",
+    "patch_sha256": "6e1e8ec64ec0784166b32cdbcbd027e6a608eed6aa00cc61c7c70fff26fb1b4a",
+    "contract": "TEXT blob_index and bottom_blob_index bounds before d->blobs access",
+    "detector_before": {
+      "text_blob_index_access": 2,
+      "unchecked_blob_index": 1
+    },
+    "detector_after": {
+      "text_blob_index_access": 0,
+      "unchecked_blob_index": 0
+    },
+    "symmetry": {
+      "symmetric": true,
+      "findings": []
+    }
+  },
+  "runtime": {
+    "harness": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_local_textfix/loadpoc_verify",
+    "harness_sha256": "39bff7629b7320ae263896d8efbc8cda1f94b608c8fcf40aeaf7bc698ab853c4",
+    "malicious": {
+      "input": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/F1_bottom_oob.param",
+      "result": "ret=-1",
+      "rejected": true,
+      "crashed": false
+    },
+    "benign": {
+      "input": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/text_repeated_bottoms.param",
+      "result": "ret=0",
+      "passed": true,
+      "crashed": false
+    },
+    "summary": {
+      "malicious_rejected": "1/1",
+      "benign_passed": "1/1",
+      "infrastructure_failures": 0,
+      "verdict": "PASS"
+    },
+    "command_semantics": "cwe_verify --asan via ncnn_loadpoc_mode_wrapper.sh mode=text"
+  },
+  "proof_scope": "named local TEXT parser contract only",
+  "formal_proof": false,
+  "strict_benchmark_impact": "none",
+  "notes": [
+    "This is a defensive local-only candidate derived from an official open PR head.",
+    "It does not change the upstream PR or claim upstream merge status.",
+    "No exploit chain, real executor, OOM input, or network target was used."
+  ]
+}

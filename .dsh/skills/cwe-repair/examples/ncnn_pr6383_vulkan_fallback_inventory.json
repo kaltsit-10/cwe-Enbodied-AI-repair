@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-vulkan-cpu-fallback-layer-load-param-failure",
+  "enumeration_method": "src/net.cpp Vulkan branch review plus Vulkan-enabled bounded harness design",
+  "source_basis": "pinned PR #6383 base/head src/net.cpp",
+  "external_boundaries": ["finite local text parameter file", "Net::load_param(TEXT)", "Vulkan layer factory", "CPU fallback layer factory"],
+  "reachable_sinks": ["layer_support_vulkan && !layer->support_vulkan", "layer_cpu->load_param", "delete layer", "delete layer_cpu", "clear", "return -1"],
+  "declared_path_ids": ["text-vulkan-cpu-fallback-layer-load-param-failure"],
+  "unverified": ["runtime base/head evidence pending independent Vulkan-enabled paired build"],
+  "safety": {"finite_local_fixture": true, "no_network_target": true, "no_forward_execution": true, "no_huge_allocation": true},
+  "formal_proof": false,
+  "universal_claim": false
+}

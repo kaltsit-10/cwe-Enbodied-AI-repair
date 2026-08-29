@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "filter": "SafeIntTest.*",
+  "head": {
+    "source_revision": "795675a77ebb898302c5798bd6247658db165d14",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/onnxruntime_test_all",
+    "binary_sha256": "55f7f2e95e08775cc1df9d32f44e868eb6911429c4347c931e6e7e833cf98b29",
+    "command": "onnxruntime_test_all --gtest_color=no --gtest_filter=SafeIntTest.*",
+    "tests_expected": 4,
+    "tests_run": 4,
+    "tests_passed": 4,
+    "tests_failed": 0,
+    "gtest_verdict": "PASS",
+    "infrastructure_failures": 0,
+    "coverage": ["SafeMul normal multiplication", "same-variable multiplication", "initial cast overflow", "multiply overflow"]
+  },
+  "base": {
+    "source_revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_test_all",
+    "binary_sha256": "e1d06b217d1f1ba522047c1c13e49789d49f62398a9274d66dd534bbf27c3eb3",
+    "filter": "SafeIntTest.*",
+    "status": "NOT_APPLICABLE",
+    "reason": "Exact base binary lists no SafeIntTest suite because SafeMul tests are head-added by PR #28003.",
+    "infrastructure_failures": 0
+  },
+  "safety": {"no_external_inputs": true, "no_network_target_execution": true, "no_oom_or_huge_allocation": true, "no_exploit_chain": true},
+  "formal_proof": false,
+  "universal_claim": false,
+  "scope_note": "This is SafeInt helper runtime evidence, not full RNN<float>::Compute path closure."
+}

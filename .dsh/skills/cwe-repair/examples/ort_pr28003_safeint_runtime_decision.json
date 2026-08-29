@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "target": "onnxruntime_test_all",
+  "source_revision": "795675a77ebb898302c5798bd6247658db165d14",
+  "filter": "SafeIntTest.*",
+  "decision": "NOT_RUN",
+  "reason": "The exact added tests are linked into the approximately 948MB aggregate test binary, but no separately allowlisted SafeInt-only executable or upstream filter evidence is materialized. Executing the aggregate binary would not be a bounded, independently attributable SafeInt run.",
+  "build_evidence": "ort_pr28003_safeint_build_evidence.json",
+  "required_before_promotion": ["separate SafeInt-only target or exact aggregate binary filter execution", "base/head runtime output", "binary hash and command binding", "infrastructure_failures=0"],
+  "safety": {"no_external_inputs": true, "no_network_target_execution": true, "no_oom_or_huge_allocation": true, "no_exploit_chain": true},
+  "formal_proof": false,
+  "universal_claim": false
+}

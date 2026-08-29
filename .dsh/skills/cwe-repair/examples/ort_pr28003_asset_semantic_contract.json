@@ -1,0 +1,999 @@
+{
+  "schema_version": 1,
+  "asset_id": "microsoft/onnxruntime",
+  "case_id": "ORT-PR-28003",
+  "asset_kind": "AI runtime / shape-processing",
+  "scope_type": "single-asset-declared-contract",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "universal_claim": false,
+  "formal_proof": false,
+  "revisions": {
+    "base": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head": "795675a77ebb898302c5798bd6247658db165d14"
+  },
+  "declared_scope": {
+    "providers": [
+      "CPU/default execution provider"
+    ],
+    "targets": [
+      "onnxruntime_provider_test",
+      "onnxruntime_test_all"
+    ],
+    "configurations": [
+      "Debug / Unix Makefiles / C++17 / pinned local toolchain"
+    ],
+    "input_domains": [
+      "finite upstream RNN fixtures",
+      "bounded zero-extent fixtures",
+      "no oversized allocations"
+    ]
+  },
+  "contract": {
+    "id": "checked-shape-arithmetic-zero-extent",
+    "cwe": [
+      190
+    ],
+    "required_asset_gates": [
+      "official_provenance",
+      "source_scope",
+      "inventory_completeness",
+      "reproducibility",
+      "safety"
+    ],
+    "required_path_gates": [
+      "static_contract",
+      "symmetry",
+      "paired_build",
+      "runtime_base",
+      "runtime_head",
+      "negative_rejection",
+      "benign_preservation",
+      "detect",
+      "repair_plan"
+    ],
+    "required_dimensions": [
+      "safe_mul_size_t_allocation",
+      "safe_mul_int_shape",
+      "narrow_hidden_size",
+      "zero_extent_sequence",
+      "forward_zero_sequence_lens",
+      "reverse_zero_sequence_lens",
+      "bidirectional_zero_sequence_lens",
+      "provider_matrix"
+    ]
+  },
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "inventory": {
+    "enumeration_method": "pinned target manifests plus source contract/path inventory and explicit exclusions",
+    "source_basis": "ort_pr28003_path_inventory.json, ort_pr28003_runtime_contract_audit.json, and paired target manifests",
+    "external_boundaries": [
+      "RNN OpTester input tensors",
+      "sequence_lens input",
+      "SafeInt unit-test API"
+    ],
+    "reachable_sinks": [
+      "RNN<float>::Compute allocation and GEMM dimensions",
+      "Assign_Y_h/ClearMissingFrames outputs",
+      "SafeMul exception path"
+    ],
+    "declared_path_ids": [
+      "rnn-allocation-overflow",
+      "rnn-narrowing-contract",
+      "rnn-sequence-lens-directional"
+    ],
+    "unverified": [
+      "complete source-to-sink enumeration",
+      "non-CPU providers",
+      "all configuration combinations",
+      "SafeMul/narrow overflow runtime stimulus"
+    ]
+  },
+  "asset_coverage": {
+    "inventory_completeness": {
+      "status": "REVIEW",
+      "evidence": [
+        {
+          "path": "ort_pr28003_path_inventory.json",
+          "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+          "assertions": [
+            {
+              "path": "case_id",
+              "equals": "ORT-PR-28003"
+            },
+            {
+              "path": "verdict",
+              "equals": "REVIEW"
+            },
+            {
+              "path": "unverified_dimensions.1",
+              "equals": "SafeMul/narrow oversized-dimension runtime behavior without OOM"
+            }
+          ]
+        }
+      ]
+    },
+    "official_provenance": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_provenance.json",
+          "sha256": "e9f9afb633643704c1ac30e3e059b5eee2b23e9b74bea8319d296435034164d9",
+          "assertions": [
+            {
+              "path": "case_id",
+              "equals": "ORT-PR-28003"
+            },
+            {
+              "path": "base_sha",
+              "equals": "0fedb26c93e6c29882185715d5c2bb583a6d92b5"
+            },
+            {
+              "path": "head_sha",
+              "equals": "795675a77ebb898302c5798bd6247658db165d14"
+            }
+          ]
+        }
+      ]
+    },
+    "source_scope": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_source_scope_integrity.json",
+          "sha256": "5d4ef06733b57f44f5a572ff8a5922182c214e8f5bf3099143698ab88353ca6d",
+          "assertions": [
+            {
+              "path": "status",
+              "equals": "PAIRED_SOURCE_SCOPE_VERIFIED"
+            },
+            {
+              "path": "changed_scope.diff_check",
+              "equals": "PASS"
+            },
+            {
+              "path": "build_and_runtime_binding.provider_target",
+              "equals": "onnxruntime_provider_test"
+            }
+          ]
+        }
+      ]
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_full_build_evidence.json",
+          "sha256": "806ad1c7a58d1ae49f69c3de3873461764f0a07bb4d633f43ae3723e304f13f1",
+          "assertions": [
+            {
+              "path": "configure.status",
+              "equals": "PASS"
+            },
+            {
+              "path": "base_configure.status",
+              "equals": "PASS"
+            },
+            {
+              "path": "base_build.status",
+              "equals": "PASS"
+            },
+            {
+              "path": "build.status",
+              "equals": "PASS"
+            }
+          ]
+        },
+        {
+          "path": "ort_pr28003_safeint_build_evidence.json",
+          "sha256": "5d0b79b376cb19f9ab06a3b91a7dc115af22ff09b4eed65cf38a7978b8a02d9a",
+          "assertions": [
+            {
+              "path": "head.build.status",
+              "equals": "PASS"
+            },
+            {
+              "path": "execution.mode",
+              "equals": "build-only"
+            },
+            {
+              "path": "runtime.head",
+              "equals": "NOT_RUN"
+            }
+          ]
+        }
+      ]
+    },
+    "safety": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_paired_runtime_evidence.json",
+          "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+          "assertions": [
+            {
+              "path": "safety.no_external_inputs",
+              "equals": true
+            },
+            {
+              "path": "safety.no_network_target_execution",
+              "equals": true
+            },
+            {
+              "path": "safety.no_oom_or_huge_allocation",
+              "equals": true
+            },
+            {
+              "path": "safety.no_exploit_chain",
+              "equals": true
+            },
+            {
+              "path": "formal_proof",
+              "equals": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "paths": [
+    {
+      "id": "rnn-allocation-overflow",
+      "source": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+      "entrypoint": "RNN<float>::Compute",
+      "call_path": [
+        "RNN<float>::Compute",
+        "ValidateCommonRnnInputs",
+        "SafeMul<size_t> allocation products",
+        "SafeMul<int> GEMM dimensions"
+      ],
+      "required_dimensions": [
+        "safe_mul_size_t_allocation",
+        "safe_mul_int_shape",
+        "zero_extent_sequence"
+      ]
+    },
+    {
+      "id": "rnn-narrowing-contract",
+      "source": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+      "entrypoint": "RNN<float>::Compute",
+      "call_path": [
+        "RNN<float>::Compute",
+        "SafeMul<int>(seq_length,batch_size)",
+        "narrow<int>(hidden_size_)",
+        "Gemm"
+      ],
+      "required_dimensions": [
+        "safe_mul_int_shape",
+        "narrow_hidden_size"
+      ]
+    },
+    {
+      "id": "rnn-sequence-lens-directional",
+      "source": "onnxruntime/core/providers/cpu/rnn/rnn_helpers.cc",
+      "entrypoint": "ValidateCommonRnnInputs",
+      "call_path": [
+        "ValidateCommonRnnInputs",
+        "RNN<float>::Compute",
+        "Assign_Y_h",
+        "ClearMissingFrames"
+      ],
+      "required_dimensions": [
+        "forward_zero_sequence_lens",
+        "reverse_zero_sequence_lens",
+        "bidirectional_zero_sequence_lens",
+        "provider_matrix"
+      ]
+    }
+  ],
+  "path_coverage": {
+    "rnn-allocation-overflow": {
+      "static_contract": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "assertions": [
+              {
+                "path": "verdict",
+                "equals": "REVIEW"
+              },
+              {
+                "path": "declared_paths.0.id",
+                "equals": "rnn-allocation-overflow"
+              }
+            ]
+          }
+        ]
+      },
+      "symmetry": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              },
+              {
+                "path": "paths.0.runtime.verdict",
+                "equals": "REVIEW"
+              }
+            ]
+          }
+        ]
+      },
+      "paired_build": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_build_evidence.json",
+            "sha256": "35d3f85d44e85274d8981a2e1e81f3d201a64258b219f849258f739e3dee4ab9",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_BUILD_VERIFIED"
+              },
+              {
+                "path": "base.build.target",
+                "equals": "onnxruntime_provider_test"
+              },
+              {
+                "path": "head.build.target",
+                "equals": "onnxruntime_provider_test"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_base": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_base_gtest_runtime_evidence.json",
+            "sha256": "935b34880f73ee45e84cff7356a3d0a4ee6f8729e712642f955fbd9498423438",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PASS"
+              },
+              {
+                "path": "source_revision",
+                "equals": "0fedb26c93e6c29882185715d5c2bb583a6d92b5"
+              },
+              {
+                "path": "runtime_scope",
+                "equals": "paired-shared-operator-controls"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_head": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_head_gtest_runtime_evidence.json",
+            "sha256": "1273814c81c6982519fa47191b22915f0b8090da917af775d9d418721fa216f5",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PASS"
+              },
+              {
+                "path": "source_revision",
+                "equals": "795675a77ebb898302c5798bd6247658db165d14"
+              },
+              {
+                "path": "runtime_scope",
+                "equals": "full-declared-operator-tests"
+              }
+            ]
+          }
+        ]
+      },
+      "negative_rejection": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS"
+              },
+              {
+                "path": "comparison.same_test_before_after_semantic_comparison",
+                "equals": "NOT_AVAILABLE_HEAD_ONLY_OFFICIAL_TESTS"
+              }
+            ]
+          }
+        ]
+      },
+      "benign_preservation": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS"
+              },
+              {
+                "path": "comparison.cross_provider_coverage",
+                "equals": "NOT_RUN_CPU_DEFAULT_PROVIDER_ONLY"
+              }
+            ]
+          }
+        ]
+      },
+      "detect": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "runtime_execution_plans.status",
+                "equals": "PASS_WITH_PARTIAL_CONTRACT_COVERAGE"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "detector"
+      },
+      "repair_plan": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "repair_plan"
+      }
+    },
+    "rnn-narrowing-contract": {
+      "static_contract": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "assertions": [
+              {
+                "path": "verdict",
+                "equals": "REVIEW"
+              },
+              {
+                "path": "declared_paths.1.id",
+                "equals": "rnn-narrowing-contract"
+              }
+            ]
+          }
+        ]
+      },
+      "symmetry": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              },
+              {
+                "path": "paths.1.runtime.verdict",
+                "equals": "REVIEW"
+              }
+            ]
+          }
+        ]
+      },
+      "paired_build": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_build_evidence.json",
+            "sha256": "35d3f85d44e85274d8981a2e1e81f3d201a64258b219f849258f739e3dee4ab9",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_BUILD_VERIFIED"
+              },
+              {
+                "path": "base.build.contract_test_source",
+                "equals": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc"
+              },
+              {
+                "path": "head.build.contract_test_source",
+                "equals": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_base": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_base_full_rnn_suite_evidence.json",
+            "sha256": "a96b3f6a4a8324f43f76d373c9c921fc8ae9922f8d760b57f93c4603cb9772f2",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PASS"
+              },
+              {
+                "path": "source_revision",
+                "equals": "0fedb26c93e6c29882185715d5c2bb583a6d92b5"
+              },
+              {
+                "path": "summary.verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_head": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_head_full_rnn_suite_evidence.json",
+            "sha256": "1fc8528ae65047bf508da18d8a5aee148e672d862d092c654dac99f57f88842a",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PASS"
+              },
+              {
+                "path": "source_revision",
+                "equals": "795675a77ebb898302c5798bd6247658db165d14"
+              },
+              {
+                "path": "summary.verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "negative_rejection": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS"
+              },
+              {
+                "path": "base.active_suite_expected_tests",
+                "equals": 10
+              }
+            ]
+          }
+        ]
+      },
+      "benign_preservation": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS"
+              },
+              {
+                "path": "head.active_suite_expected_tests",
+                "equals": 12
+              }
+            ]
+          }
+        ]
+      },
+      "detect": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "runtime_execution_plans.status",
+                "equals": "PASS_WITH_PARTIAL_CONTRACT_COVERAGE"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "detector"
+      },
+      "repair_plan": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "repair_plan"
+      }
+    },
+    "rnn-sequence-lens-directional": {
+      "static_contract": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_runtime_contract_audit.json",
+            "sha256": "f4a45ac5b08eddb14c59d5652302530ca3209c977a1daed69aa777893522d1dc",
+            "assertions": [
+              {
+                "path": "contract_under_review",
+                "equals": "sequence_lens zero semantics"
+              },
+              {
+                "path": "implementation_predicate",
+                "equals": "len < 0 || len > seq_length"
+              },
+              {
+                "path": "verdict",
+                "equals": "CONTRACT_AUDIT_PASS_WITH_DIAGNOSTIC_MISMATCH"
+              }
+            ]
+          }
+        ]
+      },
+      "symmetry": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              },
+              {
+                "path": "paths.0.runtime.verdict",
+                "equals": "REVIEW"
+              }
+            ]
+          }
+        ]
+      },
+      "paired_build": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_build_evidence.json",
+            "sha256": "35d3f85d44e85274d8981a2e1e81f3d201a64258b219f849258f739e3dee4ab9",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PAIRED_BUILD_VERIFIED"
+              },
+              {
+                "path": "head.build.target_includes_contract_test",
+                "equals": true
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_base": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_base_gtest_runtime_evidence.json",
+            "sha256": "935b34880f73ee45e84cff7356a3d0a4ee6f8729e712642f955fbd9498423438",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PASS"
+              },
+              {
+                "path": "cases.0.status",
+                "equals": "PASS"
+              },
+              {
+                "path": "cases.1.status",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_head": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_head_gtest_runtime_evidence.json",
+            "sha256": "1273814c81c6982519fa47191b22915f0b8090da917af775d9d418721fa216f5",
+            "assertions": [
+              {
+                "path": "status",
+                "equals": "PASS"
+              },
+              {
+                "path": "cases.0.status",
+                "equals": "PASS"
+              },
+              {
+                "path": "cases.1.status",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "negative_rejection": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_runtime_contract_audit.json",
+            "sha256": "f4a45ac5b08eddb14c59d5652302530ca3209c977a1daed69aa777893522d1dc",
+            "assertions": [
+              {
+                "path": "invalid_sequence_lens_control.observed_rejections.1",
+                "equals": "mixed {0,5} input where 5 exceeds seq_length=3"
+              },
+              {
+                "path": "invalid_sequence_lens_control.interpretation",
+                "equals": "The test is an adjacent shape/out-of-range control. Because the second fixture also contains an out-of-range 5, it cannot prove that zero alone is rejected. It must not contradict the head zero-boundary positive test."
+              }
+            ]
+          }
+        ]
+      },
+      "benign_preservation": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_runtime_contract_audit.json",
+            "sha256": "f4a45ac5b08eddb14c59d5652302530ca3209c977a1daed69aa777893522d1dc",
+            "assertions": [
+              {
+                "path": "head_direct_runtime_evidence.zero_sequence_lens_test",
+                "equals": "RNNTest.RNN_forward_sequence_lens_with_zero: PASS"
+              },
+              {
+                "path": "runtime_test_coverage.RNNTest.RNN_forward_sequence_lens_with_zero.does_not_support.0",
+                "equals": "reverse or bidirectional zero sequence_lens"
+              }
+            ]
+          }
+        ]
+      },
+      "detect": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "runtime_execution_plans.status",
+                "equals": "PASS_WITH_PARTIAL_CONTRACT_COVERAGE"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "detector"
+      },
+      "repair_plan": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "repair_plan"
+      }
+    }
+  },
+  "path_dimension_coverage": {
+    "rnn-allocation-overflow": {
+      "safe_mul_size_t_allocation": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_boundary_feasibility.json",
+            "sha256": "d02dee7cca963998c9c919f61f7b010ea245eed14c9d94e8ed68d646a01162ac",
+            "assertions": [
+              {
+                "path": "verdict",
+                "equals": "REVIEW"
+              }
+            ]
+          }
+        ]
+      },
+      "safe_mul_int_shape": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "assertions": [
+              {
+                "path": "unverified_dimensions.1",
+                "equals": "SafeMul/narrow oversized-dimension runtime behavior without OOM"
+              }
+            ]
+          }
+        ]
+      },
+      "zero_extent_sequence": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_head_gtest_runtime_evidence.json",
+            "sha256": "1273814c81c6982519fa47191b22915f0b8090da917af775d9d418721fa216f5",
+            "assertions": [
+              {
+                "path": "cases.0.filter",
+                "equals": "RNNTest.RNN_seq_length_zero"
+              },
+              {
+                "path": "cases.0.status",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "rnn-narrowing-contract": {
+      "safe_mul_int_shape": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "assertions": [
+              {
+                "path": "paths.1.runtime.verdict",
+                "equals": "REVIEW"
+              }
+            ]
+          }
+        ]
+      },
+      "narrow_hidden_size": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_path_inventory.json",
+            "sha256": "12108732522daed77d8aa6957e5c50444b5eadcbb2ebca1fd0020c6091825614",
+            "assertions": [
+              {
+                "path": "unverified_dimensions.1",
+                "equals": "SafeMul/narrow oversized-dimension runtime behavior without OOM"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "rnn-sequence-lens-directional": {
+      "forward_zero_sequence_lens": {
+        "status": "SCOPED",
+        "evidence": [
+          {
+            "path": "ort_pr28003_head_gtest_runtime_evidence.json",
+            "sha256": "1273814c81c6982519fa47191b22915f0b8090da917af775d9d418721fa216f5",
+            "assertions": [
+              {
+                "path": "cases.1.filter",
+                "equals": "RNNTest.RNN_forward_sequence_lens_with_zero"
+              },
+              {
+                "path": "cases.1.status",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "reverse_zero_sequence_lens": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_runtime_contract_audit.json",
+            "sha256": "f4a45ac5b08eddb14c59d5652302530ca3209c977a1daed69aa777893522d1dc",
+            "assertions": [
+              {
+                "path": "remaining_scope.0",
+                "equals": "reverse and bidirectional zero sequence_lens behavior"
+              }
+            ]
+          }
+        ]
+      },
+      "bidirectional_zero_sequence_lens": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_runtime_contract_audit.json",
+            "sha256": "f4a45ac5b08eddb14c59d5652302530ca3209c977a1daed69aa777893522d1dc",
+            "assertions": [
+              {
+                "path": "runtime_test_coverage.RNNTest.RNN_bidirectional_with_sequence_lens.does_not_support.0",
+                "equals": "zero sequence_lens semantics"
+              }
+            ]
+          }
+        ]
+      },
+      "provider_matrix": {
+        "status": "REVIEW",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "assertions": [
+              {
+                "path": "comparison.cross_provider_coverage",
+                "equals": "NOT_RUN_CPU_DEFAULT_PROVIDER_ONLY"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "exclusions": [
+    {
+      "dimension": "physical robot execution",
+      "reason": "This asset is a local runtime contract; no real actuator is connected."
+    },
+    {
+      "dimension": "exploit-chain validation",
+      "reason": "Defensive verification explicitly excludes exploit construction and execution."
+    }
+  ]
+}

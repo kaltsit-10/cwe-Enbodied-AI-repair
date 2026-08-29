@@ -1,0 +1,8 @@
+{
+  "binary": "python .dsh/skills/cwe-repair/scripts/joint_command_fake_sink.py",
+  "malicious": [".dsh/skills/cwe-repair/examples/agibot_jointcmd_malformed_fixture.json"],
+  "benign": [".dsh/skills/cwe-repair/examples/agibot_jointcmd_benign_fixture.json"],
+  "timeout": 10,
+  "asan": false,
+  "evidence_scope": "local reduced fake-sink simulation only; not AGIBOT/AimRT production runtime and not real actuator execution"
+}

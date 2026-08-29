@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "custom-cpu-fallback",
+  "verdict": "REVIEW",
+  "reachability": "config-reachable",
+  "required_preconditions": ["NCNN_VULKAN=ON", "valid Vulkan device", "registered custom layer or overwrite layer", "fallback layer load_param failure fixture"],
+  "current_status": "NOT_RUN",
+  "reason": "Existing pinned paired builds use NCNN_VULKAN=OFF and the harness registers no custom layer. The fallback branch cannot be reached in the current safe CPU scope.",
+  "safety": {"no_network_target": true, "no_forward_execution": true, "no_source_mutation": true},
+  "formal_proof": false,
+  "universal_claim": false
+}

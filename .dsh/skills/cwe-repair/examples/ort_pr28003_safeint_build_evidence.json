@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "target": "onnxruntime_test_all",
+  "added_contract_test_source": "onnxruntime/test/common/safeint_test.cc",
+  "head_added_test_source_sha256": "cd7d19c013e19deb6128ab02f6298728aeb42b60f07b461aa2eba62ad4e5239a",
+  "configuration": {
+    "CMAKE_BUILD_TYPE": "Debug",
+    "CMAKE_CXX_COMPILER": "/usr/bin/c++",
+    "CMAKE_GENERATOR": "Unix Makefiles",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_DEBUG": "-g",
+    "CMAKE_CXX_STANDARD": "17"
+  },
+  "toolchain": {
+    "cmake": "/home/kaltsit/.local/bin/cmake",
+    "cmake_version": "3.31.10",
+    "compiler": "/usr/bin/c++",
+    "compiler_version": "11.4.0",
+    "generator": "Unix Makefiles",
+    "parallelism": 1
+  },
+  "base": {
+    "sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "source_root": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe",
+    "configure": {
+      "status": "PASS",
+      "cmake_cache": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/CMakeCache.txt"
+    },
+    "build": {
+      "status": "PASS",
+      "exit_code": 0,
+      "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug",
+      "command": "cmake --build /home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug --target onnxruntime_test_all -- -j1",
+      "target": "onnxruntime_test_all",
+      "target_source_manifest": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/CMakeFiles/onnxruntime_test_all.dir/DependInfo.cmake",
+      "manifest_test_source_count": 108,
+      "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_test_all",
+      "binary_size": 947730264,
+      "binary_sha256": "e1d06b217d1f1ba522047c1c13e49789d49f62398a9274d66dd534bbf27c3eb3"
+    }
+  },
+  "head": {
+    "sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "source_root": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+    "configure": {
+      "status": "PASS",
+      "cmake_cache": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/CMakeCache.txt"
+    },
+    "build": {
+      "status": "PASS",
+      "exit_code": 0,
+      "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug",
+      "command": "cmake --build /home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug --target onnxruntime_test_all -- -j1",
+      "target": "onnxruntime_test_all",
+      "target_source_manifest": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/CMakeFiles/onnxruntime_test_all.dir/DependInfo.cmake",
+      "manifest_test_source_count": 109,
+      "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/onnxruntime_test_all",
+      "binary_size": 947930088,
+      "binary_sha256": "55f7f2e95e08775cc1df9d32f44e868eb6911429c4347c931e6e7e833cf98b29",
+      "added_test_object": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/CMakeFiles/onnxruntime_test_all.dir/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/onnxruntime/test/common/safeint_test.cc.o",
+      "added_test_object_size": 938720,
+      "added_test_object_sha256": "22f76fc085bcbbc72fb090100b93e97120e23e5b7b578a93488dfdc2ece27bcf"
+    }
+  },
+  "execution": {
+    "mode": "build-only",
+    "test_binary_execution": false,
+    "command_shape": "cmake --build <configured-Debug-dir> --target onnxruntime_test_all -- -j1"
+  },
+  "runtime": {
+    "base": "NOT_RUN",
+    "head": "NOT_RUN"
+  },
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "formal_proof": false
+}

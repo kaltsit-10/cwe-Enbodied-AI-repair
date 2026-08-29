@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "component": "ncnn",
+  "contract": "blob-index-range-and-error-cleanup",
+  "required_path_ids": ["text-load-param", "bin-load-param"],
+  "paths": [
+    {
+      "id": "text-load-param",
+      "contract": "blob-index-range-and-error-cleanup",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_local_textfix\\src\\net.cpp",
+      "cwe": 787,
+      "residual_pattern": "text_blob_index_access",
+      "required_markers": [
+        "blob_index\\s*<\\s*0",
+        "blob_index\\s*>=\\s*blob_count",
+        "bottom_blob_index\\s*<\\s*0",
+        "bottom_blob_index\\s*>=\\s*blob_count",
+        "d->layers\\[i\\]\\s*=\\s*layer",
+        "clear\\s*\\(\\s*\\)"
+      ],
+      "runtime": {
+        "malicious_rejected": "1/1",
+        "benign_passed": "1/1",
+        "infrastructure_failures": 0,
+        "verdict": "PASS"
+      }
+    },
+    {
+      "id": "bin-load-param",
+      "contract": "blob-index-range-and-error-cleanup",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_local_textfix\\src\\net.cpp",
+      "cwe": 787,
+      "residual_pattern": "unchecked_blob_index",
+      "required_markers": [
+        "bottom_blob_index\\s*<\\s*0",
+        "bottom_blob_index\\s*>=\\s*blob_count",
+        "top_blob_index\\s*<\\s*0",
+        "top_blob_index\\s*>=\\s*blob_count",
+        "d->layers\\[i\\]\\s*=\\s*layer",
+        "clear\\s*\\(\\s*\\)"
+      ],
+      "runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "1/1",
+        "infrastructure_failures": 0,
+        "verdict": "PASS"
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "purpose": "Build-only evidence for the official SafeMul test source added by the PR.",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "base": {
+    "revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe",
+    "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug",
+    "target": "onnxruntime_test_all",
+    "manifest": "CMakeFiles/onnxruntime_test_all.dir/DependInfo.cmake",
+    "manifest_test_source_count": 108,
+    "safeint_test_source": "absent by official preimage definition"
+  },
+  "head": {
+    "revision": "795675a77ebb898302c5798bd6247658db165d14",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+    "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug",
+    "target": "onnxruntime_test_all",
+    "manifest": "CMakeFiles/onnxruntime_test_all.dir/DependInfo.cmake",
+    "manifest_test_source_count": 109,
+    "safeint_test_source": "onnxruntime/test/common/safeint_test.cc",
+    "safeint_test_manifest_entry": true
+  },
+  "toolchain": {
+    "cmake": "/home/kaltsit/.local/bin/cmake",
+    "cmake_version": "3.31.10",
+    "generator": "Unix Makefiles",
+    "parallelism": 1
+  },
+  "execution": {
+    "mode": "build-only",
+    "command_shape": "cmake --build <configured-Debug-dir> --target onnxruntime_test_all -- -j1",
+    "test_binary_execution": false,
+    "target_is_not_provider_executor": true
+  },
+  "result": {
+    "build_evidence": "ort_pr28003_safeint_build_evidence.json",
+    "status": "BUILD_ONLY_NOT_RUN",
+    "verdict": "REVIEW",
+    "runtime_status": "NOT_RUN"
+  },
+  "safety": {
+    "no_real_executor_run_for_this_plan": true,
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "success_criteria": [
+    "base and head builds return zero for the same CMake target",
+    "head build compiles/links the manifest that includes safeint_test.cc",
+    "no test binary is executed"
+  ],
+  "formal_proof": false
+}

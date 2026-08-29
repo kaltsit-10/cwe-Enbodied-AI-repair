@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "source_revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "comparison_revision": "795675a77ebb898302c5798bd6247658db165d14",
+  "target": "onnxruntime_provider_test",
+  "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+  "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+  "execution_scope": "local-pinned-binary-only",
+  "runtime_scope": "paired-shared-operator-controls",
+  "user_authorization": "Explicit authorization to run the local real executor for full-path semantic-verification work; bounded local tests only.",
+  "timeout_seconds": 120,
+  "cases": [
+    {
+      "id": "rnn-bidirectional-sequence-lens-control",
+      "filter": "RNNTest.RNN_bidirectional_with_sequence_lens",
+      "expected_test_count": 1,
+      "role": "finite benign control shared by base and head",
+      "contract_paths": ["rnn-narrowing-contract"]
+    },
+    {
+      "id": "rnn-invalid-sequence-lens-rejection",
+      "filter": "RNNTest.RNN_invalid_sequence_lens",
+      "expected_test_count": 1,
+      "role": "adjacent input-validation control with shape/out-of-range failures; not evidence that sequence_lens=0 is rejected",
+      "contract_paths": []
+    }
+  ],
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "comparison_boundary": "The base revision lacks the two head-only zero-length regression tests; this plan proves only shared control behavior and must not be reported as a before/after test of those new cases.",
+  "formal_proof": false
+}

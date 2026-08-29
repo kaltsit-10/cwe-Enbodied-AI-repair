@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "scope": "fresh WSL builds of official NCNN PR base/head worktrees",
+  "environment": {
+    "distribution": "Ubuntu-22.04",
+    "compiler": "g++ 11.4.0",
+    "cmake": "3.22.1",
+    "vulkan": false,
+    "openmp": false,
+    "infrastructure_failures": 0
+  },
+  "cases": [
+    {
+      "id": "NCNN-PR-6922-BIN",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "upstream_state": "open",
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "mode": "bin",
+      "base_harness": {
+        "path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_before/loadpoc_verify",
+        "sha256": "9d16861220f884f878b961bc68c2212ba5a0ddb8d5e3b1d4ddddc5ccee2cc2e0"
+      },
+      "head_harness": {
+        "path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_after/loadpoc_verify",
+        "sha256": "80383d5c40f2b61c97d5036442dac2f791ca2984d3e3327d1e7859c94d0ea18d"
+      },
+      "inputs": {
+        "malicious": [
+          {"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/oob_single_idx.parambin", "sha256": "6c1a2ef87735201f2b2557f4f927d474cb4af2299ab3cfcab51e6c091cf98167"},
+          {"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/oob_top_idx.parambin", "sha256": "c6d676acc105c9087639b1ddec007b40616bd4b15b1cb6f254ba523a96a90218"}
+        ],
+        "benign": [
+          {"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/valid_minimal.parambin", "sha256": "8522602c26da2a64e0f01ada686649f6ba9f938e6870d21f2c0e9585a0f53254"}
+        ]
+      },
+      "base_result": {"malicious_rejected": "0/2", "benign_passed": "1/1", "verdict": "REVIEW"},
+      "head_result": {"malicious_rejected": "2/2", "benign_passed": "1/1", "verdict": "PASS"},
+      "command_semantics": "cwe_verify via ncnn_loadpoc_mode_wrapper.sh with mode=bin and --asan",
+      "scope_note": "BIN index/count scope only; separate TEXT blob_index residual remains"
+    },
+    {
+      "id": "NCNN-PR-6922-TEXT-COUNT",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "upstream_state": "open",
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "mode": "text",
+      "base_harness": {"path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_before/loadpoc_verify", "sha256": "9d16861220f884f878b961bc68c2212ba5a0ddb8d5e3b1d4ddddc5ccee2cc2e0"},
+      "head_harness": {"path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_after/loadpoc_verify", "sha256": "80383d5c40f2b61c97d5036442dac2f791ca2984d3e3327d1e7859c94d0ea18d"},
+      "inputs": {
+        "malicious": [{"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/F2_neg_topcount.param", "sha256": "1c49a10d3135c4ce4f88725e55308af480e9aa3299bd78a6337caf920edded65"}],
+        "benign": [{"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/text_repeated_bottoms.param", "sha256": "9f185c23a8de944386e8e8cd2ee12260745ca75636fa4f98aad879e655bb347d"}]
+      },
+      "base_result": {"malicious_rejected": "0/1", "benign_passed": "1/1", "verdict": "REVIEW", "malicious_observation": "SIGABRT/std::length_error"},
+      "head_result": {"malicious_rejected": "1/1", "benign_passed": "1/1", "verdict": "PASS"},
+      "command_semantics": "cwe_verify via ncnn_loadpoc_mode_wrapper.sh with mode=text and --asan",
+      "scope_note": "TEXT count scope only; F1 text blob_index remains a separate residual"
+    },
+    {
+      "id": "NCNN-PR-6337-QUOTE-CONTRACT",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6337",
+      "upstream_state": "merged",
+      "base_sha": "00f816ffd52d306c00c38b4dbbd3a5b089f73612",
+      "head_sha": "b0d970b0e3a2a23e011aeddd682063e0ad8e7a8b",
+      "harness": {
+        "base_path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6337_before/pr6337_quote_contract",
+        "base_sha256": "520a2b3a2618b5320de2995500124cbf51f17ce3db113c646ad5e8f9ff9f80b5",
+        "head_path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6337_after/pr6337_quote_contract",
+        "head_sha256": "d35b60a193c90f2db617f3193ec3e716b58f67dfd033d6c7174d8b74316576c2"
+      },
+      "input_contract": "0=bij,bjk->bik 2=\"X\" 6=\"qwqwqwq\"",
+      "base_result": {"exit": 1, "status": "FAIL", "observation": "ret=0 but trailing key was lost"},
+      "head_result": {"exit": 0, "status": "PASS", "observation": "quote_contract=PASS"},
+      "official_test": "test_paramdict passed on both base and head",
+      "scope_note": "benign parser contract regression; not an adversarial rejection case"
+    },
+    {
+      "id": "NCNN-PR-2213-CSTEP-CONTRACT",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/2213",
+      "upstream_state": "merged",
+      "base_sha": "5a91a640cbf96c8a14df0c637542215e9666f1e1",
+      "head_sha": "cdfcc49d9cb1f4829a3c77feda266d6b325e9f29",
+      "harness": {
+        "base_path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr2213_before/pr2213_cstep_contract",
+        "base_sha256": "8152003a865d1b679786c2eb14b0f6464daabcb920ebb88157e977efda3a8a7e",
+        "head_path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr2213_after/pr2213_cstep_contract",
+        "head_sha256": "4702d273526d29f7a0d3ce18f791e653f32b800315de21e77c43c6606ea890c7"
+      },
+      "input_contract": "shape-only external Mat w=INT_MAX, elempack=2; no allocation",
+      "base_result": {"exit": 1, "status": "FAIL", "observation": "cstep=18446744073709551614 expected=4294967294"},
+      "head_result": {"exit": 0, "status": "PASS", "observation": "cstep_contract=PASS"},
+      "official_test": "test_packing passed on both base and head",
+      "scope_note": "arithmetic contract regression; no large allocation or OOM input used"
+    },
+    {
+      "id": "NCNN-PR-6383-LAYER-PARAM-FAILURE",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6383",
+      "upstream_state": "merged",
+      "base_sha": "5154f22a4c146959beda380dc7522de53704d940",
+      "head_sha": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+      "harness": {
+        "base_path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6383_before/pr6383_error_path",
+        "base_sha256": "23e18c78f02151600f8f6de1160ff5a38c182bf7513f080b41e1940e9b05d105",
+        "head_path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6383_after/pr6383_error_path",
+        "head_sha256": "10601881cad2c392b70656210a22c074135789060241e91fa124619ccd52dbbd"
+      },
+      "input_contract": {
+        "path": ".dsh/skills/cwe-repair/examples/ncnn_pr6383_layer_param_failure.txt",
+        "sha256": "c08198605a24a1f5bd25aef6319c3d4b5e022cdcca0356e9970dba2cb316cda6",
+        "content_semantics": "valid layer/top blob token followed by invalid ParamDict id 999999"
+      },
+      "benign_input": {
+        "path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/text_repeated_bottoms.param",
+        "sha256": "9f185c23a8de944386e8e8cd2ee12260745ca75636fa4f98aad879e655bb347d"
+      },
+      "base_result": {"malicious_rejected": "0/1", "benign_passed": "1/1", "verdict": "REVIEW", "malicious_observation": "SIGSEGV after ParamDict load_param failure"},
+      "head_result": {"malicious_rejected": "1/1", "benign_passed": "1/1", "verdict": "PASS", "malicious_observation": "ret=-1 without crash"},
+      "command_semantics": "cwe_verify with --asan against the same harness and inputs on both fresh official builds",
+      "scope_note": "This is the first runtime fixture that reaches the PR #6383 pdlr failure branch."
+    },
+    {
+      "id": "NCNN-PR-6922-TEXT-BLOB-RESIDUAL",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "upstream_state": "open",
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "mode": "text",
+      "base_harness": {"path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_before/loadpoc_verify", "sha256": "9d16861220f884f878b961bc68c2212ba5a0ddb8d5e3b1d4ddddc5ccee2cc2e0"},
+      "head_harness": {"path": "/home/kaltsit/vuln_repro/ncnn_history/build_pr6922_after/loadpoc_verify", "sha256": "80383d5c40f2b61c97d5036442dac2f791ca2984d3e3327d1e7859c94d0ea18d"},
+      "inputs": {
+        "malicious": [{"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/F1_bottom_oob.param", "sha256": "481b78d906ae4d22b41066080c9652363a06173a19e90dca21af7e4f165de11c"}],
+        "benign": [{"path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/text_repeated_bottoms.param", "sha256": "9f185c23a8de944386e8e8cd2ee12260745ca75636fa4f98aad879e655bb347d"}]
+      },
+      "base_result": {"malicious_rejected": "0/1", "benign_passed": "1/1", "verdict": "REVIEW", "malicious_observation": "SIGSEGV after two missing text blob names"},
+      "head_result": {"malicious_rejected": "0/1", "benign_passed": "1/1", "verdict": "REVIEW", "malicious_observation": "same SIGSEGV; TEXT residual unchanged"},
+      "command_semantics": "cwe_verify via ncnn_loadpoc_mode_wrapper.sh with mode=text and --asan",
+      "scope_note": "This case intentionally records an unclosed residual; it must not be counted as a repaired rejection."
+    }
+  ],
+  "strict_benchmark_impact": "none",
+  "notes": [
+    "PR #6922 is official but open/unmerged and remains non-strict.",
+    "Runtime PASS claims are scoped to the named contract and inputs.",
+    "No real executioner or network-controlled target was used."
+  ]
+}

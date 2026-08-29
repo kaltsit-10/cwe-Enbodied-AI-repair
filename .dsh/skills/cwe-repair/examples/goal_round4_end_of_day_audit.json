@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 10,
+  "round": 4,
+  "status": "PAUSED_END_OF_DAY",
+  "task_goal_today": "推进外部 AI runtime 修复案例的可审计全路径证据，优先完成 ORT-PR-28003 before/after build 对称性，同时保持 MS-PR-70694 的契约不匹配 REVIEW 边界。",
+  "component_progress": {
+    "exact_provenance_tracking": true,
+    "pinned_source_materialization": true,
+    "contract_matrix": true,
+    "full_vs_scoped_runtime_separation": true,
+    "path_inventory": true,
+    "strict_anomaly_audit": true,
+    "legacy_benchmark_unchanged": true
+  },
+  "ort_28003": {
+    "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head_configure": "PASS",
+    "head_provider_test_build": "PASS",
+    "head_binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+    "head_target_includes_rnn_test": true,
+    "base_configure": "PASS",
+    "base_provider_test_build": "INTERRUPTED_AT_APPROX_63_PERCENT",
+    "full_runtime": "NOT_RUN",
+    "scoped_runtime": "PASS",
+    "verdict": "REVIEW",
+    "next_action": "Resume base target-only build, then record base binary hash and paired build status; do not infer runtime correctness from build success."
+  },
+  "ms_70694": {
+    "contract_match": false,
+    "verdict": "REVIEW",
+    "next_action": "Do not execute dynamic-shape arithmetic verification unless an exact contract-matching PR/revision is found."
+  },
+  "validation": {
+    "cwe_repair_regression": "PASS",
+    "registry_cases": 12,
+    "evidence_levels": {
+      "FULL_GATED_LOCAL": 4,
+      "SCOPED_RUNTIME": 6,
+      "LOCAL_STATIC": 2
+    },
+    "lattice_anomalies": 0,
+    "legacy_dataset": "34 findings / 5 repair_pairs",
+    "leaderboard": "strict 16/31; legacy 20/31; guarded 3"
+  },
+  "safety": {
+    "no_exploit_chain": true,
+    "no_oom_or_huge_allocation": true,
+    "no_real_executor": true,
+    "no_network_target_execution": true
+  },
+  "formal_proof": false
+}

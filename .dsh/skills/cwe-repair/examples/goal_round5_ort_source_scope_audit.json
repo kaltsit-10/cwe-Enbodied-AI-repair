@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 14,
+  "round": 5,
+  "phase": "active",
+  "objective_slice": "Verify that the exact ORT base/head source worktrees bound to paired build and runtime evidence are clean and cover every official changed file without runtime uplift.",
+  "ort_pr28003": {
+    "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "source_scope_integrity": "PAIRED_SOURCE_SCOPE_VERIFIED",
+    "source_scope_evidence": "ort_pr28003_source_scope_integrity.json",
+    "base_worktree_clean": true,
+    "head_worktree_clean": true,
+    "official_changed_files": 4,
+    "provider_runtime_status": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS",
+    "safeint_test_runtime_status": "NOT_CLAIMED_BY_THIS_PROVIDER_TARGET_EVIDENCE",
+    "verdict": "REVIEW"
+  },
+  "safety": {
+    "no_additional_executor_run": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "validation": {
+    "cwe_repair_regression": "PASS",
+    "paired_build_evidence": "PAIRED_BUILD_VERIFIED",
+    "paired_runtime_evidence": "PAIRED_RUNTIME_EVIDENCE_VERIFIED",
+    "registry_cases": 12,
+    "legacy_dataset": "34 findings / 5 repair_pairs",
+    "legacy_leaderboard": "strict 16/31; legacy 20/31; guarded 3"
+  },
+  "remaining_gates": [
+    "SafeMul/narrow oversized-dimension provider runtime without OOM",
+    "official SafeIntTest target membership/build/runtime evidence",
+    "reverse/bidirectional zero sequence_lens",
+    "non-CPU execution providers",
+    "full target sanitizer run",
+    "formal all-input proof"
+  ],
+  "formal_proof": false
+}

@@ -1,0 +1,5 @@
+cwe-repair is an independent research artifact.
+
+Third-party projects such as ONNX Runtime, NCNN, and AGIBOT are referenced only as external review targets, provenance anchors, or evidence sources. Their source code, trademarks, test assets, and licenses remain the property of their respective owners.
+
+This repository does not grant rights to, redistribute, or relicense third-party projects. Before adding any upstream code or artifact, verify the applicable license and authorization.

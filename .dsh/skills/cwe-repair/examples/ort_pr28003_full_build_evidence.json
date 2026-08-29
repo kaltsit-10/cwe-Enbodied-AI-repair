@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "evidence_scope": "full-pinned-source-configure-target-build-and-partial-real-provider-runtime",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+  "source_probe": {
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+    "scope": "pinned-head-onnxruntime-plus-build-metadata",
+    "rnn_source": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+    "rnn_test_source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc",
+    "safeint_source": "onnxruntime/core/common/safeint.h",
+    "safeint_test_source": "onnxruntime/test/common/safeint_test.cc",
+    "source_scope_integrity": "ort_pr28003_source_scope_integrity.json",
+    "materialized_size": "504M",
+    "detector_consistency": "full and changed-scope rnn.cc both report 7 size_mult findings",
+    "target_binding_limit": "onnxruntime_provider_test manifest/runtime proves rnn_op_test.cc; separate onnxruntime_test_all build proves safeint_test.cc object/target linkage, but no SafeIntTest execution is claimed"
+  },
+  "toolchain": {
+    "cmake": "/home/kaltsit/.local/bin/cmake",
+    "cmake_version": "3.31.10",
+    "compiler": "/usr/bin/c++",
+    "compiler_version": "11.4.0",
+    "generator": "Unix Makefiles",
+    "parallelism": 2
+  },
+  "dependency_mirror": {
+    "root": "/tmp/deps_mirror",
+    "offline_configure": true,
+    "cpuinfo_sha1": "30b2a07fe4bae8574f89176e56274cacdd6d135b",
+    "gsl_sha1": "cf368104cd22a87b4dd0c80228919bb2df3e2a14",
+    "onnx_sha1": "321d4acc807c8e0fb0bbcc0424a143dffde1e846",
+    "protobuf_zip_integrity": "verified"
+  },
+  "configure": {
+    "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure",
+    "command_mode": "update-only; skip submodule sync, pip install, tests",
+    "status": "PASS"
+  },
+  "base_configure": {
+    "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe",
+    "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure",
+    "status": "PASS"
+  },
+  "base_build": {
+    "target": "onnxruntime_provider_test",
+    "target_includes_rnn_op_test": true,
+    "target_source_manifest": "build_configure/Debug/CMakeFiles/onnxruntime_provider_test.dir/DependInfo.cmake:183",
+    "status": "PASS",
+    "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure",
+    "command_mode": "CMake target-only incremental build; no test execution",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+    "binary_size": "1.1G",
+    "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+    "elf_build_id_sha1": "b962a626c7cf406712b0b41f51385dd1ddfce5ef"
+  },
+  "paired_build_evidence": "ort_pr28003_paired_build_evidence.json",
+  "common_test_target_build_evidence": "ort_pr28003_safeint_build_evidence.json",
+  "build": {
+    "target": "onnxruntime_provider_test",
+    "target_includes_rnn_op_test": true,
+    "target_source_manifest": "build_configure/Debug/CMakeFiles/onnxruntime_provider_test.dir/DependInfo.cmake:183",
+    "status": "PASS",
+    "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure",
+    "command_mode": "target build only; no test execution",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/onnxruntime_provider_test",
+    "binary_size": "1.1G",
+    "binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+    "elf_build_id_sha1": "0bef3959c8a4de3ec93355150eeff1caa2df8275"
+  },
+  "runtime": {
+    "status": "HEAD_DIRECT_RUNTIME_PASS_WITH_BASE_SHARED_CONTROL_PASS",
+    "head": {
+      "evidence": "ort_pr28003_head_gtest_runtime_evidence.json",
+      "summary": "focused direct/shared controls 4/4 PASS; all active RNNTest cases 12/12 PASS",
+      "suite_evidence": "ort_pr28003_head_full_rnn_suite_evidence.json",
+      "scope": "local pinned full provider target; default CPU RNN active test suite plus direct zero-boundary tests"
+    },
+    "base": {
+      "evidence": "ort_pr28003_base_gtest_runtime_evidence.json",
+      "summary": "focused shared controls 2/2 PASS; all active RNNTest cases 10/10 PASS",
+      "suite_evidence": "ort_pr28003_base_full_rnn_suite_evidence.json",
+      "scope": "local pinned full provider target; default CPU RNN active test suite"
+    },
+    "paired_evidence": "ort_pr28003_paired_runtime_evidence.json",
+    "contract_audit": "ort_pr28003_runtime_contract_audit.json",
+    "remaining_gap": "No safe oversized-dimension SafeMul/narrow runtime stimulus, no zero-lens reverse/bidirectional coverage, no non-CPU provider coverage, and no formal proof.",
+    "reduced_evidence_remains_scoped": true
+  },
+  "formal_proof": false,
+  "safety": {
+    "no_exploit_chain": true,
+    "no_oom_or_huge_allocation": true,
+    "local_real_executor_user_authorized": true,
+    "execution_scope": "local pinned provider-test binary and allowlisted GTest filters only",
+    "no_network_target_execution": true
+  }
+}

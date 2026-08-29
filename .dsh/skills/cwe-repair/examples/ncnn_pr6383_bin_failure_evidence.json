@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "bin-parser-failure-cleanup",
+  "official_source": "https://github.com/Tencent/ncnn/pull/6383",
+  "upstream_state": "merged",
+  "revisions": {
+    "base": "5154f22a4c146959beda380dc7522de53704d940",
+    "head": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7"
+  },
+  "configuration": {
+    "CMAKE_BUILD_TYPE": "release",
+    "CMAKE_CXX_COMPILER": "/usr/bin/c++",
+    "CMAKE_GENERATOR": "Unix Makefiles",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "NCNN_RUNTIME_CPU": "ON",
+    "NCNN_VULKAN": "OFF",
+    "NCNN_OPENMP": "OFF",
+    "NCNN_ASAN": "OFF"
+  },
+  "base": {
+    "sha": "5154f22a4c146959beda380dc7522de53704d940",
+    "wsl_distro": "Ubuntu-22.04",
+    "worktree_wsl": "/home/kaltsit/vuln_repro/ncnn_history/pr6383_before",
+    "worktree": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_before",
+    "build_dir": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_bin_before\\out",
+    "harness_name": "pr6383_bin_error_path",
+    "cache_name": "CMakeCache.txt",
+    "source": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_before\\src\\net.cpp",
+      "sha256": "ac5a49e788c6e25eff1644e63e3bbeb65bda89047a8390c41651b191cf189766"
+    },
+    "cmake_cache": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_bin_before\\out\\CMakeCache.txt",
+      "sha256": "93d037a1ec2d180bc664b7663c568cc6f6dcbdb0e4638ec309ed54926f8a6d75"
+    },
+    "harness": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_bin_before\\out\\pr6383_bin_error_path",
+      "sha256": "0ef2dfbec73932755852f12682161c09002c9e184d0df2dea1eb400c701ba990"
+    },
+    "library_build_dir": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_before",
+    "cache_home_is_worktree": false,
+    "library_cmake_cache": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_before\\CMakeCache.txt",
+      "sha256": "38122e229b1e44cbbf425ae6ecf4bc2876d47ebf4064c732ad9f9a244d7950e5"
+    },
+    "wrapper_config": false,
+    "cache_subdir": "out"
+  },
+  "head": {
+    "sha": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+    "wsl_distro": "Ubuntu-22.04",
+    "worktree_wsl": "/home/kaltsit/vuln_repro/ncnn_history/pr6383_after",
+    "worktree": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_after",
+    "build_dir": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_bin_after\\out",
+    "harness_name": "pr6383_bin_error_path",
+    "source": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_after\\src\\net.cpp",
+      "sha256": "811830f82d785dc0fc58debc040716946abdfe13e63c7b0d8967c111d033f2c6"
+    },
+    "cmake_cache": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_bin_after\\out\\CMakeCache.txt",
+      "sha256": "c088277ad4a705a4845eee15b27f6df8bdfc6e03141d43f49b7a605dd6f4f8d6"
+    },
+    "harness": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_bin_after\\out\\pr6383_bin_error_path",
+      "sha256": "b3c19f39a5e25c714bf63bfab1596d25c5aff7bb6ca5572d2bd7896483be0377"
+    },
+    "library_build_dir": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_after",
+    "cache_home_is_worktree": false,
+    "library_cmake_cache": {
+      "path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_after\\CMakeCache.txt",
+      "sha256": "0f53d47ded674491cf61f6a19e44072e338fe8acaf0201b63ac9d5c1f381f14b"
+    },
+    "wrapper_config": false,
+    "cache_subdir": "out"
+  },
+  "harness_source": {
+    "path": "ncnn_pr6383_bin_error_path.cpp",
+    "sha256": "f25d2c0f53389bf5a0cc255be257e82c0d908fd2915313a9831fdcfbb23efd9f"
+  },
+  "fixtures": {
+    "malicious": {
+      "path": "ncnn_pr6383_bin_truncated.param.bin",
+      "sha256": "881353d957350d5eef4ca9e79337860c4e283a001e175617e96c1b7820af229b"
+    },
+    "benign": {
+      "base": {
+        "path": "ncnn_pr6383_benign.param.bin",
+        "sha256": "5d63029c3c471350021672c10f165bda3ed01f79ddaaf3309eaae86b49a7bcae"
+      },
+      "head": {
+        "path": "ncnn_pr6383_benign.param.bin",
+        "sha256": "5d63029c3c471350021672c10f165bda3ed01f79ddaaf3309eaae86b49a7bcae"
+      }
+    }
+  },
+  "runtime": {
+    "collection": "bounded local base/head release CPU execution",
+    "base": {
+      "executed": true,
+      "unsafe_behavior_observed": true,
+      "malicious_rejected": "0/1",
+      "benign_passed": "1/1",
+      "infrastructure_failures": 0,
+      "verdict": "REVIEW",
+      "malicious_observation": "ParamDict read EOP failed, then read typeindex failed and process exited 139",
+      "malicious_exit": 139
+    },
+    "head": {
+      "executed": true,
+      "unsafe_behavior_observed": false,
+      "malicious_rejected": "1/1",
+      "benign_passed": "1/1",
+      "infrastructure_failures": 0,
+      "verdict": "PASS",
+      "malicious_observation": "ParamDict read EOP failed, load_param_bin ret=-1",
+      "malicious_exit": 1
+    }
+  },
+  "safety": {
+    "local_pinned_artifacts_only": true,
+    "network_target_execution": false,
+    "oversized_allocation": false,
+    "exploit_chain": false
+  },
+  "formal_proof": false,
+  "universal_claim": false
+}

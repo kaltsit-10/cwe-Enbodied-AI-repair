@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "plan_id": "PR-MATERIALIZE-BATCH-01",
+  "purpose": "Defensive local materialization queue for public AI-runtime repair references.",
+  "selection_policy": {
+    "max_cases": 2,
+    "coverage": "one adjacent AI runtime and one framework/runtime source",
+    "priority": "small safe fixtures, explicit arithmetic/shape contracts, official source URL",
+    "strict_rule": "No case becomes strict-eligible from this plan alone."
+  },
+  "cases": [
+    {
+      "id": "ORT-PR-28003",
+      "project": "microsoft/onnxruntime",
+      "source_url": "https://github.com/microsoft/onnxruntime/pull/28003",
+      "contract_family": "checked-shape-arithmetic-zero-extent",
+      "why_selected": "Closest external reference to existing CWE-190 and zero-extent arithmetic fixtures.",
+      "materialization_steps": [
+        "Record official PR base/head commit IDs from the PR metadata.",
+        "Materialize only the changed source files and a clean local worktree.",
+        "Run cwe_detect on the before/after arithmetic scope.",
+        "Create bounded small-shape fixtures; do not use huge allocations or OOM inputs.",
+        "Run contract analysis, repair_plan, symmetry/matrix where paired paths exist.",
+        "Build the smallest available local test target and run defensive two-sided verification.",
+        "Record source, patch, binary, and runtime hashes in the case evidence object."
+      ],
+      "blocking_evidence": ["base_sha", "head_sha", "before_source", "after_source", "runtime"],
+      "expected_initial_status": "REVIEW"
+    },
+    {
+      "id": "MS-PR-70694",
+      "project": "mindspore-ai/mindspore",
+      "source_url": "https://gitee.com/mindspore/mindspore/pulls/70694",
+      "contract_family": "dynamic-shape-overflow-regression",
+      "why_selected": "Adds a MindSpore/Gitee case and tests whether dynamic-shape overflow can be verified without unsafe resource pressure.",
+      "materialization_steps": [
+        "Record official Gitee PR base/head revision identifiers.",
+        "Materialize the changed Python/C++ files and exact dependency revision.",
+        "Map the dynamic-shape arithmetic to a bounded CWE-190 contract.",
+        "Use tiny dimensions and explicit overflow checks; never trigger multi-gigabyte allocation.",
+        "Run detector, contract analysis, and repair_plan on the changed scope.",
+        "Run available unit-level validation; runtime remains REVIEW if a full local build is unavailable.",
+        "Store Gitee URL, revisions, fixture hashes, and missing evidence in provenance."
+      ],
+      "blocking_evidence": ["base_sha", "head_sha", "before_source", "after_source", "runtime"],
+      "expected_initial_status": "REVIEW"
+    }
+  ],
+  "safety_constraints": [
+    "local/offline source and fixtures only",
+    "no exploit chain or real executor",
+    "no network target execution",
+    "no OOM, huge allocation, or resource-exhaustion sample",
+    "a local crash is evidence of a preimage defect, never a successful rejection",
+    "missing proof obligations force REVIEW"
+  ]
+}

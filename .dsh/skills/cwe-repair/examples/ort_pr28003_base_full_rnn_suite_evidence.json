@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "source_revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "target": "onnxruntime_provider_test",
+  "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+  "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+  "runtime_scope": "local-full-active-RNNTest-suite",
+  "execution_scope": "local-pinned-binary-only",
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "status": "PASS",
+  "errors": [],
+  "cases": [
+    {
+      "id": "base-full-active-rnn-suite",
+      "filter": "RNNTest.*",
+      "expected_test_count": 10,
+      "role": "all non-disabled upstream RNNTest cases available in the exact base target",
+      "contract_paths": [
+        "rnn-allocation-overflow",
+        "rnn-narrowing-contract"
+      ],
+      "exit_code": 0,
+      "tests_run": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "status": "PASS",
+      "output_tail": "est(+0x2fab0cd) [0x5f2e1354c0cd]\n/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test(+0x2f9ccc0) [0x5f2e1353dcc0]\n/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test(+0x14fa0a0) [0x5f2e11a9b0a0]\n/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test(+0x14fbbf5) [0x5f2e11a9cbf5]\n/lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x756046029d90]\n/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x756046029e40]\n/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test(+0x39b1a5) [0x5f2e1093c1a5]\n\u001b[m\n[       OK ] RNNTest.RNN_with_invalid_activation_load_failure (20 ms)\n[----------] 10 tests from RNNTest (145 ms total)\n\n[----------] Global test environment tear-down\n[==========] 10 tests from 1 test suite ran. (145 ms total)\n[  PASSED  ] 10 tests.\n\n  YOU HAVE 1 DISABLED TEST\n\n"
+    }
+  ],
+  "summary": {
+    "passed": "1/1",
+    "verdict": "PASS"
+  },
+  "formal_proof": false,
+  "proof_scope": "declared local GoogleTest filters only"
+}

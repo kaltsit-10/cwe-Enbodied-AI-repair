@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "profile": "embodied-ai-runtime-safety",
+  "purpose": "Attach embodied-AI deployment semantics to artifact-backed contracts without claiming real-robot execution.",
+  "risk_labels": ["model_input_boundary", "shape_buffer_mismatch", "provider_fallback", "stale_state_risk", "sensor_frame_risk", "control_output_risk", "lifecycle_cleanup"],
+  "contracts": {
+    "ncnn_pr6383_asset_semantic_contract.json": {
+      "input_source": "model_file", "runtime_stage": "ingest", "hardware_dependency": ["cpu"], "failure_mode": "reject_input", "control_impact": "indirect", "risk_labels": ["model_input_boundary", "lifecycle_cleanup"], "real_robot_execution": false
+    },
+    "ncnn_pr6383_two_text_failure_asset_contract.json": {
+      "input_source": "model_file", "runtime_stage": "ingest", "hardware_dependency": ["cpu"], "failure_mode": "reject_input", "control_impact": "indirect", "risk_labels": ["model_input_boundary", "lifecycle_cleanup"], "real_robot_execution": false
+    },
+    "ncnn_pr6383_four_parser_paths_asset_contract.json": {
+      "input_source": "model_file", "runtime_stage": "ingest", "hardware_dependency": ["cpu"], "failure_mode": "reject_input", "control_impact": "indirect", "risk_labels": ["model_input_boundary", "lifecycle_cleanup"], "real_robot_execution": false
+    },
+    "ort_pr28003_safeint_helper_asset_contract.json": {
+      "input_source": "tensor_shape", "runtime_stage": "preprocess", "hardware_dependency": ["cpu"], "failure_mode": "reject_input", "control_impact": "indirect", "risk_labels": ["shape_buffer_mismatch", "model_input_boundary"], "real_robot_execution": false
+    },
+    "ort_pr28003_rnn_narrowing_scoped_contract.json": {
+      "input_source": "tensor_shape", "runtime_stage": "inference", "hardware_dependency": ["cpu"], "failure_mode": "review_required", "control_impact": "indirect", "risk_labels": ["shape_buffer_mismatch", "stale_state_risk"], "real_robot_execution": false
+    },
+    "ort_pr28003_asset_semantic_contract.json": {
+      "input_source": "tensor_shape", "runtime_stage": "inference", "hardware_dependency": ["cpu"], "failure_mode": "review_required", "control_impact": "indirect", "risk_labels": ["shape_buffer_mismatch", "stale_state_risk"], "real_robot_execution": false
+    }
+  },
+  "repair_constraints": {
+    "repair_mode": "review_required",
+    "preserve": ["cleanup ordering", "paired parser symmetry", "provider semantics", "fail-closed behavior"],
+    "forbid": ["silent fallback", "stale output reuse", "unbounded allocation", "network execution", "real robot execution"]
+  },
+  "universal_claim": false,
+  "formal_proof": false
+}

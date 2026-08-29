@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-layer-load-param-failure-cleanup",
+  "official_source": "https://github.com/Tencent/ncnn/pull/6383",
+  "upstream_state": "merged",
+  "revisions": {
+    "base": "5154f22a4c146959beda380dc7522de53704d940",
+    "head": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7"
+  },
+  "configuration": {
+    "CMAKE_BUILD_TYPE": "release",
+    "CMAKE_CXX_COMPILER": "/usr/bin/c++",
+    "CMAKE_GENERATOR": "Unix Makefiles",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "NCNN_RUNTIME_CPU": "ON",
+    "NCNN_VULKAN": "OFF",
+    "NCNN_OPENMP": "OFF",
+    "NCNN_ASAN": "OFF"
+  },
+  "base": {
+    "sha": "5154f22a4c146959beda380dc7522de53704d940",
+    "wsl_distro": "Ubuntu-22.04",
+    "worktree_wsl": "/home/kaltsit/vuln_repro/ncnn_history/pr6383_before",
+    "worktree": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_before",
+    "build_dir": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_before",
+    "source": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_before\\src\\net.cpp", "sha256": "ac5a49e788c6e25eff1644e63e3bbeb65bda89047a8390c41651b191cf189766"},
+    "cmake_cache": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_before\\CMakeCache.txt", "sha256": "38122e229b1e44cbbf425ae6ecf4bc2876d47ebf4064c732ad9f9a244d7950e5"},
+    "harness": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_before\\pr6383_error_path", "sha256": "23e18c78f02151600f8f6de1160ff5a38c182bf7513f080b41e1940e9b05d105"}
+  },
+  "head": {
+    "sha": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+    "wsl_distro": "Ubuntu-22.04",
+    "worktree_wsl": "/home/kaltsit/vuln_repro/ncnn_history/pr6383_after",
+    "worktree": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_after",
+    "build_dir": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_after",
+    "source": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_after\\src\\net.cpp", "sha256": "811830f82d785dc0fc58debc040716946abdfe13e63c7b0d8967c111d033f2c6"},
+    "cmake_cache": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_after\\CMakeCache.txt", "sha256": "0f53d47ded674491cf61f6a19e44072e338fe8acaf0201b63ac9d5c1f381f14b"},
+    "harness": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\build_pr6383_after\\pr6383_error_path", "sha256": "10601881cad2c392b70656210a22c074135789060241e91fa124619ccd52dbbd"}
+  },
+  "harness_source": {"path": "ncnn_pr6383_error_path.cpp", "sha256": "eddc3c430ce8a3ef520dfa1b316dae4f8b4e541e61e4bb956541d4cf16cb66f8"},
+  "fixtures": {
+    "malicious": {"path": "ncnn_pr6383_text_layer_load_failure.param", "sha256": "37d606a1cf80fd34ff9c156e7ec33e651421c3466bb673d402bc061cf05eed05", "input_semantics": "Interp layer with parsed resize_type 4, which makes Interp::load_param return -1"},
+    "benign": {"path": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_fuzz\\pr_work\\pocs\\text_repeated_bottoms.param", "sha256": "9f185c23a8de944386e8e8cd2ee12260745ca75636fa4f98aad879e655bb347d", "input_semantics": "finite valid text parameter model with repeated bottom names"}
+  },
+  "runtime": {
+    "collection": "bounded local base/head execution recorded with hash-bound release harnesses; sanitizer instrumentation is not claimed",
+    "base": {"executed": true, "unsafe_behavior_observed": true, "malicious_rejected": "0/1", "benign_passed": "1/1", "infrastructure_failures": 0, "verdict": "REVIEW", "malicious_observation": "unsupported resize type 4, then SIGSEGV after layer load_param failure", "malicious_exit": 139},
+    "head": {"executed": true, "unsafe_behavior_observed": false, "malicious_rejected": "1/1", "benign_passed": "1/1", "infrastructure_failures": 0, "verdict": "PASS", "malicious_observation": "unsupported resize type 4, then load_param ret=-1 without crash", "malicious_exit": 1}
+  },
+  "source_scope": {
+    "entrypoint": "ncnn::Net::load_param(const DataReader&)",
+    "call_path": ["Net::load_param", "Interp::load_param", "lr != 0", "delete layer", "Net::clear", "return -1"],
+    "source_file": "src/net.cpp",
+    "postimage_requirements": ["do not continue after the named layer load_param failure", "delete the partially initialized layer", "clear parser-owned state", "return an explicit error"],
+    "companion_paths_not_claimed": ["custom CPU fallback failure", "Net::load_param_bin failure paths"]
+  },
+  "safety": {"local_pinned_artifacts_only": true, "network_target_execution": false, "oversized_allocation": false, "exploit_chain": false, "real_robot_execution": false},
+  "formal_proof": false,
+  "universal_claim": false
+}

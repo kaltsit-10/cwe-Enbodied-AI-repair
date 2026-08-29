@@ -1,0 +1,593 @@
+{
+  "schema_version": 1,
+  "case_count": 12,
+  "gate_count": 8,
+  "priority_counts": {
+    "ready-for-semantic-verification": 4,
+    "complete-missing-gates": 8
+  },
+  "evidence_level_counts": {
+    "FULL_GATED_LOCAL": 4,
+    "SCOPED_RUNTIME": 6,
+    "LOCAL_STATIC": 2
+  },
+  "assessments": [
+    {
+      "id": "NCNN-LOCAL-PR6922-TEXT-BLOB-FIX",
+      "project": "Tencent/ncnn",
+      "materialization": "local-only",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "readiness_score": "8/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": true,
+        "runtime": true,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "verified",
+        "runtime": "verified"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "FULL_GATED_LOCAL",
+      "full_gate_ready": true,
+      "formal_proof": false,
+      "gaps": [],
+      "recommended_actions": [],
+      "priority": "ready-for-semantic-verification"
+    },
+    {
+      "id": "NCNN-PR-2213",
+      "project": "Tencent/ncnn",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": true,
+      "readiness_score": "8/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": true,
+        "runtime": true,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "verified",
+        "runtime": "verified"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "FULL_GATED_LOCAL",
+      "full_gate_ready": true,
+      "formal_proof": false,
+      "gaps": [],
+      "recommended_actions": [],
+      "priority": "ready-for-semantic-verification"
+    },
+    {
+      "id": "NCNN-PR-6337",
+      "project": "Tencent/ncnn",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": true,
+      "readiness_score": "8/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": true,
+        "runtime": true,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "verified",
+        "runtime": "verified"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "FULL_GATED_LOCAL",
+      "full_gate_ready": true,
+      "formal_proof": false,
+      "gaps": [],
+      "recommended_actions": [],
+      "priority": "ready-for-semantic-verification"
+    },
+    {
+      "id": "NCNN-PR-6383",
+      "project": "Tencent/ncnn",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": true,
+      "readiness_score": "8/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": true,
+        "runtime": true,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "verified",
+        "runtime": "verified"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "FULL_GATED_LOCAL",
+      "full_gate_ready": true,
+      "formal_proof": false,
+      "gaps": [],
+      "recommended_actions": [],
+      "priority": "ready-for-semantic-verification"
+    },
+    {
+      "id": "MS-PR-91146",
+      "project": "mindspore-ai/mindspore",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "7/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": true,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "scoped",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "verified",
+        "runtime": "scoped"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "SCOPED_RUNTIME",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "runtime"
+      ],
+      "recommended_actions": [
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "ORT-PR-23435",
+      "project": "microsoft/onnxruntime",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "7/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": true,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "not_applicable",
+        "runtime": "missing"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "LOCAL_STATIC",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "runtime"
+      ],
+      "recommended_actions": [
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "MS-PR-89363",
+      "project": "mindspore-ai/mindspore",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "6/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": false,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "scoped",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "not_applicable",
+        "runtime": "scoped"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": false,
+        "runtime": true
+      },
+      "evidence_level": "SCOPED_RUNTIME",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "symmetry",
+        "runtime"
+      ],
+      "recommended_actions": [
+        "run symmetry or paired-path contract matrix",
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "MS-PR-90617",
+      "project": "mindspore-ai/mindspore",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "6/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": false,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "scoped",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "not_applicable",
+        "runtime": "scoped"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "SCOPED_RUNTIME",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "symmetry",
+        "runtime"
+      ],
+      "recommended_actions": [
+        "run symmetry or paired-path contract matrix",
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "NCNN-PR-6922",
+      "project": "Tencent/ncnn",
+      "materialization": "official-local-materialized-upstream-open",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "readiness_score": "6/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": false,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "missing",
+        "runtime": "scoped"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "SCOPED_RUNTIME",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "symmetry",
+        "runtime"
+      ],
+      "recommended_actions": [
+        "run symmetry or paired-path contract matrix",
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "ORT-PR-28003",
+      "project": "microsoft/onnxruntime",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "6/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": false,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "scoped",
+        "runtime": "missing"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "SCOPED_RUNTIME",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "symmetry",
+        "runtime"
+      ],
+      "recommended_actions": [
+        "run symmetry or paired-path contract matrix",
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "ORT-PR-28112",
+      "project": "microsoft/onnxruntime",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "6/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "symmetry": false,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "verified",
+        "repair_plan": "verified",
+        "provenance": "verified",
+        "symmetry": "not_applicable",
+        "runtime": "scoped"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": false,
+        "runtime": true
+      },
+      "evidence_level": "SCOPED_RUNTIME",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "symmetry",
+        "runtime"
+      ],
+      "recommended_actions": [
+        "run symmetry or paired-path contract matrix",
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    },
+    {
+      "id": "MS-PR-70694",
+      "project": "mindspore-ai/mindspore",
+      "materialization": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": false,
+      "readiness_score": "4/8",
+      "gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": false,
+        "repair_plan": false,
+        "symmetry": false,
+        "runtime": false,
+        "provenance": true
+      },
+      "gate_status": {
+        "official_source": "verified",
+        "base_head": "verified",
+        "source_pair": "verified",
+        "detect": "missing",
+        "repair_plan": "missing",
+        "provenance": "verified",
+        "symmetry": "not_applicable",
+        "runtime": "missing"
+      },
+      "required_gates": {
+        "official_source": true,
+        "base_head": true,
+        "source_pair": true,
+        "detect": true,
+        "repair_plan": true,
+        "provenance": true,
+        "symmetry": true,
+        "runtime": true
+      },
+      "evidence_level": "LOCAL_STATIC",
+      "full_gate_ready": false,
+      "formal_proof": false,
+      "gaps": [
+        "detect",
+        "repair_plan",
+        "symmetry",
+        "runtime"
+      ],
+      "recommended_actions": [
+        "run local detector and save before/after JSON",
+        "run contract-gated repair_plan and archive patch decision",
+        "run symmetry or paired-path contract matrix",
+        "build local harness and run defensive malicious/benign verification"
+      ],
+      "priority": "complete-missing-gates"
+    }
+  ],
+  "strict_rule": "readiness does not grant strict eligibility; all semantic gates and upstream policy still apply"
+}

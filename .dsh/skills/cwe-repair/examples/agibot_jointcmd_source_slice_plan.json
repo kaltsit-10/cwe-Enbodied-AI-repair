@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "case_id": "AGIBOT-JOINTCMD-CALLBACK",
+  "kind": "real-source-callback-to-fake-sink-materialization-plan",
+  "status": "REVIEW",
+  "source_root": "AGIBOT/repos/agibot_x1_infer_src",
+  "source_anchors": [
+    {
+      "path": "src/module/dcu_driver_module/src/dcu_driver_module.cc",
+      "sha256": "1b73f85b9a18fc7ab557e414653a817841eae50d7868df82236275eb1f5c3924",
+      "entrypoint": "DcuDriverModule::JointCmdCallback",
+      "lines": [468, 499]
+    },
+    {
+      "path": "src/module/dcu_driver_module/include/dcu_driver_module/transmission.h",
+      "sha256": "b695cabbdbaac9c8b449fde31149b384747f30e4c4f83532c27b8423fa5255cd",
+      "role": "DataSpace and TransimissionManager semantics"
+    },
+    {
+      "path": "src/protocols/my_ros2_proto/msg/JointCommand.msg",
+      "sha256": "11b2d91e0296f7c877d87b62cee1319a6f131a05b6ec97405abd00be13372890",
+      "role": "real joint command message field contract"
+    }
+  ],
+  "slice_interfaces": {
+    "retain": ["JointCommand field layout", "DataSpace command fields", "callback loop order", "TransformJointToActuator call decision", "per-actuator SetMitCmd decision"],
+    "replace_with_local_fakes": ["aimrt subscription wrapper", "mutex implementation detail", "TransimissionManager concrete registrations", "XyberController transport"],
+    "fake_sink_contract": ["record every SetMitCmd invocation", "reject malformed command before state mutation", "do not call transform or fake sink after rejection", "allow matching benign vectors to reach fake sink"]
+  },
+  "fixtures": ["agibot_jointcmd_malformed_fixture.json", "agibot_jointcmd_benign_fixture.json"],
+  "required_runtime_evidence": ["exact source anchor hashes", "same slice build configuration before/after repair", "malicious rejection with fake sink count zero", "benign preservation with expected fake sink count", "post-repair source review and symmetry assessment"],
+  "environment_prerequisites": ["C++17 compiler", "minimal standalone CMake or equivalent build manifest", "generated or local JointCommand type stub bound to .msg fields"],
+  "available_authorized_executor": {"environment": "local WSL Ubuntu-22.04", "compiler": "/usr/bin/c++", "cmake": "/home/kaltsit/.local/bin/cmake"},
+  "current_blockers": ["AGIBOT snapshot has no CMakeLists.txt", "AGIBOT snapshot has no package.xml", "no generated or source-bound standalone JointCommand C++ type is materialized", "no official base/head repair pair is materialized"],
+  "safety": {
+    "no_network_target_execution": true,
+    "no_real_robot_execution": true,
+    "no_real_actuator_execution": true,
+    "no_can_or_serial_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "completion_boundary": "A completed slice proves only the declared callback-to-local-fake-sink scope. It cannot prove ROS2/AimRT transport, physical actuator safety, or all AGIBOT control paths.",
+  "universal_claim": false,
+  "formal_proof": false
+}

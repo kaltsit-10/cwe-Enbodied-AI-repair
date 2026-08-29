@@ -1,0 +1,81 @@
+{
+  "scope": "local scoped runtime verification",
+  "source_commit": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+  "harnesses": {
+    "bin_baseline": {
+      "path": "/home/kaltsit/vuln_repro/ncnn_fuzz/assess/loadpoc_file_vuln",
+      "sha256": "25d3566ee35c203117415bc5e8a582a769c00cab6941e6b400d75aa7e629f540"
+    },
+    "bin_fixed2": {
+      "path": "/home/kaltsit/vuln_repro/ncnn_fuzz/assess/loadpoc_file_fixed2",
+      "sha256": "a206c1578d273e009a1294f7655993c287cba53306194d146b38424cf3318723"
+    },
+    "combined_baseline": {
+      "path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/loadpoc_verify_baseline",
+      "sha256": "d7eaac84a441763a9c96e9b2d68587789e5ffedc926f0e52ff1ab3d8538b7c9f"
+    },
+    "combined_fixed": {
+      "path": "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/loadpoc_verify_combined",
+      "sha256": "5daec8386d178cabeac84f19108b5ed7784911cc38051c4f18b47ef9e088698f"
+    }
+  },
+  "cases": [
+    {
+      "mode": "bin",
+      "input": "pr_work/pocs/oob_single_idx.parambin",
+      "baseline": {"exit": 0, "ret": 0, "crashed": false},
+      "combined": {"exit": 0, "ret": -1, "crashed": false},
+      "classification": "combined-rejected"
+    },
+    {
+      "mode": "bin",
+      "input": "pr_work/pocs/oob_top_idx.parambin",
+      "baseline": {"exit": 0, "ret": 0, "crashed": false},
+      "combined": {"exit": 0, "ret": -1, "crashed": false},
+      "classification": "combined-rejected"
+    },
+    {
+      "mode": "bin",
+      "input": "pr_work/pocs/valid_minimal.parambin",
+      "baseline": {"exit": 0, "ret": 0, "crashed": false},
+      "combined": {"exit": 0, "ret": 0, "crashed": false},
+      "classification": "benign-preserved"
+    },
+    {
+      "mode": "text",
+      "input": "pr_work/pocs/F2_neg_topcount.param",
+      "baseline": {"exit": -6, "ret": null, "crashed": true},
+      "combined": {"exit": 0, "ret": -1, "crashed": false},
+      "classification": "combined-rejected"
+    },
+    {
+      "mode": "text",
+      "input": "pr_work/pocs/text_repeated_bottoms.param",
+      "baseline": {"exit": 0, "ret": 0, "crashed": false},
+      "combined": {"exit": 0, "ret": 0, "crashed": false},
+      "classification": "benign-preserved"
+    },
+    {
+      "mode": "text",
+      "input": "pr_work/pocs/F1_bottom_oob.param",
+      "baseline": {"exit": -6, "ret": null, "crashed": true},
+      "combined": {"exit": -6, "ret": null, "crashed": true},
+      "classification": "residual-text-blob-index-candidate"
+    }
+  ],
+  "scoped_summary": {
+    "bin_malicious_rejected": "2/2",
+    "bin_benign_passed": "1/1",
+    "text_count_malicious_rejected": "1/1",
+    "text_count_benign_passed": "1/1",
+    "text_blob_index_residual": true,
+    "overall": "PASS-for-count-and-bin-index-scope; REVIEW-for-text-blob-index-scope",
+    "runtime_infrastructure_failures": 0
+  },
+  "notes": [
+    "All inputs and binaries are pre-existing local WSL assets.",
+    "The combined result is scoped to the tested cases and does not establish universal repair.",
+    "F1 remains a separate text-path blob_index candidate after the combined patch.",
+    "This artifact is runtime evidence, not a strict benchmark row."
+  ]
+}

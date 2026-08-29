@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "verdict": "REVIEW",
+  "runtime_observation": "BIN ParamDict and BIN layer load_param paths both have local base/head paired observations with benign preservation.",
+  "strict_binding_status": "INCOMPLETE",
+  "blocking_fields": [
+    "harness source path must be bound to an existing UNC file",
+    "base/head benign fixture SHA-256 values must match the actual two files",
+    "wrapper CMake cache and pinned NCNN library cache must be represented as separate evidence records"
+  ],
+  "do_not_claim": ["BIN ASSET_SCOPE_COMPLETE", "complete PR #6383", "Vulkan/custom CPU fallback"],
+  "next_action": "normalize UNC evidence paths and recompute hashes from the exact files before promoting BIN evidence",
+  "formal_proof": false,
+  "universal_claim": false
+}

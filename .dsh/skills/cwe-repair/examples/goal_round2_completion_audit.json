@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 7,
+  "objective_scope": "first-batch-external-ai-runtime-repair-cases",
+  "round": 2,
+  "status": "ACTIVE_RUNTIME_REVIEW_GAP",
+  "primary_cases": [
+    {
+      "case_id": "ORT-PR-28003",
+      "materialization": "official-local-materialized",
+      "provenance": "ort_pr28003_provenance.json",
+      "contract_matrix": "ort_pr28003_contract_matrix.json",
+      "full_build_evidence": "ort_pr28003_full_build_evidence.json",
+      "configure": "PASS",
+      "build": "PASS",
+      "build_target": "onnxruntime_provider_test",
+      "target_includes_rnn_op_test": true,
+      "binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+      "scoped_runtime": "PASS",
+      "full_runtime": "NOT_RUN",
+      "full_case_verdict": "REVIEW",
+      "remaining_gates": ["runtime"],
+      "reason": "Exact head full source/configure/target build passed; runtime execution is intentionally not performed and reduced evidence remains scoped."
+    },
+    {
+      "case_id": "MS-PR-70694",
+      "materialization": "official-local-materialized",
+      "provenance": "ms_pr70694_diff_review.json",
+      "contract_match": false,
+      "verification_verdict": "REVIEW",
+      "remaining_gates": ["detect", "repair_plan", "symmetry", "runtime"],
+      "reason": "Exact official diff is test-only dump maintenance and conflicts with requested dynamic-shape contract."
+    }
+  ],
+  "component_improvements": {
+    "matrix_runtime_split": true,
+    "scoped_pass_never_full": true,
+    "reduced_zero_over_zero_rejected": true,
+    "strict_anomaly_audit": true
+  },
+  "current_registry": {
+    "cases": 12,
+    "official_local_materialized": 10,
+    "official_local_materialized_upstream_open": 1,
+    "local_only": 1
+  },
+  "current_evidence_levels": {
+    "FULL_GATED_LOCAL": 4,
+    "SCOPED_RUNTIME": 6,
+    "LOCAL_STATIC": 2
+  },
+  "safety_constraints": {
+    "no_exploit_chain": true,
+    "no_oom_or_huge_allocation": true,
+    "no_real_executor": true,
+    "no_network_target_execution": true,
+    "runtime_not_run": true
+  },
+  "next_round_actions": [
+    "Keep ORT full build artifact immutable and do not run the provider-test binary under the current no-real-executor boundary.",
+    "Seek an exact contract-matching MindSpore repair instead of executing MS-70694 mismatch evidence.",
+    "Retain goal active until the declared first-batch evidence set and review boundaries are judged complete."
+  ],
+  "formal_proof": false
+}

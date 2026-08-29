@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-90890",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/90890",
+  "title": "[BUGFIX]Fix std::accumulate overflow",
+  "state": "merged",
+  "merged_at": "2025-12-03T10:54:28+08:00",
+  "base_sha": "52410badb506a6caf6a29ad1660508e8acee3f8a",
+  "head_sha": "9b68703fade018d75691017175f84ffd86db0aff",
+  "commits": [
+    {
+      "sha": "830679b71e544d8243e3f66183f7a717f9af483f",
+      "message": "Fix std::accumulate overflow"
+    },
+    {
+      "sha": "9b68703fade018d75691017175f84ffd86db0aff",
+      "message": "Fix Tensor invalid args check"
+    }
+  ],
+  "compare_observation": {
+    "changed_files_returned": 200,
+    "truncated_or_capped": true,
+    "scope": "large cross-backend shape/type migration; many CPU/GPU/Ascend files"
+  },
+  "decision": "DEFER_BROAD_SCOPE",
+  "reason": "The official title matches arithmetic overflow, but the exact PR scope is too broad for a single auditable path contract. It remains a screened candidate and is not counted as locally materialized or verified.",
+  "formal_proof": false,
+  "notes": [
+    "No source checkout or runtime was attempted for this broad candidate.",
+    "No OOM, exploit chain, real executor, or network target was used."
+  ]
+}

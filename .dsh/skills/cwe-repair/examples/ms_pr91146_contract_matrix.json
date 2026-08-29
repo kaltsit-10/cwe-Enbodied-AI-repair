@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "component": "mindspore",
+  "contract": "nonnegative-shape-dimension-validation",
+  "required_path_ids": ["empty-shape-input", "ones-shape-infer"],
+  "paths": [
+    {
+      "id": "empty-shape-input",
+      "contract": "nonnegative-shape-dimension-validation",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr91146_head\\mindspore\\ccsrc\\pynative\\utils\\pyboost\\functions\\composite\\empty.cc",
+      "cwe": 125,
+      "residual_pattern": "shape_axis_index",
+      "allowed_residual_lines": [],
+      "required_markers": [
+        "output_shape\\[i\\]\\s*>=\\s*0",
+        "MS_CHECK_VALUE",
+        "FormatCheckIntegerMsg"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "full empty executor not executed"
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "2/2",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ms_pr91146_bounded_runtime_evidence.json",
+        "note": "reduced bounded shape contract only; not the full MindSpore executor"
+      }
+    },
+    {
+      "id": "ones-shape-infer",
+      "contract": "nonnegative-shape-dimension-validation",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr91146_head\\mindspore\\ops\\infer\\ops_func_impl\\ones.cc",
+      "cwe": 125,
+      "residual_pattern": "parallel_array_loop",
+      "allowed_residual_lines": [38],
+      "required_markers": [
+        "shape_i\\s*=\\s*shape\\[i\\]",
+        "shape_i\\s*>=\\s*0",
+        "MS_CHECK_VALUE",
+        "FormatCheckIntegerMsg"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "full ones inference executor not executed"
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "2/2",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ms_pr91146_bounded_runtime_evidence.json",
+        "note": "reduced bounded shape contract only; not the full MindSpore executor"
+      }
+    }
+  ]
+}

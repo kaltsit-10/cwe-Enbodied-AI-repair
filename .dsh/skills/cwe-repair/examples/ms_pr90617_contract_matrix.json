@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "component": "mindspore",
+  "contract": "cumsum-grad-axis-range-normalization",
+  "required_path_ids": ["cumsum-ext-grad-axis"],
+  "paths": [
+    {
+      "id": "cumsum-ext-grad-axis",
+      "contract": "cumsum-grad-axis-range-normalization",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr90617_head\\mindspore\\ops\\grad\\grad_math_ops.cc",
+      "cwe": 125,
+      "residual_pattern": "shape_axis_index",
+      "allowed_residual_lines": [2664, 3056],
+      "required_markers": [
+        "auto rank\\s*=\\s*SizeToLong\\(x_shape\\.size\\(\\)\\)",
+        "dim_value\\s*>=\\s*-rank\\s*&&\\s*dim_value\\s*<=\\s*rank\\s*-\\s*1",
+        "if\\s*\\(dim_value\\s*<\\s*0\\)",
+        "dim_value\\s*\\+=\\s*rank"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "full MindSpore CumsumExt runtime not executed"
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "2/2",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ms_pr90617_bounded_runtime_evidence.json",
+        "note": "reduced bounded axis contract only; not the full MindSpore executor"
+      }
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "tool": "cwe-repair-release-audit",
+  "scope": "artifact-backed embodied-AI runtime release only",
+  "contracts": [
+    {
+      "file": "ncnn_pr6383_asset_semantic_contract.json",
+      "sha256": "197de2f55c0d6aa5a3ee2b977aebd0ad0cafd8995daa78c7743dad8dc39c037d",
+      "result": {
+        "schema_version": 1,
+        "asset_id": "Tencent/ncnn",
+        "case_id": "NCNN-PR-6383",
+        "artifact_integrity": true,
+        "scope_complete": true,
+        "valid": true,
+        "verdict": "ASSET_SCOPE_COMPLETE",
+        "missing_gates": [],
+        "errors": [],
+        "universal_claim": false,
+        "formal_proof": false,
+        "proof_scope": "one pinned asset and explicitly declared paths/dimensions only; not all inputs/providers/configurations and not a formal proof"
+      }
+    },
+    {
+      "file": "ncnn_pr6383_two_text_failure_asset_contract.json",
+      "sha256": "8b9d2893f444dafaf50d1365939b90d52f6761a18737d3f26224e2e94d5ed192",
+      "result": {
+        "schema_version": 1,
+        "asset_id": "Tencent/ncnn",
+        "case_id": "NCNN-PR-6383",
+        "artifact_integrity": true,
+        "scope_complete": true,
+        "valid": true,
+        "verdict": "ASSET_SCOPE_COMPLETE",
+        "missing_gates": [],
+        "errors": [],
+        "universal_claim": false,
+        "formal_proof": false,
+        "proof_scope": "one pinned asset and explicitly declared paths/dimensions only; not all inputs/providers/configurations and not a formal proof"
+      }
+    },
+    {
+      "file": "ncnn_pr6383_four_parser_paths_asset_contract.json",
+      "sha256": "932b3c69eb7a931aa0c83739ba4d8f0d58f9cbf53e111a23a4923f2982ecfb75",
+      "result": {
+        "schema_version": 1,
+        "asset_id": "Tencent/ncnn",
+        "case_id": "NCNN-PR-6383",
+        "artifact_integrity": true,
+        "scope_complete": true,
+        "valid": true,
+        "verdict": "ASSET_SCOPE_COMPLETE",
+        "missing_gates": [],
+        "errors": [],
+        "universal_claim": false,
+        "formal_proof": false,
+        "proof_scope": "one pinned asset and explicitly declared paths/dimensions only; not all inputs/providers/configurations and not a formal proof"
+      }
+    },
+    {
+      "file": "ort_pr28003_safeint_helper_asset_contract.json",
+      "sha256": "700363df32eb23c69475eed8d466120ab0a79ed74ad5f392416789f6bb2ffb5a",
+      "result": {
+        "schema_version": 1,
+        "asset_id": "microsoft/onnxruntime",
+        "case_id": "ORT-PR-28003",
+        "artifact_integrity": true,
+        "scope_complete": true,
+        "valid": true,
+        "verdict": "ASSET_SCOPE_COMPLETE",
+        "missing_gates": [],
+        "errors": [],
+        "universal_claim": false,
+        "formal_proof": false,
+        "proof_scope": "one pinned asset and explicitly declared paths/dimensions only; not all inputs/providers/configurations and not a formal proof"
+      }
+    },
+    {
+      "file": "ort_pr28003_rnn_narrowing_scoped_contract.json",
+      "sha256": "f953641ecc6e6e9f67378b5131d1a71794eab75c0d23c035e6bc9f033bce49ea",
+      "result": {
+        "schema_version": 1,
+        "asset_id": "microsoft/onnxruntime",
+        "case_id": "ORT-PR-28003",
+        "artifact_integrity": true,
+        "scope_complete": false,
+        "valid": true,
+        "verdict": "REVIEW",
+        "missing_gates": [
+          "asset.inventory_completeness",
+          "path.rnn-narrowing-contract.negative_rejection"
+        ],
+        "errors": [],
+        "universal_claim": false,
+        "formal_proof": false,
+        "proof_scope": "one pinned asset and explicitly declared paths/dimensions only; not all inputs/providers/configurations and not a formal proof"
+      }
+    },
+    {
+      "file": "ort_pr28003_asset_semantic_contract.json",
+      "sha256": "93927887c21b4e16b0d177e47a2960a7f47413d02feaae1ef056d32c99ef086a",
+      "result": {
+        "schema_version": 1,
+        "asset_id": "microsoft/onnxruntime",
+        "case_id": "ORT-PR-28003",
+        "artifact_integrity": true,
+        "scope_complete": false,
+        "valid": true,
+        "verdict": "REVIEW",
+        "missing_gates": [
+          "asset.inventory_completeness",
+          "path.rnn-allocation-overflow.benign_preservation",
+          "path.rnn-allocation-overflow.dimension.safe_mul_int_shape",
+          "path.rnn-allocation-overflow.dimension.safe_mul_size_t_allocation",
+          "path.rnn-allocation-overflow.dimension.zero_extent_sequence",
+          "path.rnn-allocation-overflow.negative_rejection",
+          "path.rnn-allocation-overflow.runtime_base",
+          "path.rnn-allocation-overflow.runtime_head",
+          "path.rnn-allocation-overflow.static_contract",
+          "path.rnn-allocation-overflow.symmetry",
+          "path.rnn-narrowing-contract.benign_preservation",
+          "path.rnn-narrowing-contract.dimension.narrow_hidden_size",
+          "path.rnn-narrowing-contract.dimension.safe_mul_int_shape",
+          "path.rnn-narrowing-contract.negative_rejection",
+          "path.rnn-narrowing-contract.runtime_base",
+          "path.rnn-narrowing-contract.runtime_head",
+          "path.rnn-narrowing-contract.static_contract",
+          "path.rnn-narrowing-contract.symmetry",
+          "path.rnn-sequence-lens-directional.benign_preservation",
+          "path.rnn-sequence-lens-directional.dimension.bidirectional_zero_sequence_lens",
+          "path.rnn-sequence-lens-directional.dimension.forward_zero_sequence_lens",
+          "path.rnn-sequence-lens-directional.dimension.provider_matrix",
+          "path.rnn-sequence-lens-directional.dimension.reverse_zero_sequence_lens",
+          "path.rnn-sequence-lens-directional.negative_rejection",
+          "path.rnn-sequence-lens-directional.runtime_base",
+          "path.rnn-sequence-lens-directional.runtime_head",
+          "path.rnn-sequence-lens-directional.static_contract",
+          "path.rnn-sequence-lens-directional.symmetry"
+        ],
+        "errors": [],
+        "universal_claim": false,
+        "formal_proof": false,
+        "proof_scope": "one pinned asset and explicitly declared paths/dimensions only; not all inputs/providers/configurations and not a formal proof"
+      }
+    }
+  ],
+  "formal_contract_inventory": {
+    "status": "PASS",
+    "discovered": [
+      "ncnn_pr6383_asset_semantic_contract.json",
+      "ncnn_pr6383_four_parser_paths_asset_contract.json",
+      "ncnn_pr6383_two_text_failure_asset_contract.json",
+      "ort_pr28003_asset_semantic_contract.json",
+      "ort_pr28003_rnn_narrowing_scoped_contract.json",
+      "ort_pr28003_safeint_helper_asset_contract.json"
+    ],
+    "declared": [
+      "ncnn_pr6383_asset_semantic_contract.json",
+      "ncnn_pr6383_two_text_failure_asset_contract.json",
+      "ncnn_pr6383_four_parser_paths_asset_contract.json",
+      "ort_pr28003_safeint_helper_asset_contract.json",
+      "ort_pr28003_rnn_narrowing_scoped_contract.json",
+      "ort_pr28003_asset_semantic_contract.json"
+    ]
+  },
+  "protected_artifacts": {
+    "status": "PASS",
+    "mismatches": []
+  },
+  "embodied_profile": {
+    "status": "PASS",
+    "missing": [],
+    "invalid": [],
+    "core_errors": []
+  },
+  "readiness_queue": {
+    "status": "PASS",
+    "errors": []
+  },
+  "evaluation_manifest": {
+    "status": "PASS",
+    "errors": []
+  },
+  "source_slice_plan": {
+    "status": "PASS",
+    "plan_status": "REVIEW",
+    "source_anchors": "UNAVAILABLE",
+    "errors": []
+  },
+  "sensitive_files": [],
+  "errors": [],
+  "verdict": "PASS",
+  "release_boundary": {
+    "real_robot_execution": false,
+    "network_target_execution": false,
+    "universal_claim": false,
+    "formal_proof": false
+  }
+}

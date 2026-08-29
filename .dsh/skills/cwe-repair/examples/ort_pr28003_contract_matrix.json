@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "component": "onnxruntime",
+  "contract": "checked-shape-arithmetic-zero-extent",
+  "required_path_ids": ["rnn-allocation-overflow", "rnn-narrowing-contract"],
+  "paths": [
+    {
+      "id": "rnn-allocation-overflow",
+      "contract": "checked-shape-arithmetic-zero-extent",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ort_history\\pr28003_head\\onnxruntime\\core\\providers\\cpu\\rnn\\rnn.cc",
+      "cwe": 190,
+      "residual_pattern": "size_mult",
+      "allowed_residual_lines": [103, 109, 110, 112, 127, 128, 191],
+      "required_markers": [
+        "SafeMul\\s*<\\s*size_t\\s*>",
+        "SafeMul\\s*<\\s*int\\s*>",
+        "seq_length\\s*==\\s*0",
+        "last_time_step\\s*<\\s*0",
+        "narrow\\s*<\\s*int\\s*>"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "A real full target ran finite declared subcases, but the complete arithmetic contract is not runtime-covered."
+      },
+      "operator_runtime": {
+        "verdict": "PASS",
+        "scope": "local pinned full provider target; all active default-CPU RNNTest cases",
+        "evidence": "ort_pr28003_head_full_rnn_suite_evidence.json",
+        "paired_evidence": "ort_pr28003_paired_runtime_evidence.json",
+        "note": "Head full active RNN suite 12/12 and focused direct tests 4/4 pass; this never closes the complete arithmetic contract gate."
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "1/1",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ort_pr28003_bounded_runtime_evidence.json",
+        "note": "reduced bounded SafeInt/RNN harness only; not the complete ORT operator target"
+      }
+    },
+    {
+      "id": "rnn-narrowing-contract",
+      "contract": "checked-shape-arithmetic-zero-extent",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ort_history\\pr28003_head\\onnxruntime\\core\\providers\\cpu\\rnn\\rnn.cc",
+      "cwe": 190,
+      "residual_pattern": "unchecked_shape_product_narrow",
+      "required_markers": [
+        "SafeMul\\s*<\\s*int\\s*>\\s*\\(\\s*seq_length",
+        "narrow\\s*<\\s*int\\s*>\\s*\\(\\s*hidden_size_"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "A real full target ran finite declared subcases, but the complete arithmetic contract is not runtime-covered."
+      },
+      "operator_runtime": {
+        "verdict": "PASS",
+        "scope": "local pinned full provider target; all active default-CPU RNNTest cases",
+        "evidence": "ort_pr28003_head_full_rnn_suite_evidence.json",
+        "paired_evidence": "ort_pr28003_paired_runtime_evidence.json",
+        "note": "Head full active RNN suite 12/12 and focused direct tests 4/4 pass; this never closes the complete arithmetic contract gate."
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "1/1",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ort_pr28003_bounded_runtime_evidence.json",
+        "note": "reduced bounded SafeInt/RNN harness only; not the complete ORT operator target"
+      }
+    }
+  ]
+}

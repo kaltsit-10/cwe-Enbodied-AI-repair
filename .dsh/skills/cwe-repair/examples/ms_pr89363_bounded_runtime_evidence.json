@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-89363",
+  "evidence_scope": "reduced-buffer-offset-and-size-product-contract",
+  "official_source": "https://gitee.com/mindspore/mindspore/pulls/89363",
+  "base_sha": "14ce9eac501d3db833bd5d4db1863c36035d2bd8",
+  "head_sha": "4450b28f2569313f95cb71728f8f417632dd3d78",
+  "reduced_runtime": {
+    "after_source": ".dsh/skills/cwe-repair/examples/ms_pr89363_checked_after.cpp",
+    "harness_source": ".dsh/skills/cwe-repair/examples/ms_pr89363_checked_verify.cpp",
+    "binary": "/home/kaltsit/vuln_repro/mindspore_history/ms_pr89363_checked_verify",
+    "binary_sha256": "0e1df5704dfdf2d571d79d86f9fc20dfa39d898d56d277a278db4c419acc4166",
+    "malicious": [
+      {
+        "input": "ms_pr89363_checked_overflow.shape",
+        "sha256": "3a08c6f2ca7226a0c204aa18d0348776c9a754971d4db7055e974d6283c570e9",
+        "contract": "index_size * one_exp_len overflow",
+        "ret": -1,
+        "crashed": false
+      },
+      {
+        "input": "ms_pr89363_checked_oob.shape",
+        "sha256": "140d87cb85dada6d5cb03151be453cf43e7221b75985ab7586e40e419578f4e1",
+        "contract": "offset >= input size",
+        "ret": -1,
+        "crashed": false
+      }
+    ],
+    "benign": [
+      {
+        "input": "ms_pr89363_checked_valid.shape",
+        "sha256": "ca1700357746f2ecb0f5628046dc543fa7f03de1b350081d95aee8adc5431dde",
+        "contract": "bounded offset and product",
+        "ret": 0,
+        "crashed": false
+      }
+    ],
+    "summary": {
+      "malicious_rejected": "2/2",
+      "benign_passed": "1/1",
+      "infrastructure_failures": 0,
+      "asan_ubsan": true,
+      "verdict": "PASS"
+    }
+  },
+  "full_case_status": "REVIEW",
+  "full_case_gap": "reduced harness is not the complete MindSpore CPU kernel/runtime path",
+  "formal_proof": false,
+  "notes": [
+    "No tensor allocation, huge shape, real executor, network target, or exploit chain was used.",
+    "Reduced PASS does not upgrade the full case beyond REVIEW."
+  ]
+}

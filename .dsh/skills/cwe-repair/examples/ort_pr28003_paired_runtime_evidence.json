@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "target": "onnxruntime_provider_test",
+  "base": {
+    "sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+    "evidence": "ort_pr28003_base_gtest_runtime_evidence.json",
+    "full_active_suite_evidence": "ort_pr28003_base_full_rnn_suite_evidence.json",
+    "focused_filter_case_count": 2,
+    "active_suite_expected_tests": 10,
+    "summary": "focused shared controls 2/2 PASS; full active RNN suite 10/10 PASS"
+  },
+  "head": {
+    "sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+    "evidence": "ort_pr28003_head_gtest_runtime_evidence.json",
+    "full_active_suite_evidence": "ort_pr28003_head_full_rnn_suite_evidence.json",
+    "focused_filter_case_count": 4,
+    "active_suite_expected_tests": 12,
+    "summary": "focused direct/shared controls 4/4 PASS; full active RNN suite 12/12 PASS"
+  },
+  "shared_controls": [
+    {
+      "id": "rnn-bidirectional-sequence-lens-control",
+      "filter": "RNNTest.RNN_bidirectional_with_sequence_lens",
+      "base": "PASS",
+      "head": "PASS",
+      "coverage": "default CPU bidirectional valid heterogeneous sequence_lens={1,2,2}; forward/reverse traversal, padded Y zeroing, and both-direction Y_h selection; not zero-length or non-CPU provider evidence"
+    },
+    {
+      "id": "rnn-invalid-sequence-lens-control",
+      "filter": "RNNTest.RNN_invalid_sequence_lens",
+      "base": "PASS",
+      "head": "PASS",
+      "coverage": "default-provider malformed-shape and mixed {0,5} out-of-range control, where 5 > seq_length=3; not sequence_lens=0-alone rejection or repair evidence"
+    }
+  ],
+  "head_only_direct_regressions": [
+    {
+      "id": "rnn-seq-length-zero",
+      "filter": "RNNTest.RNN_seq_length_zero",
+      "status": "PASS",
+      "coverage": "CPU RNN forward seq_length=0; empty Y and zero-filled Y_h"
+    },
+    {
+      "id": "rnn-forward-sequence-lens-zero",
+      "filter": "RNNTest.RNN_forward_sequence_lens_with_zero",
+      "status": "PASS",
+      "coverage": "CPU RNN forward mixed sequence_lens={2,0}; normal Y_h for one batch and zero Y_h for zero-length batch"
+    }
+  ],
+  "comparison": {
+    "shared_control_symmetry": "PASS",
+    "full_active_rnn_suite": {
+      "base": "10/10 PASS",
+      "head": "12/12 PASS",
+      "disabled_tests": "1 per revision; not executed"
+    },
+    "head_direct_regression_runtime": "PASS",
+    "base_has_head_only_tests": false,
+    "same_test_before_after_semantic_comparison": "NOT_AVAILABLE_HEAD_ONLY_OFFICIAL_TESTS",
+    "cross_provider_coverage": "NOT_RUN_CPU_DEFAULT_PROVIDER_ONLY"
+  },
+  "status": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS",
+  "matrix_effect": "All active upstream RNNTest cases pass in each pinned default-CPU target, and head direct CPU zero-boundary behavior is runtime verified. This does not close the SafeMul/narrow oversized-dimension contract gate or produce formal all-path verification.",
+  "safety": {
+    "local_real_executor_user_authorized": true,
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "formal_proof": false
+}

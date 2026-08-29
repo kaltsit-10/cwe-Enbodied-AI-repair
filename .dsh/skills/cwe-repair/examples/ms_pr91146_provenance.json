@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-91146",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/91146",
+  "title": "[bugfix] mint.randn/rand/randint should raise ValueError when input shape has negative dimension",
+  "state": "merged",
+  "merged_at": "2025-12-16T14:22:51+08:00",
+  "base_sha": "538ff34fbc1eaa00355d5a2fb5ed1b17a76ecc4e",
+  "head_sha": "4c2308c95c7f1584e18aedb01ca3b90fb7a67168",
+  "merge_commit_sha": null,
+  "changed_files": [
+    "mindspore/ccsrc/pynative/utils/pyboost/functions/composite/empty.cc",
+    "mindspore/ops/infer/ops_func_impl/ones.cc",
+    "tests/st/ops/test_ops_rand_ext.py"
+  ],
+  "contract": "nonnegative-shape-dimension-validation",
+  "local_materialization": {
+    "repository": "/home/kaltsit/vuln_repro/mindspore_history/mindspore_repo",
+    "base_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr91146_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr91146_head",
+    "checkout_mode": "blob-filter-and-sparse-changed-files"
+  },
+  "static": {
+    "source_paths": [
+      {
+        "path": "mindspore/ccsrc/pynative/utils/pyboost/functions/composite/empty.cc",
+        "head_markers": ["for (size_t i = 0; i < output_shape.size(); ++i)", "output_shape[i] >= 0", "MS_CHECK_VALUE"]
+      },
+      {
+        "path": "mindspore/ops/infer/ops_func_impl/ones.cc",
+        "head_markers": ["shape_i = shape[i]", "shape_i >= 0", "MS_CHECK_VALUE"]
+      }
+    ],
+    "detector_note": "ones shape[i] remains a low-confidence loop residual; contract matrix binds both paths to explicit nonnegative-dimension markers"
+  },
+  "verification": {
+    "detect": "paired source markers present; low-confidence shape loop residual scoped",
+    "repair_plan": "reject every known negative dimension before tensor creation/inference",
+    "symmetry": "paired empty/ones shape-validation matrix",
+    "runtime": "reduced bounded harness PASS 2/2 + 2/2; full MindSpore rand/empty executor REVIEW",
+    "provenance": "ms_pr91146_bounded_runtime_evidence.json",
+    "verdict": "REVIEW"
+  },
+  "formal_proof": false,
+  "notes": [
+    "No tensor allocation, huge shape, real executor, network target, or exploit chain was used.",
+    "Reduced PASS does not upgrade the full case beyond REVIEW."
+  ]
+}

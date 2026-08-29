@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "purpose": "Release baseline for protected legacy benchmark and case registry. Update only through an explicit release decision.",
+  "protected_files": {
+    "ncnn_history_benchmark_v2.json": "a4271050dfd41d453f1f841e598103386059c55e2539e0d3b41e9b491ef4372b",
+    "embodied_ai_pr_case_registry.json": "8988e62be4a966fff73dc9eb11971040c95d9b540a3301eb72fec4fa132d7511"
+  }
+}

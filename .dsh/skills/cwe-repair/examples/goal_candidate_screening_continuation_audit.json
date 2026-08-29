@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 14,
+  "phase": "active",
+  "preceding_audit": "goal_authorized_executor_continuation_audit.json",
+  "objective_slice": "Expand the defensive external AI-runtime repair candidate queue without mistaking PR titles or static source evidence for runtime verification.",
+  "candidate_screening": {
+    "deferred": [
+      {
+        "case_id": "MS-PR-90173",
+        "reason": "Exact final diff is a 200-file cross-backend/type migration, not a narrow auditable contract."
+      },
+      {
+        "case_id": "MS-PR-90890",
+        "reason": "Same broad std::accumulate migration family; previously screened as 200+ file scope."
+      },
+      {
+        "case_id": "MS-PR-89359",
+        "reason": "Thirteen Lite/NNACL/Java files exceed the small-scope candidate threshold."
+      }
+    ],
+    "not_promoted": [
+      {
+        "case_id": "MS-PR-80416",
+        "reason": "One-file vector-length compatibility diff lacks enough title-to-heap-overflow causal evidence."
+      },
+      {
+        "case_id": "MS-PR-75717",
+        "reason": "One-line Ascend tuple-size adjustment lacks enough caller contract evidence."
+      }
+    ],
+    "source_static_candidate": {
+      "case_id": "MS-PR-87710",
+      "official_source": "https://gitee.com/mindspore/mindspore/pulls/87710",
+      "source_scope_status": "PASS",
+      "static_contract_status": "STATIC_CONTRACT_DELTA_VERIFIED",
+      "evidence": [
+        "ms_pr87710_screening.json",
+        "ms_pr87710_static_contract_evidence.json"
+      ],
+      "runtime": "NOT_RUN",
+      "symmetry": "REVIEW",
+      "verdict": "REVIEW"
+    }
+  },
+  "component_changes": [
+    "checked_addition_contract.py validates paired source-only checked-addition guard ordering",
+    "test_cwe_repair.py has positive/negative contract tests and MS-PR-87710 screening assertions",
+    "registry candidate_sources records the candidate without changing the 12-case registry"
+  ],
+  "safety": {
+    "no_source_build_or_executor_run_for_ms_pr87710": true,
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "invariants": {
+    "registry_cases": 12,
+    "FULL_GATED_LOCAL": 4,
+    "SCOPED_RUNTIME": 6,
+    "LOCAL_STATIC": 2,
+    "legacy_dataset": "34 findings / 5 repair_pairs",
+    "legacy_leaderboard": "strict 16/31; legacy 20/31; guarded 3"
+  },
+  "formal_proof": false,
+  "next_actions": [
+    "Keep MS-PR-87710 outside verified cases until runtime and symmetry gates are justified.",
+    "Use only exact small-scope diff evidence for new candidates; reject title-only or broad migrations.",
+    "Continue ORT-PR-28003 remaining SafeMul/narrow and provider-coverage work only within explicit safety constraints."
+  ]
+}

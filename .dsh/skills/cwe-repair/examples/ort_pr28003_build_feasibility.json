@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "scope": "full-ORT-RNN-target-build-feasibility",
+  "checked_revisions": {
+    "base": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head": "795675a77ebb898302c5798bd6247658db165d14"
+  },
+  "worktrees": {
+    "base": "/home/kaltsit/vuln_repro/ort_history/pr28003_base",
+    "head": "/home/kaltsit/vuln_repro/ort_history/pr28003_head",
+    "build_probe": "/home/kaltsit/vuln_repro/ort_history/pr28003_build_probe",
+    "full_probe": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+    "scope_mode": "changed-files-plus-independent-full-source-probe"
+  },
+  "checks": {
+    "cmake_available": true,
+    "system_cmake_version": "3.22.1",
+    "probe_cmake_version": "3.31.10",
+    "cmake_required_by_revision": ">=3.28",
+    "compiler_available": true,
+    "python_available": true,
+    "head_core_source_present": true,
+    "build_script_materialized_in_probe": true,
+    "build_helpers_materialized_in_probe": true,
+    "full_source_probe_materialized": true,
+    "full_source_probe_size": "504M",
+    "build_help_probe": "PASS",
+    "configure_probe": "PASS",
+    "full_dependency_graph_present": true,
+    "dependency_mirror": {
+      "root": "/tmp/deps_mirror",
+      "cpuinfo_sha1": "30b2a07fe4bae8574f89176e56274cacdd6d135b",
+      "gsl_sha1": "cf368104cd22a87b4dd0c80228919bb2df3e2a14",
+      "onnx_sha1": "321d4acc807c8e0fb0bbcc0424a143dffde1e846",
+      "protobuf_zip_verified": true
+    }
+  },
+  "build_entrypoint": "build.sh delegates to tools/ci_build/build.py; probe --help passed",
+  "configure_command": "build.py --update --skip_submodule_sync --skip_pip_install --skip_tests --cmake_path /home/kaltsit/.local/bin/cmake --cmake_deps_mirror_dir /tmp/deps_mirror",
+  "configure_result": "PASS",
+  "build_target": "onnxruntime_provider_test",
+  "build_probe": "PASS",
+  "build_binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+  "base_build_probe": "PASS",
+  "base_build_binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+  "paired_build_evidence": "ort_pr28003_paired_build_evidence.json",
+  "status": "PAIRED_BUILD_AND_DIRECT_RUNTIME_PASS_REVIEW",
+  "blocker": "Pinned base/head configure/build and all active default-CPU RNNTest cases pass (base 10/10, head 12/12). Complete SafeMul/narrow arithmetic boundary coverage, non-CPU providers, reverse/bidirectional zero-lens coverage, and formal proof remain unproven.",
+  "network_observation": "Only pinned source archives were downloaded and SHA1-verified into the local mirror; no network target or unpinned source was substituted.",
+  "safe_next_action": "Retain the local CPU direct runtime PASS, then seek explicit safe coverage for remaining provider/configuration paths without synthesizing oversized allocations.",
+  "runtime_effect": "The full ORT provider-test target has direct CPU runtime evidence, but the complete arithmetic contract remains REVIEW; reduced SafeInt/RNN evidence is not promoted.",
+  "formal_proof": false,
+  "notes": [
+    "No OOM, huge allocation, exploit chain, or network target was used; bounded local real executor tests were user-authorized.",
+    "This artifact records an infrastructure blocker, not a semantic failure of the PR."
+  ]
+}

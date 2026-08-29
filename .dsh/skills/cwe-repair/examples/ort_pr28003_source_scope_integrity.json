@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+  "worktrees": {
+    "base": {
+      "path": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe",
+      "head": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+      "tracked_and_untracked_status": "clean"
+    },
+    "head": {
+      "path": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+      "head": "795675a77ebb898302c5798bd6247658db165d14",
+      "tracked_and_untracked_status": "clean"
+    }
+  },
+  "changed_scope": {
+    "diff_check": "PASS",
+    "files": [
+      {
+        "path": "onnxruntime/core/common/safeint.h",
+        "status": "modified",
+        "numstat": {"additions": 45, "deletions": 0},
+        "base_git_blob": "6aba5871ac62ef7d77449c05dff815b63f56e535",
+        "head_git_blob": "7062e99f6ce3bbaa0f9e90340a6669c4375e3a44",
+        "base_sha256": "596740164dbe09603ec39c56ef51bfe3a8eb541d869de0f7efdecfa48b92d5dc",
+        "head_sha256": "048f18c0c191d4f1cc571518167df91330f37ea7c9feefe05659d9892a5da954",
+        "contract_role": "introduces checked SafeMul helper"
+      },
+      {
+        "path": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+        "status": "modified",
+        "numstat": {"additions": 38, "deletions": 20},
+        "base_git_blob": "6865571eb7a1395936bf25f4a5a7f38e1731f99e",
+        "head_git_blob": "7b27befeb3e66f28386e26984dfe802aa1849f1f",
+        "base_sha256": "3c183c92f7da17fbb90b08add0fd404c9d848eba0e2ee965bb484e303feabf44",
+        "head_sha256": "b46fc425a9690f7f80212b0be838d38330c4efa73f814fd0aa1c182ff0baa8b2",
+        "contract_role": "uses SafeMul/check-before-narrowing and defines zero-extent handling"
+      },
+      {
+        "path": "onnxruntime/test/common/safeint_test.cc",
+        "status": "added",
+        "numstat": {"additions": 38, "deletions": 0},
+        "base_git_blob": null,
+        "head_git_blob": "ced9bd94975d2879dd050ea6f6406a77350bcee6",
+        "base_sha256": null,
+        "head_sha256": "cd7d19c013e19deb6128ab02f6298728aeb42b60f07b461aa2eba62ad4e5239a",
+        "base_absence": "confirmed by git cat-file -e returning object-not-found",
+        "contract_role": "official source-level SafeMul positive and overflow-throw tests"
+      },
+      {
+        "path": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc",
+        "status": "modified",
+        "numstat": {"additions": 103, "deletions": 0},
+        "base_git_blob": "38734ab9f668f6ce68aa658dc5ed2733a67fde5c",
+        "head_git_blob": "382d1869a02f6fb7df378854345c3b41ff3ff6fb",
+        "base_sha256": "d193f88f7f445a7ce0a253b9ab2b217af4a750cc91b9544f7a4b27999d573aee",
+        "head_sha256": "a113915ff5e82431832e8d9f685d81ec19565adec911c7f3e1726ed7ae91c30a",
+        "contract_role": "official CPU RNN zero-extent and zero sequence_lens regressions"
+      }
+    ]
+  },
+  "build_and_runtime_binding": {
+    "provider_target": "onnxruntime_provider_test",
+    "common_test_target": "onnxruntime_test_all",
+    "rnn_op_test_source_in_provider_manifest": true,
+    "rnn_runtime_evidence": "ort_pr28003_paired_runtime_evidence.json",
+    "safeint_test_build_evidence": "ort_pr28003_safeint_build_evidence.json",
+    "safeint_test_target_or_runtime": "PAIRED_BUILD_VERIFIED_NOT_RUN",
+    "safeint_source_scope": "official added test source is present in the pinned head source scope and is included in the head common-test target manifest"
+  },
+  "status": "PAIRED_SOURCE_SCOPE_VERIFIED",
+  "scope_limitations": [
+    "Clean worktree status does not prove every generated build input or dependency artifact.",
+    "Provider target runtime does not execute the added SafeIntTest source unless separately built and run.",
+    "No SafeMul oversized-dimension provider runtime stimulus was run under the no-OOM constraint.",
+    "Formal proof remains unavailable."
+  ],
+  "formal_proof": false
+}

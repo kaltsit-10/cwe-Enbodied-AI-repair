@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "asset_id": "microsoft/onnxruntime",
+  "case_id": "ORT-PR-28003",
+  "asset_kind": "AI runtime / checked integer arithmetic helper",
+  "scope_type": "single-asset-declared-contract",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "universal_claim": false,
+  "formal_proof": false,
+  "revisions": {
+    "base": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head": "795675a77ebb898302c5798bd6247658db165d14"
+  },
+  "declared_scope": {
+    "providers": [
+      "CPU/default execution provider"
+    ],
+    "targets": [
+      "onnxruntime_test_all"
+    ],
+    "configurations": [
+      "Debug",
+      "Unix Makefiles",
+      "C++17",
+      "pinned local toolchain"
+    ],
+    "input_domains": [
+      "finite SafeMul helper operands"
+    ]
+  },
+  "contract": {
+    "id": "safeint-safemul-helper",
+    "cwe": [
+      190
+    ],
+    "required_asset_gates": [
+      "official_provenance",
+      "source_scope",
+      "inventory_completeness",
+      "reproducibility",
+      "safety"
+    ],
+    "required_path_gates": [
+      "static_contract",
+      "symmetry",
+      "detect",
+      "repair_plan",
+      "paired_build",
+      "runtime_base",
+      "runtime_head",
+      "negative_rejection",
+      "benign_preservation"
+    ],
+    "required_dimensions": [
+      "safe_mul_initial_cast",
+      "safe_mul_multiply_overflow"
+    ]
+  },
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "inventory": {
+    "enumeration_method": "exact PR changed-file scope plus SafeIntTest filter inventory",
+    "source_basis": "ort_pr28003_source_scope_integrity.json and ort_pr28003_safeint_runtime_evidence.json",
+    "external_boundaries": [
+      "SafeMul helper operands"
+    ],
+    "reachable_sinks": [
+      "SafeMul checked conversion and multiplication exception paths"
+    ],
+    "declared_path_ids": [
+      "safeint-safemul-helper"
+    ],
+    "unverified": []
+  },
+  "asset_coverage": {
+    "official_provenance": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_provenance.json",
+          "sha256": "e9f9afb633643704c1ac30e3e059b5eee2b23e9b74bea8319d296435034164d9",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "base_sha",
+              "equals": "0fedb26c93e6c29882185715d5c2bb583a6d92b5"
+            },
+            {
+              "path": "head_sha",
+              "equals": "795675a77ebb898302c5798bd6247658db165d14"
+            }
+          ]
+        }
+      ]
+    },
+    "source_scope": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_source_scope_integrity.json",
+          "sha256": "5d4ef06733b57f44f5a572ff8a5922182c214e8f5bf3099143698ab88353ca6d",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "changed_scope.diff_check",
+              "equals": "PASS"
+            }
+          ]
+        }
+      ]
+    },
+    "inventory_completeness": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_safeint_runtime_evidence.json",
+          "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "filter",
+              "equals": "SafeIntTest.*"
+            },
+            {
+              "path": "head.tests_run",
+              "equals": 4
+            }
+          ]
+        }
+      ]
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_safeint_runtime_evidence.json",
+          "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "head.gtest_verdict",
+              "equals": "PASS"
+            },
+            {
+              "path": "head.infrastructure_failures",
+              "equals": 0
+            }
+          ]
+        }
+      ]
+    },
+    "safety": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_safeint_runtime_evidence.json",
+          "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "safety.no_oom_or_huge_allocation",
+              "equals": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "paths": [
+    {
+      "id": "safeint-safemul-helper",
+      "source": "onnxruntime/core/common/safeint.h",
+      "entrypoint": "SafeMul<T>",
+      "call_path": [
+        "SafeMul<T>",
+        "checked initial cast",
+        "checked multiplication",
+        "OnnxRuntimeException"
+      ],
+      "required_dimensions": [
+        "safe_mul_initial_cast",
+        "safe_mul_multiply_overflow"
+      ]
+    }
+  ],
+  "path_coverage": {
+    "safeint-safemul-helper": {
+      "static_contract": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_build_evidence.json",
+            "sha256": "5d0b79b376cb19f9ab06a3b91a7dc115af22ff09b4eed65cf38a7978b8a02d9a",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "target",
+                "equals": "onnxruntime_test_all"
+              }
+            ]
+          }
+        ]
+      },
+      "detect": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "detector"
+      },
+      "repair_plan": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "repair_plan"
+      },
+      "symmetry": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_source_scope_integrity.json",
+            "sha256": "5d4ef06733b57f44f5a572ff8a5922182c214e8f5bf3099143698ab88353ca6d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "changed_scope.diff_check",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "paired_build": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_build_evidence.json",
+            "sha256": "35d3f85d44e85274d8981a2e1e81f3d201a64258b219f849258f739e3dee4ab9",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "base.build.status",
+                "equals": "PASS"
+              },
+              {
+                "path": "head.build.status",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_base": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "base.status",
+                "equals": "NOT_APPLICABLE"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_head": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.gtest_verdict",
+                "equals": "PASS"
+              },
+              {
+                "path": "head.tests_passed",
+                "equals": 4
+              }
+            ]
+          }
+        ]
+      },
+      "negative_rejection": {
+        "status": "PASS",
+        "metrics": {
+          "malicious_rejected": "2/2",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.coverage.2",
+                "equals": "initial cast overflow"
+              },
+              {
+                "path": "head.coverage.3",
+                "equals": "multiply overflow"
+              }
+            ]
+          }
+        ]
+      },
+      "benign_preservation": {
+        "status": "PASS",
+        "metrics": {
+          "benign_passed": "2/2",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.gtest_verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "path_dimension_coverage": {
+    "safeint-safemul-helper": {
+      "safe_mul_initial_cast": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.gtest_verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "safe_mul_multiply_overflow": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.gtest_verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "exclusions": [
+    {
+      "dimension": "full_rnn_compute",
+      "reason": "not declared in this helper-only contract"
+    },
+    {
+      "dimension": "base_head_identical_added_tests",
+      "reason": "base revision predates the added SafeIntTest suite"
+    }
+  ]
+}

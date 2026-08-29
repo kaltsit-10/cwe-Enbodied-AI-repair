@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "evidence_scope": "reduced-safeint-rnn-arithmetic-contract",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+  "changed_files": [
+    "onnxruntime/core/common/safeint.h",
+    "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+    "onnxruntime/test/common/safeint_test.cc",
+    "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc"
+  ],
+  "source_materialization": {
+    "base_worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_head",
+    "changed_scope_only": true
+  },
+  "static": {
+    "base_rnn_cwe190_raw": 13,
+    "base_rnn_cwe190_merged": 10,
+    "head_rnn_cwe190_raw": 7,
+    "head_rnn_cwe190_merged": 4,
+    "head_target_contract": "SafeMul/narrow/zero-extent markers present; residual Y_h/offset arithmetic is explicitly scoped, not silently cleared",
+    "matrix": ".dsh/skills/cwe-repair/examples/ort_pr28003_contract_matrix.json",
+    "matrix_status": "REVIEW-complete-arithmetic-contract-runtime-missing"
+  },
+  "reduced_runtime": {
+    "harness_source": ".dsh/skills/cwe-repair/examples/ort_pr28003_rnn_verify.cpp",
+    "reduced_after_source": ".dsh/skills/cwe-repair/examples/ort_pr28003_rnn_after.cpp",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/ort_pr28003_rnn_verify",
+    "binary_sha256": "48c413f892980ca686b76364959d0962c8f7274ed94f4d9b294460754b833e4e",
+    "malicious": [
+      {
+        "input": "ort_pr28003_rnn_negative.shape",
+        "sha256": "1fe176533fe75f145f5ee1f953ccb759838929924b76e0c3f553d447b97008bb",
+        "ret": -1,
+        "crashed": false
+      },
+      {
+        "input": "ort_pr28003_rnn_overflow.shape",
+        "sha256": "dd7654f3b9bb1ec875f369f4a2a9c6a0bf782a5b5c7a3d74f82cc83077987e43",
+        "ret": -1,
+        "crashed": false
+      }
+    ],
+    "benign": [
+      {
+        "input": "ort_pr28003_rnn_valid.shape",
+        "sha256": "9a150516de5be1380e9af7b824450f3d363d0f73db1a8d63e5fb3abff8c1d1b1",
+        "ret": 0,
+        "crashed": false
+      }
+    ],
+    "summary": {
+      "malicious_rejected": "2/2",
+      "benign_passed": "1/1",
+      "infrastructure_failures": 0,
+      "asan_ubsan": true,
+      "verdict": "PASS"
+    }
+  },
+  "full_case_status": "REVIEW",
+  "full_case_gap": "The complete ORT provider target now ran finite CPU direct and shared controls, but no safe oversized SafeMul/narrow runtime trigger or cross-provider coverage exists.",
+  "full_build_evidence": ".dsh/skills/cwe-repair/examples/ort_pr28003_full_build_evidence.json",
+  "full_build_status": "PAIRED_BUILD_PASS",
+  "full_build_binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+  "full_base_build_binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+  "full_target_runtime_evidence": ".dsh/skills/cwe-repair/examples/ort_pr28003_paired_runtime_evidence.json",
+  "build_feasibility": ".dsh/skills/cwe-repair/examples/ort_pr28003_build_feasibility.json",
+  "formal_proof": false,
+  "notes": [
+    "No OOM or huge allocation input was used.",
+    "A local reduced runtime PASS must not be promoted to full ORT semantic verification.",
+    "A user-authorized local real executor ran allowlisted finite upstream GTests; no exploit chain or network target was used."
+  ]
+}

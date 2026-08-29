@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-90617",
+  "evidence_scope": "reduced-cumsum-axis-range-normalization",
+  "official_source": "https://gitee.com/mindspore/mindspore/pulls/90617",
+  "base_sha": "948c239b1ffdb8252661d9b7fda5bd377f4fef1e",
+  "head_sha": "5eb07997f04ee807a59a1e209d68a7c4d0daef74",
+  "reduced_runtime": {
+    "after_source": ".dsh/skills/cwe-repair/examples/ms_pr90617_axis_after.cpp",
+    "harness_source": ".dsh/skills/cwe-repair/examples/ms_pr90617_axis_verify.cpp",
+    "binary": "/home/kaltsit/vuln_repro/mindspore_history/ms_pr90617_axis_verify",
+    "binary_sha256": "499e7f5dd0ae86046b3017ecfccc6dc45c68deef955318884e01b83bcebd7305",
+    "malicious": [
+      {
+        "input": "ms_pr90617_axis_invalid_high.shape",
+        "sha256": "c74ca9fbdc8f2a3d035d2dabe6e476e33e61bb7741f94b8c4d947186c36d866f",
+        "rank": 4,
+        "dim": 4,
+        "ret": -1,
+        "crashed": false
+      },
+      {
+        "input": "ms_pr90617_axis_invalid_low.shape",
+        "sha256": "2d256896014c1436ef0351e1b68469f82cd3ee8d2ec1a0aa749078f2b16aca72",
+        "rank": 4,
+        "dim": -5,
+        "ret": -1,
+        "crashed": false
+      }
+    ],
+    "benign": [
+      {
+        "input": "ms_pr90617_axis_valid_neg.shape",
+        "sha256": "ca8b6f6769998c1e8cd2394ca95bb16e56e27ea6b3f19eb21c9831014d8b6878",
+        "rank": 4,
+        "dim": -2,
+        "normalized": 2,
+        "ret": 0,
+        "crashed": false
+      },
+      {
+        "input": "ms_pr90617_axis_valid_zero.shape",
+        "sha256": "f185975e4157c46adfe550d4b40b5132c89e77b2e34e84dd460510c341de7c6d",
+        "rank": 4,
+        "dim": 0,
+        "normalized": 0,
+        "ret": 0,
+        "crashed": false
+      }
+    ],
+    "summary": {
+      "malicious_rejected": "2/2",
+      "benign_passed": "2/2",
+      "infrastructure_failures": 0,
+      "asan_ubsan": true,
+      "verdict": "PASS"
+    }
+  },
+  "full_case_status": "REVIEW",
+  "full_case_gap": "reduced axis harness is not the complete MindSpore CumsumExt graph/runtime path",
+  "formal_proof": false,
+  "notes": [
+    "No tensor allocation, huge shape, real executor, network target, or exploit chain was used.",
+    "Reduced PASS does not upgrade the full case beyond REVIEW."
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "evidence_scope": "pinned-base-head-configure-and-selected-target-build",
+  "target": "onnxruntime_provider_test",
+  "source_evidence": "ort_pr28003_full_build_evidence.json",
+  "toolchain": {
+    "cmake": "/home/kaltsit/.local/bin/cmake 3.31.10",
+    "compiler": "/usr/bin/c++ 11.4.0",
+    "generator": "Unix Makefiles",
+    "parallelism": "head=-j2; base=-j1 incremental resume"
+  },
+  "base": {
+    "sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe",
+    "configure": {
+      "status": "PASS",
+      "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure"
+    },
+    "build": {
+      "status": "PASS",
+      "target": "onnxruntime_provider_test",
+      "target_includes_contract_test": true,
+      "target_source_manifest": "build_configure/Debug/CMakeFiles/onnxruntime_provider_test.dir/DependInfo.cmake:183",
+      "contract_test_source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc",
+      "command_mode": "CMake target-only incremental build; no test execution",
+      "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+      "binary_size": "1.1G",
+      "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+      "elf_build_id_sha1": "b962a626c7cf406712b0b41f51385dd1ddfce5ef"
+    }
+  },
+  "head": {
+    "sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+    "configure": {
+      "status": "PASS",
+      "build_dir": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure"
+    },
+    "build": {
+      "status": "PASS",
+      "target": "onnxruntime_provider_test",
+      "target_includes_contract_test": true,
+      "target_source_manifest": "build_configure/Debug/CMakeFiles/onnxruntime_provider_test.dir/DependInfo.cmake:183",
+      "contract_test_source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc",
+      "command_mode": "build.py target-only build; no test execution",
+      "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/onnxruntime_provider_test",
+      "binary_size": "1.1G",
+      "binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+      "elf_build_id_sha1": "0bef3959c8a4de3ec93355150eeff1caa2df8275"
+    }
+  },
+  "runtime": {
+    "base": "NOT_RUN",
+    "head": "NOT_RUN",
+    "reason": "Paired build evidence is intentionally separate from the subsequently authorized local runtime plans."
+  },
+  "status": "PAIRED_BUILD_VERIFIED",
+  "formal_proof": false,
+  "safety": {
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  }
+}

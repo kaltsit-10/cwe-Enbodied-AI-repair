@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "subject": "narrow<T> helper boundary",
+  "base_head_presence": {"base": true, "head": true},
+  "source": "onnxruntime/test/common/narrow_test.cc",
+  "tests": ["NarrowTest.Basic", "NarrowTest.CharOutOfRange", "NarrowTest.MinusOneToUint32OutOfRange", "NarrowTest.Int32MinToUint32OutOfRange", "NarrowTest.UnsignedOutOfRange", "NarrowTest.FloatLossyRoundTripConversion", "NarrowTest.ComplexFloatLossyRoundTripConversion"],
+  "classification": "AUXILIARY_PREEXISTING_CONTROL",
+  "not_attributed_to_pr": true,
+  "reason": "The narrow helper tests are present in both exact revisions and are not changed by PR #28003. They can inform generic narrowing behavior but cannot serve as PR-added changed-scope evidence.",
+  "safe_boundary": "No new input, source mutation, or broad aggregate execution performed.",
+  "formal_proof": false,
+  "universal_claim": false
+}

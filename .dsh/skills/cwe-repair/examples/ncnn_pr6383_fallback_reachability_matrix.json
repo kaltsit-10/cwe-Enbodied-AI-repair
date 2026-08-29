@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "scope": "Vulkan layer fallback to CPU layer load_param failure branches",
+  "entries": [
+    {
+      "id": "text-vulkan-cpu-fallback-layer-load-param-failure",
+      "entrypoint": "Net::load_param(TEXT)",
+      "source_lines": [1263, 1291, 1294, 1295, 1296, 1297, 1298],
+      "preconditions": ["NCNN_VULKAN=ON", "valid Vulkan device", "Vulkan layer created", "layer->support_vulkan=false", "CPU fallback layer created", "CPU fallback load_param returns nonzero"],
+      "current_status": "REVIEW",
+      "runtime": "NOT_RUN",
+      "blocker": "No auditable Vulkan paired build: pinned worktree lacks glslang submodule and system glslang CMake targets are unavailable."
+    },
+    {
+      "id": "bin-vulkan-cpu-fallback-layer-load-param-failure",
+      "entrypoint": "Net::load_param_bin(BIN)",
+      "source_lines": [1553, 1580, 1583, 1584, 1585, 1586, 1587],
+      "preconditions": ["NCNN_VULKAN=ON", "valid Vulkan device", "Vulkan layer created", "layer->support_vulkan=false", "CPU fallback layer created", "CPU fallback load_param returns nonzero"],
+      "current_status": "REVIEW",
+      "runtime": "NOT_RUN",
+      "blocker": "Same missing glslang provenance/build dependency as TEXT fallback; existing CPU BIN paired build cannot reach this branch."
+    }
+  ],
+  "negative_reachability_claim": "The branches are config-reachable in a Vulkan-enabled build, but not reachable in the current declared CPU release configuration.",
+  "safe_boundary": "No submodule initialization, source mutation, network target execution, forward execution, or large allocation was performed.",
+  "formal_proof": false,
+  "universal_claim": false
+}

@@ -1,0 +1,38 @@
+# DSH private and local state
+.dsh/.credentials.yaml
+.dsh/**/.credentials.yaml
+.dsh/**/credentials*
+.dsh/**/*token*
+.dsh/**/*secret*
+.dsh/**/cache/
+.dsh/**/state/
+.dsh/**/sessions/
+.dsh/**/logs/
+
+# Python caches and environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Native build output
+build/
+dist/
+cmake-build-*/
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+
+# Editor and local output
+.vscode/
+.idea/
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db

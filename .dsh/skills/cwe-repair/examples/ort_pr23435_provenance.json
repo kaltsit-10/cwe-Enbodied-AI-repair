@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-23435",
+  "source_url": "https://github.com/microsoft/onnxruntime/pull/23435",
+  "title": "[QNN EP]: Clean up QNN logging resources if an error occurs during initialization",
+  "state": "closed",
+  "merged_at": "2025-01-21T20:48:08Z",
+  "base_sha": "3e4c5e64877c6d9814e4ebce5dcbb1fe71588ec5",
+  "head_sha": "81573cce5bec34dc7bdf6883ef96f0c30dffcdca",
+  "merge_commit_sha": "c7f764c941dd5fb76d58fad2c234f56a9818d7b6",
+  "changed_files": [
+    "onnxruntime/core/providers/qnn/builder/qnn_backend_manager.cc"
+  ],
+  "contract": "qnn-initialization-failure-lifecycle-guard",
+  "local_materialization": {
+    "repository": "/home/kaltsit/vuln_repro/ort_history/onnxruntime_repo",
+    "base_worktree": "/home/kaltsit/vuln_repro/ort_history/pr23435_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/ort_history/pr23435_head",
+    "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ort_history\\pr23435_base\\onnxruntime\\core\\providers\\qnn\\builder\\qnn_backend_manager.cc",
+    "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ort_history\\pr23435_head\\onnxruntime\\core\\providers\\qnn\\builder\\qnn_backend_manager.cc"
+  },
+  "static": {
+    "target_scope": "QNN logging callback, backend_setup_completed_ guards, release-resource error paths",
+    "target_markers": [
+      "HasDefaultLogger",
+      "backend_setup_completed_",
+      "Cannot create HTP power config ID",
+      "Cannot set HTP power config ID",
+      "Cannot set HTP RPC control latency",
+      "ErrorMessage"
+    ],
+    "detector_note": "iterator_end_deref is low-confidence and guarded in both base/head; it is outside this PR contract",
+    "before_target": "not independently counted by generic detector",
+    "after_target": "markers present in official diff"
+  },
+  "verification": {
+    "repair_plan": "contract identified; no local candidate patch generated",
+    "symmetry": "not applicable to QNN hardware callback without paired local backend",
+    "runtime": "REVIEW-QNN backend/hardware unavailable in local environment",
+    "verdict": "REVIEW"
+  },
+  "formal_proof": false,
+  "notes": [
+    "No QNN hardware, proprietary backend, real executor, or network target was used.",
+    "The case is retained for lifecycle-contract analysis, not claimed as runtime verified."
+  ]
+}

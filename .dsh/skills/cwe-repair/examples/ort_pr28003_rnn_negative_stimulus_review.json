@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "path_id": "rnn-narrowing-contract",
+  "status": "REVIEW",
+  "upstream_executor": "onnxruntime_provider_test",
+  "revision_pair": {"base": "0fedb26c93e6c29882185715d5c2bb583a6d92b5", "head": "795675a77ebb898302c5798bd6247658db165d14"},
+  "search_basis": ["exact upstream rnn_op_test.cc", "base/head RNNTest.* runtime plans", "ort_pr28003_rnn_overflow.shape reduced fixture"],
+  "found_safe_upstream_negative": false,
+  "available_upstream_negative_controls": ["RNN_invalid_sequence_lens shape mismatch", "RNN_invalid_sequence_lens out-of-range value"],
+  "not_a_substitute_for": ["SafeMul<int> overflow in RNN<float>::Compute", "narrow<int>(hidden_size_) failure in full provider executor"],
+  "reduced_fixture_status": "PASS in extracted arithmetic harness only; not full provider evidence",
+  "reason": "No finite upstream OpTester fixture reaches oversized SafeMul/narrow dimensions without allocating correspondingly huge tensors. Generating one would violate the no-OOM/huge-allocation boundary.",
+  "required_for_promotion": ["safe finite full-provider stimulus or independently attributable upstream test", "base/head runtime output", "binary and fixture hashes", "infrastructure_failures=0"],
+  "safety": {"no_external_inputs": true, "no_network_target_execution": true, "no_oom_or_huge_allocation": true, "no_exploit_chain": true},
+  "formal_proof": false,
+  "universal_claim": false
+}

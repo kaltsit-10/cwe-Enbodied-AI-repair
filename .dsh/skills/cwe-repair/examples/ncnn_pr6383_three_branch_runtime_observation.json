@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "observation_scope": "local runtime observations only; not artifact binding verification",
+  "configuration": "existing release CPU build; hand-compiled load_param_bin harness",
+  "paths": {
+    "bin-paramdict-load-failure-cleanup": {"fixture": "bounded truncated copy of official param.bin", "base": "exit=139 after parser continued beyond failed EOP", "head": "ret=-1, exit=1", "benign": "both official squeezenet param.bin loads ret=0"},
+    "bin-layer-load-param-failure-cleanup": {"fixture": "one-layer binary Interp with resize_type=4", "base": "exit=139 after layer load_param failure", "head": "ret=-1, exit=1", "benign": "official squeezenet param.bin loads ret=0"},
+    "bin-custom-cpu-fallback": {"status": "NOT_REACHED", "reason": "requires Vulkan-enabled layer creation and fallback; existing CPU build has NCNN_VULKAN=OFF"}
+  },
+  "binding_limitations": ["BIN harness was hand-compiled after the original paired build and is not part of the original CMake cache artifact set", "no claim of ASan", "no claim of Vulkan fallback"],
+  "formal_proof": false,
+  "universal_claim": false
+}

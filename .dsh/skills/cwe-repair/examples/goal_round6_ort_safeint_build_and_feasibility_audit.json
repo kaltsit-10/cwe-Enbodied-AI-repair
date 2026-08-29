@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 17,
+  "round": 6,
+  "phase": "active",
+  "objective_slice": "Complete artifact-backed paired build evidence for the official added SafeInt test while assessing a no-OOM provider-runtime boundary for the remaining arithmetic gate.",
+  "ort_pr28003": {
+    "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "common_test_target": "onnxruntime_test_all",
+    "common_test_target_build": "BUILD_ONLY_NOT_RUN",
+    "common_test_build_evidence": "ort_pr28003_safeint_build_evidence.json",
+    "common_test_build_validator": "added_test_target_build_evidence.py",
+    "common_test_build_validator_result": "valid=true; verdict=REVIEW; runtime_status=NOT_RUN",
+    "provider_runtime_status": "PAIRED_ACTIVE_RNN_SUITE_PASS_WITH_HEAD_DIRECT_REGRESSIONS",
+    "case_verdict": "REVIEW"
+  },
+  "feasibility": {
+    "evidence": "ort_pr28003_safeint_boundary_feasibility.json",
+    "normal_positive_dimension_overflow": "not safe to execute because allocation may precede the checked int product",
+    "zero_element_candidate": "design-only; hidden_size=0 may be outside normative RNN contract and requires a dedicated probe",
+    "executor_run": "none in this slice"
+  },
+  "validator_hardening": {
+    "artifact_binding": true,
+    "manifest_source_object_binding": true,
+    "binary_path_size_sha256_binding": true,
+    "cmake_cache_configuration_binding": true,
+    "source_sha256_binding": true,
+    "runtime_no_uplift": true,
+    "lattice_not_run_marker_regression": true
+  },
+  "safety": {
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true,
+    "no_safeint_test_binary_execution": true
+  },
+  "validation": {
+    "cwe_repair_regression": "PASS",
+    "safeint_artifact_validator": "PASS_VALID_ARTIFACTS_REVIEW_ONLY",
+    "provider_paired_build_validator": "PAIRED_BUILD_VERIFIED",
+    "provider_paired_runtime_validator": "PAIRED_RUNTIME_EVIDENCE_VERIFIED",
+    "lattice": "12 cases; FULL_GATED_LOCAL 4; SCOPED_RUNTIME 6; LOCAL_STATIC 2; anomalies 0",
+    "readiness": "4 ready-for-semantic-verification; 8 complete-missing-gates",
+    "legacy_dataset": "34 findings / 5 repair_pairs",
+    "legacy_benchmark": "valid; unchanged",
+    "compile_and_json": "PASS"
+  },
+  "remaining_gates": [
+    "SafeMul/narrow provider-runtime coverage without OOM",
+    "reverse/bidirectional zero sequence_lens",
+    "non-CPU execution providers",
+    "full target sanitizer run",
+    "formal all-input proof"
+  ],
+  "formal_proof": false
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "name": "cwe-repair-release-evaluation",
+  "purpose": "Reproducible evaluation plan. Pending baselines are not reported as measured results.",
+  "claim_boundary": {
+    "universal_claim": false,
+    "formal_proof": false,
+    "real_robot_execution": false
+  },
+  "corpus": {
+    "legacy_benchmark": "ncnn_history_benchmark_v2.json",
+    "registry": "embodied_ai_pr_case_registry.json",
+    "readiness_queue": "embodied_ai_pr_readiness_queue.json",
+    "expected_legacy_cases": 8,
+    "expected_registry_cases": 12,
+    "case_classes": ["parser", "tensor_shape", "integer_arithmetic", "callback_parallel_array"]
+  },
+  "environment_evidence": "baseline_environment_probe.json",
+  "methods": [
+    {"id": "cwe-repair", "status": "measured-local", "commands": ["scripts/test_cwe_repair.py", "scripts/release_audit.py"]},
+    {"id": "cppcheck", "status": "pending-environment", "reason": "No normalized invocation and result mapping have been recorded."},
+    {"id": "semgrep", "status": "pending-environment", "reason": "No normalized C/C++ rule mapping and result mapping have been recorded."},
+    {"id": "codeql", "status": "pending-environment", "reason": "No local database build or query result mapping has been recorded."}
+  ],
+  "metrics": ["precision", "recall", "f1", "guarded_false_positive_rate", "repair_plan_coverage", "symmetry_detection_rate", "malicious_rejection_rate", "benign_preservation_rate", "contract_completion_rate", "runtime_cost"],
+  "scoped_simulations": [
+    {
+      "id": "agibot-jointcmd-fake-sink",
+      "status": "measured-local-reduced",
+      "evidence": "agibot_jointcmd_fake_sink_runtime_evidence.json",
+      "included_in_production_runtime_metrics": false,
+      "included_in_asset_scope_complete_metrics": false
+    }
+  ],
+  "reported_results": {
+    "cwe_repair": {"status": "measured-local", "evidence": "release_audit_report.json"},
+    "external_baselines": {"status": "not_measured", "reason": "Pending methods must not be interpreted as zero or as comparative results."}
+  }
+}

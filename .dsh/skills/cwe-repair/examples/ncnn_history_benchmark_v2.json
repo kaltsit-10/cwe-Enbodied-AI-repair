@@ -1,0 +1,236 @@
+{
+  "schema_version": 2,
+  "description": "Official NCNN historical PR before/after benchmark; independent dimensions, legacy leaderboard excluded.",
+  "cases": [
+    {
+      "id": "NCNN-PR-6383-ERROR-PATH",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6383",
+      "pr_number": 6383,
+      "base_sha": "5154f22a4c146959beda380dc7522de53704d940",
+      "head_sha": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_before\\src\\net.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6383_after\\src\\net.cpp",
+      "contract": "parser-error-path-cleanup",
+      "cwe": 703,
+      "expected_pattern": "parser_error_continue",
+      "postimage_markers": [
+        "delete\\s+layer\\s*;",
+        "clear\\s*\\(\\s*\\)\\s*;",
+        "return\\s+-1\\s*;"
+      ],
+      "provenance_status": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": true,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "PASS",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "layer-specific invalid ParamDict id: base SIGSEGV, head ret=-1; same benign text input passes both"
+      }
+    },
+    {
+      "id": "NCNN-PR-6337-QUOTE-READ",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6337",
+      "pr_number": 6337,
+      "base_sha": "00f816ffd52d306c00c38b4dbbd3a5b089f73612",
+      "head_sha": "b0d970b0e3a2a23e011aeddd682063e0ad8e7a8b",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6337_before\\src\\paramdict.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6337_after\\src\\paramdict.cpp",
+      "contract": "quoted-token-consumption",
+      "cwe": 20,
+      "expected_pattern": "paramdict_terminal_quote_rescan",
+      "postimage_markers": [
+        "int\\s+len\\s*=\\s*0",
+        "char\\s+end\\s*=\\s*vstr\\[len\\s*-\\s*1\\]",
+        "end\\s*!=\\s*['\"]"
+      ],
+      "provenance_status": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": true,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "NOT_APPLICABLE",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "official quote-contract harness: before rejects the valid adjacent-token contract; after passes"
+      }
+    },
+    {
+      "id": "NCNN-PR-2213-PACKING-OFFSET",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/2213",
+      "pr_number": 2213,
+      "base_sha": "5a91a640cbf96c8a14df0c637542215e9666f1e1",
+      "head_sha": "cdfcc49d9cb1f4829a3c77feda266d6b325e9f29",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr2213_before\\src\\layer\\packing.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr2213_after\\src\\layer\\packing.cpp",
+      "contract": "size_t-pointer-offset-arithmetic",
+      "cwe": 190,
+      "expected_pattern": "pointer_offset_int_multiply",
+      "postimage_markers": [
+        "\\(size_t\\)w\\s*\\*\\s*elempack",
+        "\\(size_t\\)i\\s*\\*\\s*w\\s*\\*\\s*out_elemsize",
+        "\\(size_t\\)srcy\\s*\\*\\s*w\\s*\\*\\s*elemsize"
+      ],
+      "provenance_status": "official-local-materialized",
+      "upstream_state": "merged",
+      "strict_eligible": true,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "NOT_APPLICABLE",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "official normal packing test and shape-only cstep contract both pass after; before fails the cstep contract"
+      }
+    },
+    {
+      "id": "NCNN-PR-6922-COUNT-GUARDS",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "pr_number": 6922,
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_before\\src\\net.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_after\\src\\net.cpp",
+      "contract": "text-bin-parser-count-and-shape-hint",
+      "cwe": 190,
+      "expected_pattern": "unchecked_parser_count",
+      "postimage_markers": [
+        "layer_count\\s*<=\\s*0",
+        "blob_count\\s*>\\s*MAX",
+        "bottom_count\\s*<\\s*0",
+        "top_count\\s*<\\s*0"
+      ],
+      "provenance_status": "official-local-materialized-upstream-open",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "PASS",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "fresh official base/head builds: BIN count/index scope 2/2 rejected and 1/1 benign passed; TEXT count scope 1/1 rejected and 1/1 benign passed"
+      }
+    },
+    {
+      "id": "NCNN-PR-6922-BIN-INDEX-GUARD",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "pr_number": 6922,
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_before\\src\\net.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_after\\src\\net.cpp",
+      "contract": "bin-blob-index",
+      "cwe": 787,
+      "expected_pattern": "unchecked_blob_index",
+      "evaluation_scope": "BIN load_param_bin entry only",
+      "allowed_postimage_residual_patterns": ["unchecked_blob_index"],
+      "allowed_postimage_residual_note": "one residual unchecked_blob_index is in the separate TEXT parser path; it remains a review candidate and is not claimed fixed by the BIN scope",
+      "postimage_markers": [
+        "bottom_blob_index\\s*<\\s*0",
+        "top_blob_index\\s*<\\s*0",
+        "bottom_blob_index\\s*>=\\s*blob_count",
+        "top_blob_index\\s*>=\\s*blob_count"
+      ],
+      "provenance_status": "official-local-materialized-upstream-open",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "PASS",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "fresh official base/head builds: oob_single_idx and oob_top_idx are rejected only by head; valid_minimal passes both"
+      }
+    },
+    {
+      "id": "NCNN-PR-6922-TOP-COUNT-SHAPE-HINT",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "pr_number": 6922,
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_before\\src\\net.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_after\\src\\net.cpp",
+      "contract": "zero-top-shape-hint",
+      "cwe": 369,
+      "expected_pattern": "divide_by_input",
+      "postimage_markers": [
+        "top_count\\s*>\\s*0",
+        "psh_step\\s*=\\s*shape_hints\\.w\\s*/\\s*top_count"
+      ],
+      "provenance_status": "official-local-materialized-upstream-open",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "REVIEW",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "static base/head guard observed; no separate zero-output runtime case claimed"
+      }
+    },
+    {
+      "id": "NCNN-PR-6922-TEXT-BLOB-RESIDUAL",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "pr_number": 6922,
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_before\\src\\net.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_after\\src\\net.cpp",
+      "contract": "text-blob-index-residual",
+      "cwe": 787,
+      "expected_pattern": "text_blob_index_access",
+      "evaluation_scope": "TEXT load_param entry",
+      "postimage_markers": [
+        "find_blob_index_by_name",
+        "d->blobs\\[\\s*blob_index\\s*\\]"
+      ],
+      "provenance_status": "official-local-materialized-upstream-open",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_official_pr_runtime_evidence.json",
+      "runtime": {
+        "rejection": "REVIEW",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "F1_bottom_oob reproduces SIGSEGV on both official base and open-PR head; text_repeated_bottoms remains benign on both"
+      }
+    },
+    {
+      "id": "NCNN-LOCAL-PR6922-TEXT-BLOB-FIX",
+      "project": "Tencent/ncnn",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "pr_number": 6922,
+      "base_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "head_sha": "local-only-6e1e8ec64ec0784166b32cdbcbd027e6a608eed6aa00cc61c7c70fff26fb1b4a",
+      "before_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_after\\src\\net.cpp",
+      "after_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\ncnn_history\\pr6922_local_textfix\\src\\net.cpp",
+      "contract": "local-text-blob-index-guard",
+      "cwe": 787,
+      "expected_pattern": "text_blob_index_access",
+      "evaluation_scope": "TEXT load_param entry",
+      "postimage_markers": [
+        "blob_index\\s*<\\s*0",
+        "blob_index\\s*>=\\s*blob_count",
+        "bottom_blob_index\\s*<\\s*0",
+        "bottom_blob_index\\s*>=\\s*blob_count"
+      ],
+      "provenance_status": "local-only",
+      "upstream_state": "open",
+      "strict_eligible": false,
+      "runtime_artifact": ".dsh/skills/cwe-repair/examples/ncnn_pr6922_local_text_fix_evidence.json",
+      "runtime": {
+        "rejection": "PASS",
+        "benign": "PASS",
+        "infrastructure_failures": 0,
+        "note": "local-only candidate: target residual cleared, symmetry passes, F1 rejected with ret=-1 and benign TEXT input passes"
+      }
+    }
+  ]
+}

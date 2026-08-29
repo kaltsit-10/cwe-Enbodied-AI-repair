@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "component": "mindspore",
+  "contract": "multiplication-overflow-and-memcpy-bounds",
+  "required_path_ids": ["buffer-get-kernel"],
+  "paths": [
+    {
+      "id": "buffer-get-kernel",
+      "contract": "multiplication-overflow-and-memcpy-bounds",
+      "source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr89363_head\\mindspore\\ccsrc\\plugin\\device\\cpu\\kernel\\rl\\buffer_get_cpu_kernel.h",
+      "cwe": 190,
+      "residual_pattern": "size_mult",
+      "allowed_residual_lines": [91, 95],
+      "required_markers": [
+        "index_size\\s*>\\s*SIZE_MAX\\s*/\\s*one_exp_len",
+        "index_size\\s*\\*\\s*one_exp_len\\s*>=\\s*inputs\\[i\\]->size\\(\\)",
+        "IntToSize\\s*\\(\\s*index\\s*\\)"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "full MindSpore kernel runtime not executed"
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "2/2",
+        "benign_passed": "1/1",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ms_pr89363_bounded_runtime_evidence.json",
+        "note": "reduced bounded multiplication/memcpy contract only; not the full MindSpore kernel"
+      }
+    }
+  ]
+}

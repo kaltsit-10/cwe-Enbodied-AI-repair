@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-paramdict-failure-cleanup",
+  "symmetry_kind": "single-in-scope-entrypoint",
+  "enumeration_basis": "pinned src/net.cpp base/head diff and path inventory",
+  "in_scope_entrypoints": [
+    "ncnn::Net::load_param -> ParamDict::load_param -> pdlr != 0"
+  ],
+  "in_scope_pairs": [],
+  "exhaustive_for_declared_scope": true,
+  "excluded_companion_entrypoints": [
+    "ncnn::Net::load_param -> layer::load_param -> lr != 0",
+    "ncnn::Net::load_param custom CPU fallback -> layer_cpu::load_param -> lr != 0",
+    "ncnn::Net::load_param_bin -> ParamDict::load_param_bin -> pdlr != 0",
+    "ncnn::Net::load_param_bin -> layer::load_param -> lr != 0",
+    "ncnn::Net::load_param_bin custom CPU fallback -> layer_cpu::load_param -> lr != 0"
+  ],
+  "verdict": "PASS",
+  "interpretation": "No paired path exists inside this explicitly declared single-entrypoint contract. This does not establish symmetry for excluded parser paths.",
+  "formal_proof": false,
+  "universal_claim": false
+}

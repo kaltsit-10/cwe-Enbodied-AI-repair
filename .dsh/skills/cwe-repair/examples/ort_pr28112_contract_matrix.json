@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "component": "onnxruntime",
+  "contract": "validated-narrowing-api-error",
+  "required_path_ids": ["session-model-buffer-load"],
+  "paths": [
+    {
+      "id": "session-model-buffer-load",
+      "contract": "validated-narrowing-api-error",
+      "source": "C:\\Users\\asus\\vuln_repro\\ort_history_win\\pr28112_head\\onnxruntime\\core\\session\\utils.cc",
+      "cwe": 190,
+      "residual_pattern": "static_cast_narrow_truncation",
+      "required_markers": [
+        "std::numeric_limits<int32_t>::max\\(\\)",
+        "model_data_length\\s*>\\s*static_cast<size_t>",
+        "narrow<int32_t>\\s*\\(\\s*model_data_length\\s*\\)",
+        "Model data size exceeds maximum supported size"
+      ],
+      "runtime": {
+        "malicious_rejected": "0/0",
+        "benign_passed": "0/0",
+        "infrastructure_failures": 0,
+        "verdict": "REVIEW",
+        "note": "full ORT session-load runtime not executed"
+      },
+      "scoped_runtime": {
+        "malicious_rejected": "1/1",
+        "benign_passed": "1/1",
+        "infrastructure_failures": 0,
+        "asan_ubsan": true,
+        "verdict": "PASS",
+        "evidence": "ort_pr28112_bounded_runtime_evidence.json",
+        "note": "reduced bounded input-boundary harness only; not the full ORT session-load target"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-and-bin-parser-failure-cleanup",
+  "enumeration_method": "pinned src/net.cpp text/bin diff review plus finite local binary fixtures",
+  "source_basis": "pinned PR #6383 base/head src/net.cpp and generated layer_type_enum.h",
+  "external_boundaries": ["finite local TEXT parameter file", "finite local BIN parameter file", "Net::load_param", "Net::load_param_bin"],
+  "reachable_sinks": ["TEXT ParamDict failure", "TEXT layer load_param failure", "BIN ParamDict failure", "BIN layer load_param failure"],
+  "declared_path_ids": ["text-paramdict-load-failure-cleanup", "text-layer-load-param-failure-cleanup", "bin-paramdict-load-failure-cleanup", "bin-layer-load-param-failure-cleanup"],
+  "unverified": ["text-vulkan-cpu-fallback-layer-load-param-failure", "bin-vulkan-cpu-fallback-layer-load-param-failure", "text-custom-cpu-fallback", "bin-custom-cpu-fallback"],
+  "formal_proof": false,
+  "universal_claim": false
+}

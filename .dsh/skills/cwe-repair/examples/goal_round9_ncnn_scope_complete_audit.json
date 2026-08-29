@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 28,
+  "round": 9,
+  "milestone": "first-real-asset-scope-complete-subcontract",
+  "asset": {
+    "asset_id": "Tencent/ncnn",
+    "case_id": "NCNN-PR-6383",
+    "official_source": "https://github.com/Tencent/ncnn/pull/6383",
+    "base": "5154f22a4c146959beda380dc7522de53704d940",
+    "head": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+    "declared_contract": "TEXT Net::load_param -> ParamDict::load_param pdlr failure -> delete layer -> clear -> return -1",
+    "verdict": "ASSET_SCOPE_COMPLETE",
+    "artifact_integrity": true,
+    "scope_complete": true
+  },
+  "gates": {
+    "official_provenance": "PASS",
+    "source_scope": "PASS",
+    "inventory_completeness": "PASS",
+    "reproducibility": "PASS",
+    "safety": "PASS",
+    "static_contract": "PASS",
+    "symmetry": "PASS: no in-scope sibling entrypoint after exhaustive narrow-scope inventory",
+    "paired_build": "PASS",
+    "preimage_witness": "PASS: base 0/1 with unsafe behavior observed",
+    "runtime_head": "PASS",
+    "negative_rejection": "PASS: head 1/1",
+    "benign_preservation": "PASS: head 1/1"
+  },
+  "explicit_exclusions": [
+    "ASan instrumentation is not claimed; the hash-bound build has NCNN_ASAN=OFF",
+    "Net::load_param layer->load_param failure",
+    "Net::load_param custom CPU fallback failure",
+    "Net::load_param_bin failure paths",
+    "all inputs, providers, configurations, and the rest of NCNN"
+  ],
+  "ort_control": {
+    "case_id": "ORT-PR-28003",
+    "artifact_integrity": true,
+    "scope_complete": false,
+    "verdict": "REVIEW"
+  },
+  "implementation": {
+    "default_path_gate_replaced": "runtime_base replaced by preimage_witness",
+    "preimage_rule": "PASS requires unsafe_behavior_observed=true, incomplete malicious_rejected ratio, and zero infrastructure failures",
+    "real_contract_regression": "added to test_cwe_repair.py"
+  },
+  "validation": {
+    "cwe_repair_regression": "PASS",
+    "ncnn_evidence_binding": "PASS",
+    "ncnn_asset_contract": "ASSET_SCOPE_COMPLETE",
+    "compile_and_json": "PASS",
+    "new_target_execution": false,
+    "legacy_strict_benchmark_modified": false
+  },
+  "universal_claim": false,
+  "formal_proof": false
+}

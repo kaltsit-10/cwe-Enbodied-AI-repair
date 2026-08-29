@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-paramdict-failure-cleanup",
+  "detector": "cwe_detect.py",
+  "cwe": 703,
+  "pattern": "parser_error_continue",
+  "source_pair": {
+    "base": {
+      "revision": "5154f22a4c146959beda380dc7522de53704d940",
+      "file": "src/net.cpp",
+      "sha256": "ac5a49e788c6e25eff1644e63e3bbeb65bda89047a8390c41651b191cf189766",
+      "target_branch_line": 1195,
+      "target_branch": "pdlr != 0",
+      "target_behavior": "continue"
+    },
+    "head": {
+      "revision": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+      "file": "src/net.cpp",
+      "sha256": "811830f82d785dc0fc58debc040716946abdfe13e63c7b0d8967c111d033f2c6",
+      "target_branch_line": 1195,
+      "required_cleanup_lines": [1198, 1199, 1200],
+      "required_cleanup": ["delete layer", "clear", "return -1"]
+    }
+  },
+  "scan": {
+    "base_parser_error_continue_count": 6,
+    "base_target_branch_count": 1,
+    "head_parser_error_continue_count": 0,
+    "head_target_branch_count": 0
+  },
+  "repair_plan": [
+    "stop parsing at the named ParamDict failure",
+    "destroy the partially initialized layer before clearing parser state",
+    "return -1 to preserve the API error contract"
+  ],
+  "scope_note": "The detector's other five historical branches are not used as runtime evidence for this narrow contract.",
+  "formal_proof": false,
+  "universal_claim": false
+}

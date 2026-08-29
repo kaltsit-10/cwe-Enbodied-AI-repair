@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-87710",
+  "official_source": "https://gitee.com/mindspore/mindspore/pulls/87710",
+  "source_scope": {
+    "base_revision": "d15b70d59b3ae0a36f41cd67753109092cf006a0",
+    "head_revision": "6ae69d885df612affe27482a3dafb06386ca6ea2",
+    "head_branch_commit": "fd723d1b20884417a4090438b568ebb8e62238ee",
+    "path": "mindspore/ops/kernel/ascend/acl_ir/op_api_cache.h",
+    "base_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr87710_base\\mindspore\\ops\\kernel\\ascend\\acl_ir\\op_api_cache.h",
+    "head_source": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr87710_head\\mindspore\\ops\\kernel\\ascend\\acl_ir\\op_api_cache.h",
+    "checkout_mode": "detached sparse worktrees containing only the declared source file",
+    "base_git_blob": "09aea0c8e1696170ea23c5ffd6ce57df4f327a62",
+    "head_git_blob": "860a61d409b9eb65a6b7828730f7ef468cb65444",
+    "base_sha256": "c1ad1ace59ae1b268228c19ab8b97f4405db262b14daeab85fa5aaaec8abdfd4",
+    "head_sha256": "4eb8687703df265aadd0e9f0547da456c74340c563cb72a8ff222d3ba9f8a83f",
+    "worktrees_clean": true,
+    "diff_check": "PASS"
+  },
+  "contract": {
+    "family": "checked-size-addition-before-buffer-offset-update",
+    "function": "MemcpyToBuf",
+    "offset": "g_hash_offset",
+    "size": "size_expression",
+    "base": {
+      "addition_lines": [71],
+      "update_lines": [79],
+      "representability_guard_lines": []
+    },
+    "head": {
+      "representability_guard_lines": [71],
+      "addition_lines": [75],
+      "update_lines": [83],
+      "guard": "static_cast<uint64_t>(g_hash_offset) > SIZE_MAX - size_expression",
+      "failure_behavior": "MS_LOG(ERROR) and return before addition",
+      "guard_returns_before_operation": true
+    }
+  },
+  "static_validator": {
+    "script": "checked_addition_contract.py",
+    "verdict": "STATIC_CONTRACT_DELTA_VERIFIED",
+    "scope": "paired source text and lexical ordering only",
+    "formal_proof": false
+  },
+  "detector_observation": {
+    "script": "cwe_detect.py --cwe 190",
+    "base": {
+      "raw_findings": 2,
+      "merged_findings": 1,
+      "remaining_pattern": "read_size_unchecked",
+      "confidence": "low"
+    },
+    "head": {
+      "raw_findings": 2,
+      "merged_findings": 1,
+      "remaining_pattern": "read_size_unchecked",
+      "confidence": "low"
+    },
+    "interpretation": "The generic detector does not model the representability guard and its unchanged low-confidence memcpy-size residual is not a before/after repair verdict. The dedicated static validator supplies only the explicitly declared addition contract."
+  },
+  "symmetry": {
+    "status": "REVIEW",
+    "reason": "No audited inventory of all Ascend ACL hash-buffer write entry points exists."
+  },
+  "runtime": {
+    "status": "NOT_RUN",
+    "reason": "The declared path depends on Ascend ACL cache/provider behavior; no local hardware/provider runtime or safe unit target was available."
+  },
+  "verdict": "REVIEW",
+  "limitations": [
+    "No bounded runtime fixture was run.",
+    "No Ascend ACL hardware/provider validation was run.",
+    "No full cache-write symmetry inventory was completed.",
+    "No proof of offset/size origin, concurrency behavior, or all callers exists."
+  ],
+  "safety": {
+    "no_source_build_or_executor_run": true,
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "formal_proof": false
+}

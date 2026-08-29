@@ -1,0 +1,32 @@
+--- a/src/net.cpp
++++ b/src/net.cpp
+@@ -1453,1 +1453,9 @@
++                if (blob_index < 0 || blob_index >= blob_count)
++                {
++                    NCNN_LOGE("invalid index blob_index %d (size=%zu)", blob_index, (size_t)blob_count);
++                    d->layers[i] = layer;
++                    clear();
++                    return -1;
++                }
++
+                 Blob& blob = d->blobs[blob_index];
+@@ -1463,1 +1471,9 @@
++            if (bottom_blob_index < 0 || bottom_blob_index >= blob_count)
++            {
++                NCNN_LOGE("invalid index bottom_blob_index %d (size=%zu)", bottom_blob_index, (size_t)blob_count);
++                d->layers[i] = layer;
++                clear();
++                return -1;
++            }
++
+             Blob& blob = d->blobs[bottom_blob_index];
+@@ -1473,1 +1488,9 @@
++            if (blob_index < 0 || blob_index >= blob_count)
++            {
++                NCNN_LOGE("invalid index blob_index %d (size=%zu)", blob_index, (size_t)blob_count);
++                d->layers[i] = layer;
++                clear();
++                return -1;
++            }
++
+             Blob& blob = d->blobs[blob_index];

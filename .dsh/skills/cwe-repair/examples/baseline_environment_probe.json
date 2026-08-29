@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "probe_scope": "local availability only; no package installation, source mutation, or network activity",
+  "tools": {
+    "cppcheck": {
+      "available": false,
+      "path": null
+    },
+    "semgrep": {
+      "available": false,
+      "path": null
+    },
+    "codeql": {
+      "available": false,
+      "path": null
+    },
+    "cmake": {
+      "available": false,
+      "path": null
+    },
+    "ninja": {
+      "available": false,
+      "path": null
+    },
+    "clang++": {
+      "available": false,
+      "path": null
+    },
+    "g++": {
+      "available": false,
+      "path": null
+    }
+  },
+  "source_snapshot": {
+    "path": "AGIBOT\\repos\\agibot_x1_infer_src",
+    "exists": true,
+    "cmake_files": 0,
+    "ros_package_manifests": 0
+  },
+  "conclusion": {
+    "external_baselines_runnable": false,
+    "native_cxx_slice_runnable": false
+  },
+  "universal_claim": false,
+  "formal_proof": false
+}

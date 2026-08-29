@@ -1,0 +1,12 @@
+{
+  "binary": "/home/kaltsit/vuln_repro/ncnn_fuzz/assess/loadpoc_file_fixed2",
+  "malicious": [
+    "/home/kaltsit/vuln_repro/ncnn_fuzz/ncnn_blobidx_oob_149B.parambin",
+    "/home/kaltsit/vuln_repro/ncnn_fuzz/pocfix/ncnn_blobidx_oob_negidx.parambin"
+  ],
+  "benign": [
+    "/home/kaltsit/vuln_repro/ncnn_fuzz/pr_work/pocs/valid_minimal.parambin"
+  ],
+  "asan": true,
+  "timeout": 30
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "detector": "cwe_detect.py",
+  "cases": [
+    {
+      "id": "NCNN-PR-6383",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6383",
+      "upstream_state": "merged",
+      "base_sha": "5154f22a4c146959beda380dc7522de53704d940",
+      "head_sha": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7",
+      "file": "src/net.cpp",
+      "pattern": "parser_error_continue",
+      "cwe": 703,
+      "before": {"count": 6, "lines": [1195, 1245, 1287, 1477, 1527, 1568]},
+      "after": {"count": 0, "lines": []},
+      "repair_requirements": [
+        "destroy the partially initialized layer on parser failure",
+        "clear parser-owned state and return an explicit error instead of continuing"
+      ],
+      "symmetry": {"before": "symmetric", "after": "symmetric"},
+      "runtime_fixture": {
+        "path": ".dsh/skills/cwe-repair/examples/ncnn_pr6383_layer_param_failure.txt",
+        "base": "SIGSEGV after ParamDict failure",
+        "head": "ret=-1 without crash"
+      }
+    },
+    {
+      "id": "NCNN-PR-6337",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6337",
+      "upstream_state": "merged",
+      "base_sha": "00f816ffd52d306c00c38b4dbbd3a5b089f73612",
+      "head_sha": "b0d970b0e3a2a23e011aeddd682063e0ad8e7a8b",
+      "file": "src/paramdict.cpp",
+      "pattern": "paramdict_terminal_quote_rescan",
+      "cwe": 20,
+      "before": {"count": 1, "lines": [350]},
+      "after": {"count": 0, "lines": []},
+      "repair_requirements": [
+        "do not rescan a quoted token when its first scan already consumed the closing quote",
+        "preserve the next key-value token after a complete quoted string"
+      ],
+      "symmetry": {"before": "symmetric", "after": "symmetric"}
+    },
+    {
+      "id": "NCNN-PR-2213",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/2213",
+      "upstream_state": "merged",
+      "base_sha": "5a91a640cbf96c8a14df0c637542215e9666f1e1",
+      "head_sha": "cdfcc49d9cb1f4829a3c77feda266d6b325e9f29",
+      "file": "src/layer/packing.cpp",
+      "pattern": "pointer_offset_int_multiply",
+      "cwe": 190,
+      "before": {"count": 5, "lines": [81, 112, 126, 154, 169]},
+      "after": {"count": 0, "lines": []},
+      "repair_requirements": [
+        "promote one pointer-offset operand to size_t before multiplication",
+        "keep byte-offset and cstep arithmetic in size_t through the address calculation"
+      ],
+      "symmetry": {"before": "symmetric", "after": "symmetric"},
+      "note": "Unrelated read_size_unchecked low-confidence candidates remain outside this PR contract."
+    },
+    {
+      "id": "NCNN-PR-6922",
+      "pr_url": "https://github.com/Tencent/ncnn/pull/6922",
+      "upstream_state": "open",
+      "base_sha": "946fe3fb14a8dff8c06df763f67be522167b2f00",
+      "head_sha": "408f6df63c1c6076c0d7294f5fcee55f994d93b5",
+      "file": "src/net.cpp",
+      "patterns": {
+        "unchecked_parser_count": {"before": 6, "after": 0},
+        "unchecked_blob_index": {"before": 3, "after": 1, "residual_scope": "TEXT path"},
+        "text_blob_index_access": {"before": 2, "after": 2, "residual_scope": "TEXT path"},
+        "divide_by_input": {"before": 2, "after": 0}
+      },
+      "repair_requirements": {
+        "unchecked_parser_count": [
+          "validate decoded count for sign and an explicit upper bound before resize",
+          "mirror count validation across text and binary loaders"
+        ],
+        "unchecked_blob_index": [
+          "validate blob index is non-negative and less than blob_count before d->blobs access",
+          "apply equivalent guards to both bottom and top index paths"
+        ],
+        "divide_by_input": ["validate divisor is non-zero before division"]
+      },
+      "symmetry": {"before": "symmetric", "after": "symmetric"},
+      "strict_eligible": false,
+      "note": "Official open PR; materialized for review, not presented as merged upstream history."
+    }
+  ],
+  "interpretation": "Repair requirements are deterministic review guidance, not automatic semantic proof."
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "two-text-parser-failure-cleanup",
+  "symmetry_kind": "paired TEXT parser failure branches",
+  "paired_paths": [
+    {"id": "text-paramdict-load-failure-cleanup", "base": "continue", "head": ["delete layer", "clear", "return -1"]},
+    {"id": "text-layer-load-param-failure-cleanup", "base": "continue", "head": ["delete layer", "clear", "return -1"]}
+  ],
+  "exhaustive_for_declared_scope": true,
+  "excluded_companion_entrypoints": ["TEXT custom CPU fallback failure", "BIN ParamDict failure", "BIN layer load_param failure", "BIN custom CPU fallback failure"],
+  "verdict": "PASS",
+  "formal_proof": false,
+  "universal_claim": false
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-89363",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/89363",
+  "title": "fix multiplication overflow warning",
+  "state": "merged",
+  "merged_at": "2025-09-15T19:22:18+08:00",
+  "base_sha": "14ce9eac501d3db833bd5d4db1863c36035d2bd8",
+  "head_sha": "4450b28f2569313f95cb71728f8f417632dd3d78",
+  "changed_files": [
+    "mindspore/ccsrc/plugin/device/cpu/kernel/rl/buffer_get_cpu_kernel.h",
+    "mindspore/ccsrc/plugin/res_manager/cpu/cpu_mem_manager/cpu_hash_table_util.h",
+    "mindspore/ccsrc/pynative/grad/custom_function.cc",
+    "mindspore/ccsrc/pynative/grad/function/func_grad.cc",
+    "tests/st/pynative/hook/test_hook_grad_with_torch.py"
+  ],
+  "contract": "multiplication-overflow-warning",
+  "local_materialization": {
+    "repository": "/home/kaltsit/vuln_repro/mindspore_history/mindspore_repo",
+    "base_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr89363_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr89363_head",
+    "checkout_mode": "blob-filter-and-sparse-changed-files"
+  },
+  "static": {
+    "buffer_get_cpu_kernel.h": {
+      "base": "read_size_unchecked 1 at memcpy_s",
+      "head": "SIZE_MAX/one_exp_len multiply guard and inputs[i]->size() bounds guard added before memcpy_s; detector still reports guarded line (guard-aware limitation, scoped residual)"
+    },
+    "cpu_hash_table_util.h": {
+      "base": "int32_t value_size accumulation without per-dim check",
+      "head": "size_t accumulation with SIZE_MAX/dim overflow check per dimension"
+    }
+  },
+  "verification": {
+    "detect": "scoped: multiply guard markers present; residual recorded",
+    "repair_plan": "SIZE_MAX division guards before multiply and memcpy bounds check",
+    "symmetry": "not-applicable-single-kernel-scope",
+    "runtime": "not executed; MindSpore full build out of local scope",
+    "verdict": "REVIEW"
+  },
+  "formal_proof": false,
+  "notes": [
+    "Official title, head commit, and changed-file scope agree on the multiplication-overflow contract.",
+    "No exploit chain, real executor, network target, OOM or huge shape input was used."
+  ]
+}

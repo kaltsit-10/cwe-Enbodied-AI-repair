@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28112",
+  "evidence_scope": "reduced-model-data-length-narrowing-contract",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28112",
+  "base_sha": "a208df8a25a53d1a6c3334487e58574a839460f5",
+  "head_sha": "066e6c085c63bfb16460d663333646da698ec6fd",
+  "reduced_runtime": {
+    "after_source": ".dsh/skills/cwe-repair/examples/ort_pr28112_narrow_after.cpp",
+    "harness_source": ".dsh/skills/cwe-repair/examples/ort_pr28112_narrow_verify.cpp",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/ort_pr28112_narrow_verify",
+    "binary_sha256": "5cd68528c0546b7ce9a24ae129811566af770d6bceef0a68bc8a55e7cf70016a",
+    "malicious": [
+      {
+        "input": "ort_pr28112_narrow_overflow.shape",
+        "sha256": "604fec38960d7c5bd3bd6c06ad8f4b42eac0bb30ea02d43518d0f9f11d5e131e",
+        "value": "INT32_MAX+1",
+        "ret": -1,
+        "crashed": false
+      }
+    ],
+    "benign": [
+      {
+        "input": "ort_pr28112_narrow_valid.shape",
+        "sha256": "4225294e0b1c479988ce8e032ef662c1166728a7a0c1f6bbefef1d45a2b02581",
+        "value": "INT32_MAX",
+        "ret": 0,
+        "crashed": false
+      }
+    ],
+    "summary": {
+      "malicious_rejected": "1/1",
+      "benign_passed": "1/1",
+      "infrastructure_failures": 0,
+      "asan_ubsan": true,
+      "verdict": "PASS"
+    }
+  },
+  "full_case_status": "REVIEW",
+  "full_case_gap": "reduced harness is not the complete ORT session-load path",
+  "formal_proof": false,
+  "notes": [
+    "No model allocation, huge file, real executor, network target, or exploit chain was used.",
+    "Reduced PASS does not upgrade the full case beyond REVIEW."
+  ]
+}

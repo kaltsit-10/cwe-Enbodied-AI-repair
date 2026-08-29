@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "source_revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "target": "onnxruntime_provider_test",
+  "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+  "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+  "execution_scope": "local-pinned-binary-only",
+  "runtime_scope": "local-full-active-RNNTest-suite",
+  "user_authorization": "Explicit authorization to run the local real executor for full-path semantic-verification work; bounded local tests only.",
+  "timeout_seconds": 180,
+  "cases": [
+    {
+      "id": "base-full-active-rnn-suite",
+      "filter": "RNNTest.*",
+      "expected_test_count": 10,
+      "role": "all non-disabled upstream RNNTest cases available in the exact base target",
+      "contract_paths": ["rnn-allocation-overflow", "rnn-narrowing-contract"]
+    }
+  ],
+  "excluded_tests": ["RNNTest.DISABLED_RNN_default_attributes_and_forward_direction"],
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "known_limitations": [
+    "GTest disabled cases are not executed.",
+    "The suite does not synthesize oversized dimensions or a SafeMul/narrow overflow trigger.",
+    "The exact base source does not contain the head-only zero-boundary regression tests."
+  ],
+  "formal_proof": false
+}

@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "asset_id": "microsoft/onnxruntime",
+  "case_id": "ORT-PR-28003",
+  "asset_kind": "AI runtime / shape-processing",
+  "scope_type": "single-asset-declared-contract",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "universal_claim": false,
+  "formal_proof": false,
+  "revisions": {
+    "base": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head": "795675a77ebb898302c5798bd6247658db165d14"
+  },
+  "declared_scope": {
+    "providers": [
+      "CPU/default execution provider"
+    ],
+    "targets": [
+      "onnxruntime_provider_test"
+    ],
+    "configurations": [
+      "Debug / Unix Makefiles / C++17 / pinned local toolchain"
+    ],
+    "input_domains": [
+      "finite upstream RNN fixtures",
+      "bounded zero-extent fixtures",
+      "no oversized allocations"
+    ]
+  },
+  "contract": {
+    "id": "rnn-narrowing-contract",
+    "cwe": [
+      190
+    ],
+    "required_asset_gates": [
+      "official_provenance",
+      "source_scope",
+      "inventory_completeness",
+      "reproducibility",
+      "safety"
+    ],
+    "required_path_gates": [
+      "static_contract",
+      "symmetry",
+      "detect",
+      "repair_plan",
+      "paired_build",
+      "runtime_base",
+      "runtime_head",
+      "negative_rejection",
+      "benign_preservation"
+    ],
+    "required_dimensions": [
+      "narrow_hidden_size",
+      "safe_mul_int_shape"
+    ]
+  },
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "inventory": {
+    "enumeration_method": "pinned source scope and explicit RNN path inventory",
+    "source_basis": "ort_pr28003_path_inventory.json",
+    "external_boundaries": [
+      "RNN OpTester input tensors"
+    ],
+    "reachable_sinks": [
+      "RNN<float>::Compute allocation and GEMM dimensions"
+    ],
+    "declared_path_ids": [
+      "rnn-narrowing-contract"
+    ],
+    "unverified": [
+      "safe oversized-dimension rejection without OOM"
+    ]
+  },
+  "asset_coverage": {
+    "official_provenance": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_provenance.json",
+          "sha256": "e9f9afb633643704c1ac30e3e059b5eee2b23e9b74bea8319d296435034164d9",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "base_sha",
+              "equals": "0fedb26c93e6c29882185715d5c2bb583a6d92b5"
+            },
+            {
+              "path": "head_sha",
+              "equals": "795675a77ebb898302c5798bd6247658db165d14"
+            }
+          ]
+        }
+      ]
+    },
+    "source_scope": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_source_scope_integrity.json",
+          "sha256": "5d4ef06733b57f44f5a572ff8a5922182c214e8f5bf3099143698ab88353ca6d",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "changed_scope.diff_check",
+              "equals": "PASS"
+            }
+          ]
+        }
+      ]
+    },
+    "inventory_completeness": {
+      "status": "REVIEW",
+      "evidence": [
+        {
+          "path": "ort_pr28003_narrowing_scoped_inventory.json",
+          "sha256": "8f46a1b1598195a86a76a4a6f1d4585bc836173e3cdc8aa75d996e47fd56d37d",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "inventory_completeness",
+              "equals": "PASS_WITHIN_DECLARED_SCOPED_PATH"
+            },
+            {
+              "path": "declared_path_ids.0",
+              "equals": "rnn-narrowing-contract"
+            }
+          ]
+        }
+      ]
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_paired_build_evidence.json",
+          "sha256": "35d3f85d44e85274d8981a2e1e81f3d201a64258b219f849258f739e3dee4ab9",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "base.configure.status",
+              "equals": "PASS"
+            },
+            {
+              "path": "head.build.status",
+              "equals": "PASS"
+            }
+          ]
+        }
+      ]
+    },
+    "safety": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ort_pr28003_paired_runtime_evidence.json",
+          "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+          "case_id": "ORT-PR-28003",
+          "assertions": [
+            {
+              "path": "safety.no_oom_or_huge_allocation",
+              "equals": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "paths": [
+    {
+      "id": "rnn-narrowing-contract",
+      "source": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+      "entrypoint": "RNN<float>::Compute",
+      "lines": [
+        198,
+        212,
+        279,
+        282
+      ],
+      "call_path": [
+        "SafeMul<int>(seq_length,batch_size)",
+        "narrow<int>(hidden_size_)",
+        "checked shape arithmetic",
+        "output allocation/GEMM dimensions"
+      ],
+      "required_dimensions": [
+        "narrow_hidden_size",
+        "safe_mul_int_shape"
+      ]
+    }
+  ],
+  "path_coverage": {
+    "rnn-narrowing-contract": {
+      "detect": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "detector"
+      },
+      "repair_plan": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "repair_plan"
+      },
+      "static_contract": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ]
+      },
+      "symmetry": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_contract_matrix.json",
+            "sha256": "07d1564e8b7e1021eb3bf438577bc7ecc382edb1dfa2c6c68d0e3994eaf5d899",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "ORT-PR-28003"
+              }
+            ]
+          }
+        ]
+      },
+      "paired_build": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_build_evidence.json",
+            "sha256": "35d3f85d44e85274d8981a2e1e81f3d201a64258b219f849258f739e3dee4ab9",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "base.build.status",
+                "equals": "PASS"
+              },
+              {
+                "path": "head.build.status",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_base": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "base.summary",
+                "equals": "focused shared controls 2/2 PASS; full active RNN suite 10/10 PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_head": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.summary",
+                "equals": "focused direct/shared controls 4/4 PASS; full active RNN suite 12/12 PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "negative_rejection": {
+        "status": "REVIEW",
+        "metrics": {
+          "malicious_rejected": "2/2",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ort_pr28003_rnn_negative_stimulus_review.json",
+            "sha256": "332ee721eb5e345bf85b1b204de84fff526ef6ac93892f74121d00f301e26f5c",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "found_safe_upstream_negative",
+                "equals": false
+              }
+            ]
+          }
+        ]
+      },
+      "benign_preservation": {
+        "status": "PASS",
+        "metrics": {
+          "benign_passed": "4/4",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ort_pr28003_paired_runtime_evidence.json",
+            "sha256": "344b0f338d5dc97dceaf067602e41e7ad012e3a62f04c1e45dc8f8959bd529af",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "comparison.shared_control_symmetry",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "path_dimension_coverage": {
+    "rnn-narrowing-contract": {
+      "narrow_hidden_size": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_bounded_runtime_evidence.json",
+            "sha256": "3df128d5350e6bb74183294563a38d5d684386f82ee5da470e648b5438bd82ac",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "reduced_runtime.summary.verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ]
+      },
+      "safe_mul_int_shape": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ort_pr28003_safeint_runtime_evidence.json",
+            "sha256": "a7306a1bb074275bded275a80b0660daef8a01aeb2eb3f2cc20e8095bfb7315d",
+            "case_id": "ORT-PR-28003",
+            "assertions": [
+              {
+                "path": "head.gtest_verdict",
+                "equals": "PASS"
+              },
+              {
+                "path": "head.tests_passed",
+                "equals": 4
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "exclusions": [
+    {
+      "dimension": "rnn-allocation-overflow",
+      "reason": "not declared in this scoped contract"
+    },
+    {
+      "dimension": "rnn-sequence-lens-directional",
+      "reason": "not declared in this scoped contract"
+    }
+  ]
+}

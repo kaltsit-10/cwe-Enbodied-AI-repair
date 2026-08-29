@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28112",
+  "source_url": "https://github.com/microsoft/onnxruntime/pull/28112",
+  "title": "Apply model size limit before converting size_t input to int32_t",
+  "state": "closed",
+  "merged_at": "2026-04-22T22:45:28Z",
+  "base_sha": "a208df8a25a53d1a6c3334487e58574a839460f5",
+  "head_sha": "066e6c085c63bfb16460d663333646da698ec6fd",
+  "merge_commit_sha": "564cabfc98a5cd1367b22be590fb44141a27370b",
+  "changed_files": [
+    "onnxruntime/core/session/utils.cc",
+    "onnxruntime/core/session/onnxruntime_c_api.cc",
+    "onnxruntime/test/shared_lib/test_model_loading.cc",
+    "winml/adapter/winml_adapter_model.cpp",
+    "js/node/test/unittests/lib/inference-session.ts"
+  ],
+  "contract": "validated-narrowing-api-error",
+  "local_materialization": {
+    "method": "official-contents-api-at-exact-sha",
+    "base_root": "C:\\Users\\asus\\vuln_repro\\ort_history_win\\pr28112_base",
+    "head_root": "C:\\Users\\asus\\vuln_repro\\ort_history_win\\pr28112_head",
+    "note": "github.com git transport was unavailable; contents API returned exact-sha file blobs"
+  },
+  "static": {
+    "target_pattern": "static_cast_narrow_truncation",
+    "base_hits": [
+      {"line": 388, "evidence": "model_data, static_cast<int>(model_data_length));"},
+      {"line": 440, "evidence": "ORT_API_RETURN_IF_STATUS_NOT_OK(sess->Load(model_data, static_cast<int>(model_data_length)));"}
+    ],
+    "head_hits": [],
+    "head_markers": [
+      "std::numeric_limits<int32_t>::max()",
+      "narrow<int32_t>(model_data_length)",
+      "Model data size exceeds maximum supported size (2GB)"
+    ],
+    "non_target_residuals": [
+      "resize_from_attacker domains.resize(num_domains) low-confidence, unchanged both sides",
+      "read_size_unchecked memcpy out low-confidence, unchanged both sides"
+    ]
+  },
+  "verification": {
+    "detect": "static_cast_narrow_truncation 2 -> 0 on target scope",
+    "repair_plan": "explicit INT32_MAX model-size limit then narrow; verified in official diff",
+    "symmetry": "not-applicable-single-session-load-path",
+    "runtime": "not executed; full ORT session load harness out of local scope",
+    "verdict": "REVIEW"
+  },
+  "formal_proof": false,
+  "notes": [
+    "No exploit chain, real executor, network target, OOM or huge model input was used.",
+    "Static target contract is verified; full runtime remains REVIEW."
+  ]
+}

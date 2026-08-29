@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-87710",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/87710",
+  "title": "avoid overflow",
+  "project": "mindspore-ai/mindspore",
+  "source_platform": "Gitee",
+  "local_git_repository": "/home/kaltsit/vuln_repro/mindspore_history/mindspore_repo",
+  "local_history_provenance": {
+    "merge_commit": "6ae69d885df612affe27482a3dafb06386ca6ea2",
+    "base_merge_parent": "d15b70d59b3ae0a36f41cd67753109092cf006a0",
+    "head_branch_commit": "fd723d1b20884417a4090438b568ebb8e62238ee",
+    "head_branch_parent": "86517cbf84cc95f92dd59811e9c7ea5bac50305a",
+    "diff_basis": "base_merge_parent to merge_commit",
+    "merge_message": "!87710 avoid overflow Merge pull request !87710 from 胡彬/fix-master"
+  },
+  "changed_scope": {
+    "files_changed": 1,
+    "additions": 4,
+    "deletions": 0,
+    "path": "mindspore/ops/kernel/ascend/acl_ir/op_api_cache.h",
+    "base_blob": "09aea0c8e1696170ea23c5ffd6ce57df4f327a62",
+    "head_blob": "860a61d409b9eb65a6b7828730f7ef468cb65444",
+    "diff_check": "PASS"
+  },
+  "observed_contract": {
+    "family": "checked-size-addition-before-buffer-offset-update",
+    "function": "MemcpyToBuf",
+    "preimage_risk": "g_hash_offset + size_expression can wrap before the existing buffer-capacity comparison.",
+    "head_guard": "static_cast<uint64_t>(g_hash_offset) > SIZE_MAX - size_expression",
+    "head_behavior": "log an error and return before addition when the sum is not representable.",
+    "post_guard_existing_check": "g_hash_offset + size_expression >= g_hash_buf_size"
+  },
+  "source_materialization": {
+    "status": "PASS",
+    "mode": "detached sparse worktrees containing only the changed header",
+    "evidence": "ms_pr87710_static_contract_evidence.json",
+    "static_contract_verdict": "STATIC_CONTRACT_DELTA_VERIFIED"
+  },
+  "screening": {
+    "title_diff_contract_match": true,
+    "scope_quality": "small-single-function",
+    "candidate_suitability": "high-for-static-source-materialization",
+    "decision": "OFFICIAL_LOCAL_SOURCE_SCOPE_AND_STATIC_CONTRACT_VERIFIED_REVIEW",
+    "reason": "The exact merge final diff is a direct checked-addition repair and detached source scope/static ordering validation pass, but it is an Ascend ACL cache path with no local hardware/provider runtime or full symmetry evidence."
+  },
+  "unmet_evidence": [
+    "bounded non-OOM fixture or unit-level target",
+    "Ascend ACL provider runtime",
+    "symmetry review for other cache buffer write entry points",
+    "detector rule that understands this representability guard without a low-confidence memcpy residual",
+    "formal proof"
+  ],
+  "safety": {
+    "no_source_build_or_executor_run": true,
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "status": "REVIEW",
+  "formal_proof": false
+}

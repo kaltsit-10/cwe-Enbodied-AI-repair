@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 14,
+  "status": "ACTIVE_PARTIAL_RUNTIME_EVIDENCE",
+  "task_goal": "Complete ORT-PR-28003 paired base/head build evidence, then use user-authorized bounded local real executor tests without OOM, network targets, or exploit chains.",
+  "authorization": {
+    "local_real_executor": true,
+    "scope": "pinned onnxruntime_provider_test binaries and allowlisted upstream RNNTest filters only",
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "ort_pr28003": {
+    "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+    "paired_build": "PAIRED_BUILD_VERIFIED",
+    "base_binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+    "head_binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+    "focused_runtime": {
+      "base_shared_controls": "2/2 PASS",
+      "head_direct_and_shared_controls": "4/4 PASS"
+    },
+    "full_active_rnn_suite": {
+      "base": "10/10 PASS",
+      "head": "12/12 PASS",
+      "disabled_tests": "1 per revision; intentionally not executed"
+    },
+    "paired_runtime": "PAIRED_RUNTIME_EVIDENCE_VERIFIED",
+    "direct_repair_paths": [
+      "seq_length=0 produces defined zero-filled Y_h on head CPU provider",
+      "forward mixed sequence_lens={2,0} produces defined zero-filled Y_h for the zero-length batch"
+    ],
+    "contract_audit": "sequence_lens=0 is allowed by implementation predicate; legacy diagnostic text disagrees",
+    "case_verdict": "REVIEW",
+    "remaining_gates": [
+      "SafeMul/narrow oversized-dimension runtime without OOM",
+      "reverse/bidirectional zero sequence_lens",
+      "non-CPU provider execution",
+      "full target sanitizer execution",
+      "formal all-input proof"
+    ]
+  },
+  "ms_pr70694": {
+    "verdict": "REVIEW",
+    "reason": "Exact official diff remains dump-sample test maintenance, not the requested dynamic-shape arithmetic repair contract."
+  },
+  "component_changes": [
+    "paired_build_evidence.py validates base/head build symmetry without runtime uplift",
+    "gtest_runtime.py executes bounded local allowlisted GoogleTest plans and binds revision/target/binary hashes",
+    "paired_runtime_evidence.py validates paired runtime artifact consistency without semantic uplift",
+    "contract_matrix.py reports display-only operator_runtime separately from full runtime gate"
+  ],
+  "validation": {
+    "cwe_repair_regression": "PASS",
+    "registry_cases": 12,
+    "evidence_lattice": {
+      "FULL_GATED_LOCAL": 4,
+      "SCOPED_RUNTIME": 6,
+      "LOCAL_STATIC": 2,
+      "anomalies": []
+    },
+    "legacy_dataset": "34 findings / 5 repair_pairs",
+    "legacy_leaderboard": "strict 16/31; legacy 20/31; guarded 3"
+  },
+  "formal_proof": false,
+  "next_actions": [
+    "Retain ORT matrix REVIEW until safe coverage exists for the remaining arithmetic and provider dimensions.",
+    "Seek a contract-matching MindSpore candidate instead of treating MS-PR-70694 as a dynamic-shape repair.",
+    "Do not modify legacy strict benchmark or fabricate cross-provider/full-input evidence."
+  ]
+}

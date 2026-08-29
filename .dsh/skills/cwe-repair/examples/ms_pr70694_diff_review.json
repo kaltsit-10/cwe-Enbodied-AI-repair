@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-70694",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/70694",
+  "base_sha": "2de6095d1b53692e327eb074426b5ad2c29e66ba",
+  "head_sha": "7493f8535900c238ca0ebe0273cacac3aae4f7f7",
+  "api_status": "merged",
+  "head_commit_message": "test dump sample bugfix",
+  "changed_files": [
+    {
+      "path": "tests/st/dump/test_dump_sample.py",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 12
+    }
+  ],
+  "contract_requested": "dynamic-shape-overflow-regression",
+  "contract_observed": "dump-sample-test-maintenance",
+  "contract_match": false,
+  "local_sources": {
+    "base": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr70694_base\\tests\\st\\dump\\test_dump_sample.py",
+    "head": "\\\\wsl.localhost\\Ubuntu-22.04\\home\\kaltsit\\vuln_repro\\mindspore_history\\pr70694_head\\tests\\st\\dump\\test_dump_sample.py"
+  },
+  "verification": {
+    "detect": "not-applicable-contract-mismatch",
+    "repair_plan": "not-applicable-contract-mismatch",
+    "symmetry": "not-applicable",
+    "runtime": "not-run",
+    "verdict": "REVIEW"
+  },
+  "reason": "Official PR title and exact diff disagree on the intended security contract; retain as a provenance/audit finding, not as a dynamic-shape repair case.",
+  "formal_proof": false
+}

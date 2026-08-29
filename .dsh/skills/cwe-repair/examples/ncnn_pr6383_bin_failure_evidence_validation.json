@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "valid": true,
+  "verdict": "NCNN_PR6383_BIN_ARTIFACT_BINDING_VERIFIED",
+  "runtime_status": "RECORDED_LOCAL_BASE_HEAD_PAIR",
+  "errors": [],
+  "formal_proof": false,
+  "proof_scope": "pinned NCNN PR #6383 binary parser failure paths only"
+}

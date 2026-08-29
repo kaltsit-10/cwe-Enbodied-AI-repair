@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "contract": "checked-shape-arithmetic-zero-extent",
+  "revision": {
+    "base": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "head": "795675a77ebb898302c5798bd6247658db165d14"
+  },
+  "runtime_execution_plans": {
+    "base_shared_controls": "ort_pr28003_base_gtest_runtime_plan.json",
+    "head_direct_and_shared_controls": "ort_pr28003_head_gtest_runtime_plan.json",
+    "safeint_added_test_target_build": "ort_pr28003_safeint_build_evidence.json",
+    "safeint_added_test_runtime": "BUILD_ONLY_NOT_RUN",
+    "status": "PASS_WITH_PARTIAL_CONTRACT_COVERAGE"
+  },
+  "declared_paths": [
+    {
+      "id": "rnn-allocation-overflow",
+      "source": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+      "function": "RNN<float>::Compute",
+      "lines": [142, 283],
+      "contract_points": [
+        "SafeMul<size_t> allocation products",
+        "SafeMul<int> matrix dimensions",
+        "zero-extent sequence handling",
+        "checked narrowing markers"
+      ],
+      "matrix_status": "REVIEW",
+      "full_runtime": "DIRECT_CPU_RUNTIME_PASS_PARTIAL_CONTRACT",
+      "scoped_runtime": "PASS",
+      "direct_runtime_evidence": "ort_pr28003_head_gtest_runtime_evidence.json",
+      "full_active_rnn_suite_evidence": "ort_pr28003_head_full_rnn_suite_evidence.json",
+      "direct_runtime_tests": [
+        "RNNTest.RNN_seq_length_zero",
+        "RNNTest.RNN_forward_sequence_lens_with_zero"
+      ],
+      "runtime_boundary": "Both direct CPU zero-extent/Y_h tests passed in the complete provider target; no oversized allocation-overflow trigger was safely exercised."
+    },
+    {
+      "id": "rnn-narrowing-contract",
+      "source": "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+      "function": "RNN<float>::Compute",
+      "lines": [198, 212, 279, 282],
+      "contract_points": [
+        "SafeMul<int>(seq_length, batch_size)",
+        "narrow<int>(hidden_size_)",
+        "narrowing occurs after checked arithmetic"
+      ],
+      "matrix_status": "REVIEW",
+      "full_runtime": "DIRECT_CPU_RUNTIME_PASS_PARTIAL_CONTRACT",
+      "scoped_runtime": "PASS",
+      "direct_runtime_evidence": "ort_pr28003_head_gtest_runtime_evidence.json",
+      "full_active_rnn_suite_evidence": "ort_pr28003_head_full_rnn_suite_evidence.json",
+      "direct_runtime_tests": [
+        "RNNTest.RNN_forward_sequence_lens_with_zero",
+        "RNNTest.RNN_bidirectional_with_sequence_lens"
+      ],
+      "runtime_boundary": "Finite CPU cases passed through ordinary checked narrowing, but did not safely induce narrowing or multiplication overflow."
+    }
+  ],
+  "related_local_paths_not_claimed_as_verified": [
+    {
+      "function": "Assign_Y_h",
+      "lines": [86, 116],
+      "reason": "head direct CPU zero-extent tests executed this function through the complete provider target, but not all directions/providers/inputs"
+    },
+    {
+      "function": "ClearMissingFrames",
+      "lines": [120, 136],
+      "reason": "the valid bidirectional control exercised padded Y zeroing with nonzero lengths, but reverse/bidirectional zero-lens and all short-frame combinations remain unverified"
+    },
+    {
+      "source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc",
+      "tests": [
+        "RNN_seq_length_zero",
+        "RNN_forward_sequence_lens_with_zero",
+        "RNN_invalid_sequence_lens",
+        "RNN_bidirectional_with_sequence_lens",
+        "RNN_forward_direction_zigged_batch",
+        "RNN_reverse_direction_zigged_batch",
+        "RNN_bidirectional_zigged_batch"
+      ],
+      "reason": "the focused four GTests and all 12 active RNNTest cases completed PASS in the local pinned head target; non-CPU provider/configuration combinations are not claimed verified"
+    }
+  ],
+  "unverified_dimensions": [
+    "same-test before/after comparison for head-only zero-boundary regressions",
+    "SafeMul/narrow oversized-dimension runtime behavior without OOM",
+    "reverse and bidirectional zero sequence_lens behavior",
+    "ASan/UBSan run on the full provider-test binary",
+    "all configured providers and build feature combinations",
+    "all caller and error-propagation paths outside the declared matrix",
+    "formal all-path proof"
+  ],
+  "verdict": "REVIEW",
+  "formal_proof": false,
+  "purpose": "Make path coverage explicit without promoting compiled or reduced evidence to semantic verification."
+}

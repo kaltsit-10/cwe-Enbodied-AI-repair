@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 19,
+  "round": 8,
+  "phase": "active",
+  "objective_slice": "Add an inventory-completeness gate and assess current component maturity against the asset-scoped full-path semantic-verification objective.",
+  "maturity_assessment": {
+    "deterministic_detection_repair_runtime_prototype": {
+      "estimate": "70-80%",
+      "basis": "detector, repair suggestions, reachability, symmetry, real bounded verification, paired evidence and regression infrastructure exist"
+    },
+    "one_asset_declared_scope_complete": {
+      "estimate": "50-60%",
+      "basis": "NCNN has the strongest before/after and paired runtime materials, but they still need normalization into the new asset contract and independent inventory closure"
+    },
+    "cross_asset_generality": {
+      "estimate": "30-40%",
+      "basis": "34 findings span five component types and registry has 12 cases, but full evidence is concentrated in NCNN; ORT and MindSpore are mostly partial/scoped"
+    },
+    "embodied_control_semantics": {
+      "estimate": "15-25%",
+      "basis": "Agibot/AimRT/XR have useful reachability, ASan or L3 evidence, but lack contract adapters, repair pairs, and complete side-effect oracles"
+    },
+    "universal_all_input_provider_configuration_correctness": "not a finite or appropriate plugin claim"
+  },
+  "inventory_gate": {
+    "script": "../scripts/asset_semantic_contract.py",
+    "new_default_asset_gate": "inventory_completeness",
+    "required_inventory_fields": ["enumeration_method", "source_basis", "external_boundaries", "reachable_sinks", "declared_path_ids", "unverified"],
+    "fail_closed_rules": [
+      "missing inventory is an artifact error and asset.inventory_completeness is missing",
+      "declared path IDs must match the paths list",
+      "PASS inventory with non-empty unverified items is invalid",
+      "inventory evidence remains distinct from path runtime evidence"
+    ]
+  },
+  "asset_selection": {
+    "first_scope_complete_candidate": "NCNN paired model/parameter parser contract",
+    "strict_review_control": "ORT-PR-28003",
+    "cross_framework_transfer": "MindSpore checkpoint/shape contract",
+    "embodied_message_control_extension": "Agibot JointCommand or AimRT AR-1",
+    "protocol_logic_later": "Unitree xr_teleoperate"
+  },
+  "ort_pr28003": {
+    "asset_contract": "ort_pr28003_asset_semantic_contract.json",
+    "artifact_integrity": true,
+    "scope_complete": false,
+    "verdict": "REVIEW",
+    "missing_gate_count": 27,
+    "new_missing_gate": "asset.inventory_completeness",
+    "interpretation": "The evidence artifacts are hash/case/assertion reproducible, but the declared path and dimension scope is not closed; no semantic uplift is granted."
+  },
+  "validation": {
+    "asset_contract_regression": "PASS",
+    "cwe_repair_regression": "PASS",
+    "compile_and_json": "PASS",
+    "new_target_execution": false,
+    "network_target_execution": false,
+    "oom_or_huge_allocation": false,
+    "exploit_chain": false,
+    "legacy_strict_benchmark_modified": false
+  },
+  "formal_proof": false,
+  "universal_claim": false
+}

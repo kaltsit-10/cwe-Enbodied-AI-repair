@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-90617",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/90617",
+  "title": "r2.7.2 fix cumsum grad shape out-of-range access",
+  "state": "merged",
+  "merged_at": "2025-11-20T09:08:18+08:00",
+  "base_sha": "948c239b1ffdb8252661d9b7fda5bd377f4fef1e",
+  "head_sha": "5eb07997f04ee807a59a1e209d68a7c4d0daef74",
+  "merge_commit_sha": null,
+  "changed_files": [
+    "mindspore/ops/grad/grad_math_ops.cc",
+    "tests/st/mint/test_cumsum.py"
+  ],
+  "contract": "cumsum-grad-axis-range-normalization",
+  "local_materialization": {
+    "repository": "/home/kaltsit/vuln_repro/mindspore_history/mindspore_repo",
+    "base_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr90617_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr90617_head",
+    "checkout_mode": "blob-filter-and-sparse-changed-files"
+  },
+  "static": {
+    "target_pattern": "shape_axis_index",
+    "base_hits": [
+      {"line": 2658, "evidence": "x_shape[dim_value]"},
+      {"line": 3050, "evidence": "x_shape[axis_value]", "scope": "pre-existing non-target residual"}
+    ],
+    "head_hits": [
+      {"line": 2664, "evidence": "x_shape[dim_value]", "scope": "guarded target access"},
+      {"line": 3056, "evidence": "x_shape[axis_value]", "scope": "pre-existing non-target residual"}
+    ],
+    "head_markers": [
+      "auto rank = SizeToLong(x_shape.size())",
+      "dim_value >= -rank && dim_value <= rank - 1",
+      "if (dim_value < 0)",
+      "dim_value += rank"
+    ]
+  },
+  "verification": {
+    "detect": "target shape_axis_index retained only as explicitly guarded residual; pre-existing axis_value residual scoped",
+    "repair_plan": "validate axis against rank, normalize negative axis, then index shape",
+    "symmetry": "not-applicable-single-CumsumExt-grad-path",
+    "runtime": "reduced bounded harness PASS 2/2 + 2/2; full MindSpore CumsumExt runtime REVIEW",
+    "provenance": "ms_pr90617_bounded_runtime_evidence.json",
+    "verdict": "REVIEW"
+  },
+  "formal_proof": false,
+  "notes": [
+    "No exploit chain, real executor, network target, OOM, or huge shape was used.",
+    "The added test includes a valid negative axis (-2); full framework runtime remains REVIEW."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "case_id": "AGIBOT-JOINTCMD-FAKE-SINK",
+  "evidence_level": "LOCAL_REDUCED_FAKE_SINK",
+  "source_anchor": "agibot_jointcmd_callback_static_review.json",
+  "executor": "python local bounded simulation",
+  "safety": {
+    "no_network_target_execution": true,
+    "no_real_robot_execution": true,
+    "no_real_actuator_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "malicious": {
+    "fixture": "agibot_jointcmd_malformed_fixture.json",
+    "result": "ret=-1 fake_publish_count=0 state_mutated=False transform_count=0",
+    "rejected": true
+  },
+  "benign": {
+    "fixture": "agibot_jointcmd_benign_fixture.json",
+    "result": "ret=0 fake_publish_count=2 state_mutated=True transform_count=1",
+    "accepted": true
+  },
+  "summary": {
+    "malicious_rejected": "1/1",
+    "benign_passed": "1/1",
+    "infrastructure_failures": 0,
+    "verdict": "PASS"
+  },
+  "limitations": [
+    "Models the required repair policy; it does not execute AGIBOT/AimRT production code.",
+    "Does not prove ROS2/AimRT transport, transmission behavior, XyberController behavior, or real actuator safety.",
+    "Must not be used as an ASSET_SCOPE_COMPLETE runtime gate for the current AGIBOT source."
+  ],
+  "universal_claim": false,
+  "formal_proof": false
+}

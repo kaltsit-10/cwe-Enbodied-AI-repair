@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "source_url": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "title": "Handle int overflow in rnn",
+  "state": "closed",
+  "merged_at": "2026-04-13T22:28:56Z",
+  "base_sha": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+  "head_sha": "795675a77ebb898302c5798bd6247658db165d14",
+  "merge_commit_sha": "ffbc5e8d8223c44e3ca0d9a197e0193bdff03af0",
+  "changed_files": [
+    "onnxruntime/core/common/safeint.h",
+    "onnxruntime/core/providers/cpu/rnn/rnn.cc",
+    "onnxruntime/test/common/safeint_test.cc",
+    "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc"
+  ],
+  "contract": "checked-shape-arithmetic-zero-extent",
+  "local_materialization": {
+    "repository": "/home/kaltsit/vuln_repro/ort_history/onnxruntime_repo",
+    "base_worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_head",
+    "checkout_mode": "blob-filter-and-sparse-changed-files"
+  },
+  "safety_scope": {
+    "fixture_policy": "small bounded dimensions and explicit overflow boundaries",
+    "forbidden": [
+      "OOM allocation",
+      "huge tensor dimensions",
+      "real executor",
+      "network target",
+      "exploit chain"
+    ]
+  },
+  "status": "REVIEW-until-source-runtime-gates-pass"
+}

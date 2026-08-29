@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 6,
+  "objective_scope": "first-batch-external-ai-runtime-repair-cases",
+  "round": 1,
+  "status": "ACTIVE_REVIEW_GAPS_REMAIN",
+  "primary_cases": [
+    {
+      "case_id": "ORT-PR-28003",
+      "materialization": "official-local-materialized",
+      "provenance": "ort_pr28003_provenance.json",
+      "contract_matrix": "ort_pr28003_contract_matrix.json",
+      "reduced_runtime": "ort_pr28003_bounded_runtime_evidence.json",
+      "reduced_runtime_verdict": "PASS",
+      "full_case_verdict": "REVIEW",
+      "remaining_gates": ["symmetry", "runtime"],
+      "build_blocker": "ort_pr28003_build_feasibility.json",
+      "build_probe": {
+        "help": "PASS",
+        "configure": "FAIL_CMAKE_VERSION",
+        "environment_cmake": "3.22.1",
+        "required_cmake": ">=3.28"
+      },
+      "reason": "Build entrypoint and helpers were materialized in an independent probe; configure reached CMake and stopped because the environment has CMake 3.22.1 while the exact revision requires >=3.28, with full dependency graph still incomplete."
+    },
+    {
+      "case_id": "MS-PR-70694",
+      "materialization": "official-local-materialized",
+      "provenance": "ms_pr70694_diff_review.json",
+      "contract_match": false,
+      "verification_verdict": "REVIEW",
+      "remaining_gates": ["detect", "repair_plan", "symmetry", "runtime"],
+      "reason": "Official title/requested dynamic-shape contract conflicts with exact head commit and changed test-only file; retained as mismatch review."
+    }
+  ],
+  "completed_requirements": {
+    "official_exact_provenance": true,
+    "local_source_scope": true,
+    "contract_analysis": true,
+    "repair_plan_boundary": true,
+    "matrix_or_symmetry_evidence": true,
+    "safe_bounded_fixtures": true,
+    "runtime_boundary_recorded": true,
+    "legacy_benchmark_unchanged": true,
+    "defensive_only": true
+  },
+  "current_registry": {
+    "cases": 12,
+    "official_local_materialized": 10,
+    "official_local_materialized_upstream_open": 1,
+    "local_only": 1,
+    "external_reference": 0
+  },
+  "current_evidence_levels": {
+    "FULL_GATED_LOCAL": 4,
+    "SCOPED_RUNTIME": 6,
+    "LOCAL_STATIC": 2
+  },
+  "validation": {
+    "cwe_repair_regression": "PASS",
+    "registry": "valid",
+    "readiness": "valid",
+    "legacy_dataset": "34 findings / 5 repair_pairs",
+    "legacy_leaderboard": "strict 16/31; legacy 20/31; guarded 3"
+  },
+  "next_round_actions": [
+    "Attempt full ORT RNN target only after a complete pinned checkout and offline dependency graph are available.",
+    "Do not execute MindSpore-70694 arithmetic verification unless an exact contract-matching PR/revision is found.",
+    "Keep all reduced PASS results scoped and retain full cases as REVIEW until every declared gate passes."
+  ],
+  "formal_proof": false,
+  "safety_constraints": {
+    "no_exploit_chain": true,
+    "no_oom_or_huge_allocation": true,
+    "no_real_executor": true,
+    "no_network_target_execution": true
+  }
+}

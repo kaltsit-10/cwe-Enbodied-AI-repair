@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "profile": "embodied-ai-callback-parallel-array",
+  "source": "AGIBOT\\repos\\agibot_x1_infer_src\\src\\module\\dcu_driver_module\\src\\dcu_driver_module.cc",
+  "source_sha256": "1b73f85b9a18fc7ab557e414653a817841eae50d7868df82236275eb1f5c3924",
+  "entrypoint": "DcuDriverModule::JointCmdCallback",
+  "input_source": "joint_command",
+  "runtime_stage": "control_boundary",
+  "control_boundary": "xyber_ctrl_->SetMitCmd",
+  "real_robot_execution": false,
+  "network_target_execution": false,
+  "static_finding": {
+    "id": "joint_command_parallel_array_contract",
+    "cwe": [
+      125,
+      787
+    ],
+    "indexed_fields": [
+      "effort",
+      "velocity",
+      "position",
+      "stiffness",
+      "damping"
+    ],
+    "missing_length_guards": [
+      "effort",
+      "velocity",
+      "position",
+      "stiffness",
+      "damping"
+    ],
+    "reachable_control_boundary": "static-source-only",
+    "verdict": "REVIEW"
+  },
+  "repair_constraints": {
+    "required": [
+      "reject before any command-state mutation when every command vector is not name.size()",
+      "skip TransformJointToActuator and SetMitCmd after rejection",
+      "preserve benign matching-vector command semantics"
+    ],
+    "forbidden": [
+      "silent truncation",
+      "partial command state update",
+      "real actuator execution"
+    ]
+  },
+  "evidence_level": "STATIC_ONLY",
+  "runtime_verification": "NOT_RUN: source-bound static review only; no fake-sink or real actuator runtime claim",
+  "errors": [],
+  "universal_claim": false,
+  "formal_proof": false,
+  "valid": true
+}

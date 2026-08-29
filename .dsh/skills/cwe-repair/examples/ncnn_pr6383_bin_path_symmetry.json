@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-and-bin-parser-failure-cleanup",
+  "symmetry_kind": "TEXT/BIN parser failure cleanup pairs",
+  "paired_paths": [
+    {"id": "text-paramdict-load-failure-cleanup", "base": "continue", "head": ["delete layer", "clear", "return -1"]},
+    {"id": "text-layer-load-param-failure-cleanup", "base": "continue", "head": ["delete layer", "clear", "return -1"]},
+    {"id": "bin-paramdict-load-failure-cleanup", "base": "continue", "head": ["delete layer", "clear", "return -1"]},
+    {"id": "bin-layer-load-param-failure-cleanup", "base": "continue", "head": ["delete layer", "clear", "return -1"]}
+  ],
+  "exhaustive_for_declared_scope": true,
+  "excluded_companion_entrypoints": ["TEXT custom CPU fallback", "BIN custom CPU fallback", "TEXT/BIN Vulkan fallback"],
+  "verdict": "PASS",
+  "formal_proof": false,
+  "universal_claim": false
+}

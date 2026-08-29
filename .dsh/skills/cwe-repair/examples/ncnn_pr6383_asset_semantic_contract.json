@@ -1,0 +1,516 @@
+{
+  "schema_version": 1,
+  "asset_id": "Tencent/ncnn",
+  "case_id": "NCNN-PR-6383",
+  "asset_kind": "embodied-ai-inference-runtime",
+  "scope_type": "single-asset-declared-contract",
+  "official_source": "https://github.com/Tencent/ncnn/pull/6383",
+  "universal_claim": false,
+  "formal_proof": false,
+  "revisions": {
+    "base": "5154f22a4c146959beda380dc7522de53704d940",
+    "head": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7"
+  },
+  "declared_scope": {
+    "providers": [
+      "cpu"
+    ],
+    "targets": [
+      "pr6383_error_path"
+    ],
+    "configurations": [
+      "release",
+      "Unix Makefiles",
+      "g++ 11.4.0",
+      "NCNN_RUNTIME_CPU=ON",
+      "NCNN_VULKAN=OFF",
+      "NCNN_OPENMP=OFF",
+      "NCNN_ASAN=OFF"
+    ],
+    "input_domains": [
+      "finite local text parameter file",
+      "ParamDict failure after valid layer/top-blob tokens"
+    ]
+  },
+  "contract": {
+    "required_asset_gates": [
+      "official_provenance",
+      "source_scope",
+      "inventory_completeness",
+      "reproducibility",
+      "safety"
+    ],
+    "required_path_gates": [
+      "static_contract",
+      "symmetry",
+      "paired_build",
+      "preimage_witness",
+      "runtime_head",
+      "negative_rejection",
+      "benign_preservation",
+      "detect",
+      "repair_plan"
+    ],
+    "required_dimensions": [
+      "text_load_param",
+      "paramdict_failure_id",
+      "partial_layer_cleanup",
+      "explicit_error_return",
+      "finite_benign_text_model"
+    ]
+  },
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "asset_coverage": {
+    "official_provenance": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ncnn_pr6383_text_paramdict_static_evidence.json",
+          "sha256": "411db3b7252a53b003eaee9d40e6454ce23fd0ae7a814bedbbdca486a8286edf",
+          "case_id": "NCNN-PR-6383",
+          "assertions": [
+            {
+              "path": "source_pair.base.revision",
+              "equals": "5154f22a4c146959beda380dc7522de53704d940"
+            },
+            {
+              "path": "source_pair.head.revision",
+              "equals": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7"
+            }
+          ]
+        }
+      ]
+    },
+    "source_scope": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ncnn_pr6383_text_paramdict_static_evidence.json",
+          "sha256": "411db3b7252a53b003eaee9d40e6454ce23fd0ae7a814bedbbdca486a8286edf",
+          "case_id": "NCNN-PR-6383",
+          "assertions": [
+            {
+              "path": "pattern",
+              "equals": "parser_error_continue"
+            },
+            {
+              "path": "scan.head_parser_error_continue_count",
+              "equals": 0
+            }
+          ]
+        }
+      ]
+    },
+    "inventory_completeness": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ncnn_pr6383_text_paramdict_path_inventory.json",
+          "sha256": "efab220ffee45e7fcdaa8d197e6c8234ad7b749746dff09955e6ff2eaa89f9fa",
+          "case_id": "NCNN-PR-6383",
+          "assertions": [
+            {
+              "path": "declared_path_ids.0",
+              "equals": "text-paramdict-load-failure-cleanup"
+            },
+            {
+              "path": "unverified",
+              "equals": []
+            }
+          ]
+        }
+      ]
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ncnn_pr6383_paramdict_failure_evidence_validation.json",
+          "sha256": "39d5317b05bb0418029d77d3e8a57a53cf91f2643ae518d5f913d3c08432a58b",
+          "case_id": "NCNN-PR-6383",
+          "assertions": [
+            {
+              "path": "valid",
+              "equals": true
+            },
+            {
+              "path": "errors",
+              "equals": []
+            }
+          ]
+        }
+      ]
+    },
+    "safety": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+          "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+          "case_id": "NCNN-PR-6383",
+          "assertions": [
+            {
+              "path": "safety.local_pinned_artifacts_only",
+              "equals": true
+            },
+            {
+              "path": "safety.network_target_execution",
+              "equals": false
+            },
+            {
+              "path": "safety.oversized_allocation",
+              "equals": false
+            },
+            {
+              "path": "safety.exploit_chain",
+              "equals": false
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "inventory": {
+    "enumeration_method": "pinned base/head src/net.cpp diff review plus CWE-703 detector enumeration",
+    "source_basis": "ncnn_pr6383_text_paramdict_static_evidence.json",
+    "external_boundaries": [
+      "finite local text parameter file",
+      "ncnn::Net::load_param",
+      "ParamDict::load_param"
+    ],
+    "reachable_sinks": [
+      "pdlr != 0",
+      "delete layer",
+      "Net::clear",
+      "return -1"
+    ],
+    "declared_path_ids": [
+      "text-paramdict-load-failure-cleanup"
+    ],
+    "unverified": []
+  },
+  "paths": [
+    {
+      "id": "text-paramdict-load-failure-cleanup",
+      "source": "src/net.cpp",
+      "entrypoint": "ncnn::Net::load_param(const DataReader&)",
+      "call_path": [
+        "Net::load_param",
+        "ParamDict::load_param",
+        "pdlr != 0",
+        "delete layer",
+        "clear",
+        "return -1"
+      ],
+      "required_dimensions": [
+        "text_load_param",
+        "paramdict_failure_id",
+        "partial_layer_cleanup",
+        "explicit_error_return",
+        "finite_benign_text_model"
+      ]
+    }
+  ],
+  "path_coverage": {
+    "text-paramdict-load-failure-cleanup": {
+      "static_contract": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_text_paramdict_static_evidence.json",
+            "sha256": "411db3b7252a53b003eaee9d40e6454ce23fd0ae7a814bedbbdca486a8286edf",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "scan.base_target_branch_count",
+                "equals": 1
+              },
+              {
+                "path": "scan.head_parser_error_continue_count",
+                "equals": 0
+              }
+            ]
+          }
+        ]
+      },
+      "symmetry": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_text_paramdict_symmetry.json",
+            "sha256": "e9e4308b711bc316c2b7141261cb15887d3c053c4b4664a2770cbb14e5e2919f",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "verdict",
+                "equals": "PASS"
+              },
+              {
+                "path": "exhaustive_for_declared_scope",
+                "equals": true
+              }
+            ]
+          }
+        ]
+      },
+      "paired_build": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "configuration.CMAKE_BUILD_TYPE",
+                "equals": "release"
+              },
+              {
+                "path": "base.sha",
+                "equals": "5154f22a4c146959beda380dc7522de53704d940"
+              },
+              {
+                "path": "head.sha",
+                "equals": "1d6c7f55d11aee7d9808802ff913f8482f8e2ac7"
+              }
+            ]
+          }
+        ]
+      },
+      "preimage_witness": {
+        "status": "PASS",
+        "metrics": {
+          "unsafe_behavior_observed": true,
+          "malicious_rejected": "0/1",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "runtime.base.unsafe_behavior_observed",
+                "equals": true
+              },
+              {
+                "path": "runtime.base.malicious_rejected",
+                "equals": "0/1"
+              }
+            ]
+          }
+        ]
+      },
+      "runtime_head": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "runtime.head.verdict",
+                "equals": "PASS"
+              },
+              {
+                "path": "runtime.head.malicious_rejected",
+                "equals": "1/1"
+              }
+            ]
+          }
+        ]
+      },
+      "negative_rejection": {
+        "status": "PASS",
+        "metrics": {
+          "malicious_rejected": "1/1",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "runtime.head.malicious_rejected",
+                "equals": "1/1"
+              }
+            ]
+          }
+        ]
+      },
+      "benign_preservation": {
+        "status": "PASS",
+        "metrics": {
+          "benign_passed": "1/1",
+          "infrastructure_failures": 0
+        },
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "runtime.base.benign_passed",
+                "equals": "1/1"
+              },
+              {
+                "path": "runtime.head.benign_passed",
+                "equals": "1/1"
+              }
+            ]
+          }
+        ]
+      },
+      "detect": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_bin_path_inventory.json",
+            "sha256": "ca4af1b32e454700f9f12aa74497900a3dbb39c16ef6ba581095b35827d0af1d",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "case_id",
+                "equals": "NCNN-PR-6383"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "detector"
+      },
+      "repair_plan": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_bin_path_symmetry.json",
+            "sha256": "cfb3d7a8f8abd1f060c313c71671ad170054acd61bfe76fea31724cc2d06b48a",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "verdict",
+                "equals": "PASS"
+              }
+            ]
+          }
+        ],
+        "evidence_role": "repair_plan"
+      }
+    }
+  },
+  "path_dimension_coverage": {
+    "text-paramdict-load-failure-cleanup": {
+      "text_load_param": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_text_paramdict_static_evidence.json",
+            "sha256": "411db3b7252a53b003eaee9d40e6454ce23fd0ae7a814bedbbdca486a8286edf",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "source_pair.base.file",
+                "equals": "src/net.cpp"
+              }
+            ]
+          }
+        ]
+      },
+      "paramdict_failure_id": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "fixtures.malicious.input_semantics",
+                "equals": "valid layer and top-blob token followed by invalid ParamDict id 999999"
+              }
+            ]
+          }
+        ]
+      },
+      "partial_layer_cleanup": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_text_paramdict_static_evidence.json",
+            "sha256": "411db3b7252a53b003eaee9d40e6454ce23fd0ae7a814bedbbdca486a8286edf",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "source_pair.head.required_cleanup.0",
+                "equals": "delete layer"
+              },
+              {
+                "path": "source_pair.head.required_cleanup.1",
+                "equals": "clear"
+              }
+            ]
+          }
+        ]
+      },
+      "explicit_error_return": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_text_paramdict_static_evidence.json",
+            "sha256": "411db3b7252a53b003eaee9d40e6454ce23fd0ae7a814bedbbdca486a8286edf",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "source_pair.head.required_cleanup.2",
+                "equals": "return -1"
+              }
+            ]
+          }
+        ]
+      },
+      "finite_benign_text_model": {
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "ncnn_pr6383_paramdict_failure_evidence.json",
+            "sha256": "b2bf81f464150b4a1cf2d9e90e7a8c5986af5c86c58d13c34b774ab03c69475b",
+            "case_id": "NCNN-PR-6383",
+            "assertions": [
+              {
+                "path": "runtime.head.benign_passed",
+                "equals": "1/1"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "exclusions": [
+    {
+      "dimension": "asan_instrumentation",
+      "reason": "existing release build has NCNN_ASAN=OFF; no sanitizer claim"
+    },
+    {
+      "dimension": "layer_load_param_failure",
+      "reason": "separate branch without independent fixture"
+    },
+    {
+      "dimension": "custom_cpu_fallback_failure",
+      "reason": "separate branch without independent fixture"
+    },
+    {
+      "dimension": "binary_load_param_bin",
+      "reason": "outside text-only declared input/API domain"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "case_id": "MS-PR-70694",
+  "source_url": "https://gitee.com/mindspore/mindspore/pulls/70694",
+  "title": "动态shape 溢出检测用例",
+  "state": "merged",
+  "merged_at": "2024-06-13T14:31:57+08:00",
+  "base_sha": "2de6095d1b53692e327eb074426b5ad2c29e66ba",
+  "head_sha": "7493f8535900c238ca0ebe0273cacac3aae4f7f7",
+  "merge_commit_sha": null,
+  "changed_files": null,
+  "changed_files_status": "pending-commit-diff",
+  "contract": "dynamic-shape-overflow-regression",
+  "local_materialization": {
+    "repository": "/home/kaltsit/vuln_repro/mindspore_history/mindspore_repo",
+    "base_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr70694_base",
+    "head_worktree": "/home/kaltsit/vuln_repro/mindspore_history/pr70694_head",
+    "checkout_mode": "blob-filter-and-changed-file-scope-pending"
+  },
+  "safety_scope": {
+    "fixture_policy": "tiny bounded dynamic-shape dimensions and arithmetic-only checks",
+    "forbidden": [
+      "OOM allocation",
+      "huge tensor dimensions",
+      "real executor",
+      "network target",
+      "exploit chain"
+    ]
+  },
+  "status": "REVIEW-until-changed-files-and-runtime-gates-pass"
+}

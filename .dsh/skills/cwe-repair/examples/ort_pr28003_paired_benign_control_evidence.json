@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "status": "PAIRED_FINITE_RNN_BENIGN_CONTROL_PASS",
+  "evidence_scope": "one shared finite CPU/default-provider RNN control only",
+  "executor": {
+    "environment": "local WSL Ubuntu-22.04",
+    "target": "onnxruntime_provider_test",
+    "configuration": "Debug / Unix Makefiles / C++17 / pinned local toolchain",
+    "gtest_filter": "RNNTest.RNN_forward_direction_zigged_batch"
+  },
+  "base": {
+    "revision": "0fedb26c93e6c29882185715d5c2bb583a6d92b5",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_base_probe/build_configure/Debug/onnxruntime_provider_test",
+    "binary_sha256": "6d3dc79a07cc129deef5da44a6158412f2e7df82a3ec91a14a38fd7d2ffc8c24",
+    "exit_code": 0,
+    "passed": "1/1",
+    "elapsed_ms": 59
+  },
+  "head": {
+    "revision": "795675a77ebb898302c5798bd6247658db165d14",
+    "worktree": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe",
+    "binary": "/home/kaltsit/vuln_repro/ort_history/pr28003_full_probe/build_configure/Debug/onnxruntime_provider_test",
+    "binary_sha256": "ec1bfff81a5e4f85419483f9a3efa6a323df3404ceb7b92d8bd7c808c4d1b952",
+    "exit_code": 0,
+    "passed": "1/1",
+    "elapsed_ms": 48
+  },
+  "safety": {
+    "no_external_inputs": true,
+    "no_network_target_execution": true,
+    "no_oom_or_huge_allocation": true,
+    "no_exploit_chain": true
+  },
+  "not_a_substitute_for": [
+    "oversized SafeMul/narrow malicious rejection",
+    "complete RNN path inventory",
+    "all providers/configurations",
+    "universal or formal proof"
+  ],
+  "formal_proof": false,
+  "universal_claim": false
+}

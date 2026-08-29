@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "source_revision": "795675a77ebb898302c5798bd6247658db165d14",
+  "source": "onnxruntime/core/providers/cpu/rnn/rnn_helpers.cc:73-88",
+  "contract_under_review": "sequence_lens zero semantics",
+  "implementation_predicate": "len < 0 || len > seq_length",
+  "implementation_allows": ["len == 0", "len == seq_length"],
+  "diagnostic_text": "All values must be > 0 and < seq_length",
+  "diagnostic_matches_predicate": false,
+  "head_direct_runtime_evidence": {
+    "file": "ort_pr28003_head_gtest_runtime_evidence.json",
+    "zero_extent_test": "RNNTest.RNN_seq_length_zero: PASS",
+    "zero_sequence_lens_test": "RNNTest.RNN_forward_sequence_lens_with_zero: PASS"
+  },
+  "runtime_test_coverage": {
+    "RNNTest.RNN_seq_length_zero": {
+      "source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc:889",
+      "supports": [
+        "default CPU RNN forward path",
+        "seq_length == 0 empty-X handling",
+        "empty Y and zero-filled Y_h",
+        "Assign_Y_h zero-initialization/early return behavior"
+      ],
+      "does_not_support": [
+        "nonempty sequence_lens behavior",
+        "reverse or bidirectional traversal",
+        "non-CPU execution providers",
+        "SafeMul/narrow overflow hardening"
+      ]
+    },
+    "RNNTest.RNN_forward_sequence_lens_with_zero": {
+      "source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc:925",
+      "supports": [
+        "default CPU RNN forward path",
+        "nonempty sequence with mixed sequence_lens={2,0}",
+        "zero Y_h for the zero-length batch and normal final state for the other batch",
+        "Assign_Y_h negative-last-index guard"
+      ],
+      "does_not_support": [
+        "reverse or bidirectional zero sequence_lens",
+        "independent proof of padded Y-frame zeroing because Y is optional",
+        "non-CPU execution providers",
+        "SafeMul/narrow overflow hardening"
+      ]
+    },
+    "RNNTest.RNN_bidirectional_with_sequence_lens": {
+      "source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc:764",
+      "supports": [
+        "default CPU RNN bidirectional path",
+        "valid heterogeneous nonzero sequence_lens={1,2,2}",
+        "forward/reverse traversal, padded Y zeroing, and both-direction Y_h selection"
+      ],
+      "does_not_support": [
+        "zero sequence_lens semantics",
+        "head empty-sequence guard",
+        "non-CPU execution providers",
+        "SafeMul/narrow overflow hardening"
+      ]
+    },
+    "RNNTest.RNN_invalid_sequence_lens": {
+      "source": "onnxruntime/test/providers/cpu/rnn/rnn_op_test.cc:694; mixed fixture at 759-761",
+      "supports": [
+        "default-provider malformed sequence_lens shape control",
+        "out-of-range sequence_lens control when the fixture contains 5 > seq_length=3"
+      ],
+      "does_not_support": [
+        "proof that sequence_lens=0 alone is rejected",
+        "repair evidence for head zero-length runtime behavior",
+        "non-CPU execution providers",
+        "SafeMul/narrow overflow hardening"
+      ]
+    }
+  },
+  "invalid_sequence_lens_control": {
+    "filter": "RNNTest.RNN_invalid_sequence_lens",
+    "base": "PASS",
+    "head": "PASS",
+    "observed_rejections": [
+      "sequence_lens shape {1} where batch size is 2",
+      "mixed {0,5} input where 5 exceeds seq_length=3"
+    ],
+    "interpretation": "The test is an adjacent shape/out-of-range control. Because the second fixture also contains an out-of-range 5, it cannot prove that zero alone is rejected. It must not contradict the head zero-boundary positive test."
+  },
+  "conclusion": "For the pinned head, sequence_lens=0 is a legal boundary value with defined Y_h=0 behavior in the forward CPU RNN path. The stale diagnostic text requires maintenance but is not evidence against the repair behavior.",
+  "remaining_scope": [
+    "reverse and bidirectional zero sequence_lens behavior",
+    "CUDA, TensorRT, OpenVINO, DML and other execution providers",
+    "SafeMul/narrow oversized-dimension runtime behavior",
+    "formal all-input proof"
+  ],
+  "verdict": "CONTRACT_AUDIT_PASS_WITH_DIAGNOSTIC_MISMATCH",
+  "formal_proof": false
+}

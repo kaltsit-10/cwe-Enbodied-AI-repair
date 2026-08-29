@@ -1,0 +1,106 @@
+# cwe-repair 规则镜像（Semgrep 格式）— 2026-08-22
+# 目的：把 cwe-repair 的规则模板镜像为 Semgrep 规则，白嫖 test-ok/test-evil 框架与社区生态。
+# 用法：
+#   1) 安装 semgrep: pip install semgrep
+#   2) 测试规则: semgrep --config <此目录> --test
+#   3) 扫描: semgrep --config <此目录> --severity ERROR <目标目录>
+# 注意：Semgrep 是语法感知的（比 cwe-repair 正则精确），但缺少 cwe-repair 的运行级双向验证；
+# 两者互补：Semgrep 检测 → cwe-repair 修复+验证。
+
+rules:
+  # ===== CWE-125/787: 数组下标未校验（平行数组模式）=====
+  - id: cwe-repair-parallel-array
+    languages: [cpp, c]
+    message: |
+      平行数组模式：以数组 A 长度循环，直接索引数组 B（A/B 长度未互检）。
+      AGIBOT JointCmdCallback 同款漏洞。建议修复：循环前校验各数组长度一致。
+    severity: WARNING
+    patterns:
+      - pattern: for (int $I = 0; $I < $A.size(); $I++) { ... $B[$I] ... }
+      - metavariable-regex:
+          metavariable: $A
+          regex: ^(?!.*(?:$B))
+    fix: |
+      // TODO: 在循环前校验 $A.size() == $B.size()
+      // if ($A.size() != $B.size()) { return -1; }
+
+  # ===== CWE-125: 二次索引/嵌套下标（arr[map.at(k)] 类）=====
+  - id: cwe-repair-nested-index
+    languages: [cpp, c]
+    message: |
+      二次/派生下标（arr[map.at(k)]、arr[obj->field]）——下标来源需确认是否为攻击者输入。
+      AimRT json_convert WriteMemberNested / AGIBOT SetJointStateData 同款。
+    severity: WARNING
+    patterns:
+      - pattern-either:
+          - pattern: $ARR[$X.at($K)]
+          - pattern: $ARR[$X[$I]]
+          - pattern: $ARR[$OBJ->$FIELD]
+
+  # ===== CWE-190: 外部输入直接 resize/create =====
+  - id: cwe-repair-resize-from-attacker
+    languages: [cpp, c]
+    message: |
+      用外部输入直接 resize/create，未校验上限。
+      NCNN layer_count/blob_count、MindSpore dims 同款。建议：分配前校验上界。
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: $VEC.resize($N)
+          - pattern: $VEC.create($N)
+      - metavariable-regex:
+          metavariable: $N
+          regex: ^(?:msg|data|buf|len|count|n|size)\w*$
+
+  # ===== CWE-369: 除零（分母来自输入）=====
+  - id: cwe-repair-divide-by-input
+    languages: [cpp, c]
+    message: |
+      除法分母为变量（可能为 0 或来自输入）。NCNN shape_hints.w/top_count、
+      AGIBOT freq 同款。建议：除法前校验分母非零。
+    severity: WARNING
+    patterns:
+      - pattern-either:
+          - pattern: $X / $D
+          - pattern: $X % $D
+      - pattern-not: $X / 2
+      - pattern-not: $X / 8
+      - metavariable-regex:
+          metavariable: $D
+          regex: ^(?!.*(?:0|[0-9]+$))
+
+  # ===== CWE-502: pickle 反序列化（Python）=====
+  - id: cwe-repair-pickle-load
+    languages: [python]
+    message: |
+      pickle.load/loads 反序列化不可信数据 → 任意代码执行。
+      XR teleop robot_arm_ik 同款。建议：改用 json/safetensors，或校验文件来源与哈希。
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: pickle.load(...)
+          - pattern: pickle.loads(...)
+
+  # ===== CWE-78: shell 命令拼接（Python/C）=====
+  - id: cwe-repair-shell-concat
+    languages: [python, cpp, c]
+    message: |
+      shell 命令字符串拼接未净化 → 命令注入。
+      AGIBOT JoyStickModule system()、XR teleop 同款。建议：改用安全 API/白名单。
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: system($S + $X)
+          - pattern: os.system(f"...{$X}...")
+          - pattern: subprocess.$FUNC(..., shell=True, ...)
+
+  # ===== CWE-248: map.at() 未捕获异常 =====
+  - id: cwe-repair-at-uncaught
+    languages: [cpp]
+    message: |
+      容器 .at() 可能抛 out_of_range，回调无 try/catch。
+      AGIBOT ControlModule 同款。建议：改用 find() + 存在性检查。
+    severity: WARNING
+    patterns:
+      - pattern: $MAP.at($K)
+      - pattern-not: try { ... }

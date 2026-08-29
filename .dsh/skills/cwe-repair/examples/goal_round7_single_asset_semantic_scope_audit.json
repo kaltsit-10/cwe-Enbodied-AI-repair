@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "goal_id": "goal-1282612e-abd2-44fd-973f-0517d848fb34",
+  "goal_revision": 18,
+  "round": 7,
+  "phase": "active",
+  "objective_slice": "Convert the single-asset full-path semantic-verification requirement into an auditable plugin gate and apply it to ORT-PR-28003.",
+  "answer_to_user_question": {
+    "single_asset_scope_complete_is_reproducible": true,
+    "universal_all_input_provider_proof_is_not_claimed": true,
+    "basis": [
+      "Earlier development logs define cwe-repair as a reproducible, auditable, migratable input-contract verifier.",
+      "The logs explicitly separate static, reduced runtime, full runtime, symmetry, and formal-proof boundaries.",
+      "The plugin can close a declared asset scope only when every declared path and dimension has artifact-backed evidence."
+    ]
+  },
+  "plugin_change": {
+    "script": "../scripts/asset_semantic_contract.py",
+    "stage": "single-asset declared semantic contract gate",
+    "required_asset_gates": ["official_provenance", "source_scope", "reproducibility", "safety"],
+    "required_path_gates": [
+      "static_contract",
+      "symmetry",
+      "paired_build",
+      "runtime_base",
+      "runtime_head",
+      "negative_rejection",
+      "benign_preservation"
+    ],
+    "artifact_requirements": [
+      "local JSON artifact exists",
+      "SHA-256 matches",
+      "case_id matches",
+      "assertions resolve through object and array paths",
+      "formal_proof claims are rejected"
+    ],
+    "result_semantics": {
+      "artifact_integrity": "evidence files and normalized structure are reproducible",
+      "scope_complete": "every declared gate and path dimension has PASS status",
+      "ASSET_SCOPE_COMPLETE": "complete only within the declared asset scope",
+      "REVIEW": "any missing/non-PASS gate or artifact-integrity error",
+      "universal_claim": false,
+      "formal_proof": false
+    }
+  },
+  "ort_pr28003": {
+    "contract": "ort_pr28003_asset_semantic_contract.json",
+    "artifact_integrity": true,
+    "scope_complete": false,
+    "verdict": "REVIEW",
+    "missing_gate_count": 26,
+    "closed_infrastructure_gates": [
+      "official_provenance",
+      "source_scope",
+      "reproducibility",
+      "safety",
+      "paired_build for declared RNN paths"
+    ],
+    "remaining_semantic_gates": [
+      "SafeMul<size_t> allocation overflow runtime",
+      "SafeMul<int> shape overflow runtime",
+      "hidden_size narrowing overflow runtime",
+      "base/head malicious rejection and benign preservation contract",
+      "reverse and bidirectional zero sequence_lens",
+      "provider matrix",
+      "complete symmetry/static contract closure"
+    ],
+    "current_declared_scope": [
+      "pinned ORT base/head",
+      "CPU/default execution provider",
+      "onnxruntime_provider_test and onnxruntime_test_all",
+      "Debug / Unix Makefiles / C++17",
+      "finite bounded fixtures without OOM"
+    ]
+  },
+  "validation": {
+    "asset_validator_unit_regression": "PASS",
+    "synthetic_complete_asset": "ASSET_SCOPE_COMPLETE",
+    "synthetic_missing_runtime_gate": "REVIEW",
+    "tampered_artifact": "invalid with sha256 mismatch",
+    "ort_asset_validator": "valid=true; artifact_integrity=true; scope_complete=false; REVIEW",
+    "cwe_repair_regression": "PASS",
+    "contract_matrix": "REVIEW as expected",
+    "legacy_strict_benchmark_modified": false
+  },
+  "safety": {
+    "new_target_execution": false,
+    "network_target_execution": false,
+    "oom_or_huge_allocation": false,
+    "exploit_chain": false
+  },
+  "formal_proof": false
+}

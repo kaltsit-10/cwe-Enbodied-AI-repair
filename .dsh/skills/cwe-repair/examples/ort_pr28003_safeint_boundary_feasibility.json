@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "case_id": "ORT-PR-28003",
+  "contract": "SafeMul<int> shape-product overflow before RNN GEMM",
+  "status": "SAFE_BOUNDARY_DESIGN_REVIEW",
+  "official_source": "https://github.com/microsoft/onnxruntime/pull/28003",
+  "source_revision": "795675a77ebb898302c5798bd6247658db165d14",
+  "analysis": {
+    "compute_order": [
+      "ValidateCommonRnnInputs",
+      "output shape allocation when outputs are requested",
+      "temporary x_matmul allocation through SafeMul<size_t>",
+      "SafeMul<int>(seq_length, batch_size) in Gemm argument evaluation",
+      "sequence loop"
+    ],
+    "safe_observation": "A normal positive-dimension overflow case can require very large X/output/temp allocation before the checked int product is reached; such a fixture is forbidden under the no-OOM constraint.",
+    "candidate_zero_element_boundary": {
+      "shape_X": [50000, 50000, 0],
+      "shape_W": [1, 0, 0],
+      "shape_R": [1, 0, 0],
+      "hidden_size": 0,
+      "direction": "forward",
+      "outputs": "both optional",
+      "expected_input_element_counts": {
+        "X": 0,
+        "W": 0,
+        "R": 0
+      },
+      "expected_checked_product": "50000 * 50000 > INT_MAX",
+      "expected_behavior_if_executed": "SafeMul<int> rejection before time loop, subject to model/schema acceptance of hidden_size=0",
+      "allocation_safety_basis": "TensorShape products contain a zero extent and outputs are omitted; this must still be confirmed by a dedicated probe before execution.",
+      "contract_strength": "edge-case feasibility only; not valid full arithmetic proof"
+    }
+  },
+  "execution": {
+    "status": "NOT_RUN",
+    "reason": "No existing official provider GTest exposes this fixture; adding it to the pinned upstream target would alter the target source scope.",
+    "allowed_next_step": "A separately identified local pinned-provider probe may validate pre-allocation rejection with strict memory/time limits and an independent artifact record.",
+    "forbidden": [
+      "positive-dimension huge allocation",
+      "OOM experimentation",
+      "network target",
+      "exploit chain"
+    ]
+  },
+  "formal_proof": false,
+  "verdict": "REVIEW"
+}

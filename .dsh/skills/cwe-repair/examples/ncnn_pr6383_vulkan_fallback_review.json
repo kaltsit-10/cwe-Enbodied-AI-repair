@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "text-vulkan-cpu-fallback-layer-load-param-failure",
+  "verdict": "REVIEW",
+  "artifact_integrity": true,
+  "scope_complete": false,
+  "reachability": "config-reachable only when NCNN_VULKAN=ON and a valid Vulkan device is available",
+  "attempted_configuration": {"NCNN_VULKAN": "ON", "NCNN_SYSTEM_GLSLANG": "ON", "CMAKE_BUILD_TYPE": "Release", "NCNN_OPENMP": "OFF"},
+  "blocker": "Pinned worktree has no glslang submodule; system glslang lacks glslang-config CMake target; CMake refuses to configure Vulkan build and reports that submodules were not downloaded.",
+  "evidence": ["Vulkan headers present", "Vulkan ICD files present", "cmake configuration output captured from local build attempt"],
+  "runtime_base_head": "NOT_RUN",
+  "no_claim": ["No Vulkan fallback runtime claim", "No complete PR #6383 claim", "No formal proof"],
+  "safe_boundary": "Do not initialize or mutate submodules in the pinned research worktree without a separately recorded source/build provenance decision.",
+  "universal_claim": false,
+  "formal_proof": false
+}

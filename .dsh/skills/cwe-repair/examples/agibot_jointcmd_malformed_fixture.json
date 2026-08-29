@@ -1,0 +1,12 @@
+{
+  "fixture_kind": "bounded-joint-command-malicious",
+  "known_joints": ["left_hip", "right_hip"],
+  "joint_command": {
+    "name": ["left_hip", "right_hip"],
+    "position": [0.1],
+    "velocity": [0.0],
+    "effort": [0.0],
+    "stiffness": [1.0],
+    "damping": [0.1]
+  }
+}

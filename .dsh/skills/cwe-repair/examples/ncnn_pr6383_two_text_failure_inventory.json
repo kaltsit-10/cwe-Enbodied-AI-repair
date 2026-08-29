@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "case_id": "NCNN-PR-6383",
+  "contract_id": "two-text-parser-failure-cleanup",
+  "enumeration_method": "pinned src/net.cpp diff plus detector enumeration and two independently executed finite TEXT fixtures",
+  "source_basis": "base/head src/net.cpp hashes bound by the two path evidence records",
+  "external_boundaries": ["finite local text parameter file", "ncnn::Net::load_param", "ParamDict::load_param", "layer::load_param"],
+  "reachable_sinks": ["pdlr != 0 cleanup/return", "lr != 0 cleanup/return"],
+  "declared_path_ids": ["text-paramdict-load-failure-cleanup", "text-layer-load-param-failure-cleanup"],
+  "unverified": [],
+  "explicit_exclusions": ["TEXT custom CPU fallback failure", "all BIN load_param_bin failure paths", "ASan instrumentation"],
+  "formal_proof": false,
+  "universal_claim": false
+}
